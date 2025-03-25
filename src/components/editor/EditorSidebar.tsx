@@ -14,10 +14,10 @@ interface EditorSidebarProps {
 
 const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="editor-panel w-64 flex flex-col h-full bg-white border-r border-gray-200 shadow-sm">
-      <div className="editor-toolbar justify-between bg-white border-b border-gray-200">
-        <span className="text-gray-800 text-sm font-medium">Design Tools</span>
-        <button className="editor-button p-1.5 text-gray-600 hover:text-gray-900">
+    <div className="editor-panel w-64 flex flex-col h-full bg-cv-darkgray border-r border-cv-lightgray shadow-sm">
+      <div className="editor-toolbar justify-between bg-cv-gray border-b border-cv-lightgray">
+        <span className="text-cv-white text-sm font-medium">Design Tools</span>
+        <button className="editor-button p-1.5 text-cv-white hover:text-cv-white">
           <Grid size={14} />
         </button>
       </div>

@@ -29,8 +29,8 @@ const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) =>
           onClick={() => setActiveTab(tab.id)}
           className={`flex items-center w-full px-3 py-2 rounded-md text-sm font-medium transition-colors ${
             activeTab === tab.id
-              ? "bg-theme-primary text-white"
-              : "text-gray-700 hover:bg-gray-100"
+              ? "bg-cv-accent text-cv-white"
+              : "text-cv-white hover:bg-cv-lightgray"
           }`}
         >
           <tab.icon size={16} className="mr-3" />

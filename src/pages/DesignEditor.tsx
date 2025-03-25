@@ -47,7 +47,7 @@ const DesignEditor: React.FC = () => {
   };
   
   return (
-    <div className="flex flex-col h-screen bg-gray-50">
+    <div className="flex flex-col h-screen bg-cv-black">
       <Navbar />
       
       <div className="flex-1 flex flex-col overflow-hidden">

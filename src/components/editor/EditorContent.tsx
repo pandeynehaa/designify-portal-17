@@ -4,6 +4,7 @@ import EditorSidebar from "./EditorSidebar";
 import CanvasArea from "./CanvasArea";
 import PropertyPanel from "./PropertyPanel";
 import CanvasDropOverlay from "./CanvasDropOverlay";
+import CanvasTools from "./CanvasTools";
 
 interface EditorContentProps {
   activeTab: string;
@@ -38,7 +39,7 @@ const EditorContent: React.FC<EditorContentProps> = ({
     <div className="flex-1 flex overflow-hidden">
       <EditorSidebar activeTab={activeTab} setActiveTab={handleTabClick} />
       
-      <div className="flex-1 relative overflow-hidden bg-gray-100" id="canvas-area">
+      <div className="flex-1 relative overflow-hidden bg-cv-gray" id="canvas-area">
         <CanvasArea 
           activeTemplate={activeTemplate} 
           zoom={zoom} 
@@ -56,8 +57,5 @@ const EditorContent: React.FC<EditorContentProps> = ({
     </div>
   );
 };
-
-// Import CanvasTools to avoid TypeScript errors
-import CanvasTools from "./CanvasTools";
 
 export default EditorContent;

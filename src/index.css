@@ -1,124 +1,108 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+@import url('https://fonts.cdnfonts.com/css/gravity');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 240 10% 3.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
-    --primary: 240 5.9% 10%;
-    --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 16 100% 57%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 16%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 70%;
+    --accent: 16 100% 57%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 240 5.9% 10%;
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 16 100% 57%;
     --radius: 0.5rem;
     
     /* Editor specific variables */
-    --editor-bg: 0 0% 98%;
-    --editor-panel: 0 0% 100%;
-    --editor-toolbar: 0 0% 100%;
-    --editor-border: 0 0% 90%;
-    --editor-surface: 0 0% 97%;
-    --editor-highlight: 0 0% 95%;
-    --editor-accent: 210 100% 56%;
-    --editor-text: 210 10% 30%;
-    --editor-muted: 210 10% 60%;
+    --editor-bg: 0 0% 0%;
+    --editor-panel: 0 0% 7%;
+    --editor-toolbar: 0 0% 10%;
+    --editor-border: 0 0% 20%;
+    --editor-surface: 0 0% 10%;
+    --editor-highlight: 0 0% 16%;
+    --editor-accent: 16 100% 57%;
+    --editor-text: 0 0% 100%;
+    --editor-muted: 0 0% 60%;
     
     /* Theme variables */
-    --theme-primary: 210 100% 56%;
-    --theme-secondary: 280 60% 60%;
-    --theme-accent: 35 95% 60%;
-    --theme-neutral: 210 20% 40%;
+    --theme-primary: 16 100% 57%;
+    --theme-secondary: 0 0% 29%;
+    --theme-accent: 16 100% 67%;
+    --theme-neutral: 0 0% 25%;
   }
 
-  .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
-
-    /* Dark mode editor variables */
-    --editor-bg: 220 10% 10%;
-    --editor-panel: 220 10% 13%;
-    --editor-toolbar: 220 10% 17%;
-    --editor-border: 220 10% 22%;
-    --editor-surface: 220 10% 15%;
-    --editor-highlight: 220 10% 24%;
-    --editor-accent: 210 100% 56%;
-    --editor-text: 0 0% 90%;
-    --editor-muted: 0 0% 70%;
-  }
-}
-
-@layer base {
-  * {
-    @apply border-border;
-  }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-cv-black text-cv-white;
+    font-family: 'Gravity', system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
   }
 }
 
 @layer components {
   .editor-panel {
-    @apply bg-editor-panel border-r border-editor-border;
+    @apply bg-cv-darkgray border-r border-cv-lightgray;
   }
   
   .editor-toolbar {
-    @apply h-10 flex items-center bg-editor-toolbar border-b border-editor-border px-3;
+    @apply h-10 flex items-center bg-cv-gray border-b border-cv-lightgray px-3;
   }
   
   .editor-button {
-    @apply text-editor-text hover:bg-editor-highlight rounded-md transition-colors;
+    @apply text-cv-white hover:bg-cv-lightgray rounded-md transition-colors;
   }
   
   .editor-button-primary {
-    @apply bg-theme-primary hover:bg-theme-primary/90 text-white px-3 py-1.5 rounded-md flex items-center transition-colors;
+    @apply bg-cv-accent hover:bg-cv-accent/90 text-cv-white px-3 py-1.5 rounded-md flex items-center transition-colors;
   }
   
   .toolbar-button-hover {
-    @apply hover:text-editor-text transition-colors;
+    @apply hover:text-cv-white transition-colors;
   }
 
   /* Component Styles */
   .component-card {
-    @apply bg-white border border-gray-200 rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow;
+    @apply bg-cv-gray border border-cv-lightgray rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow;
   }
 
   .component-card-header {
-    @apply bg-gray-50 p-2 text-sm font-medium border-b border-gray-200;
+    @apply bg-cv-darkgray p-2 text-sm font-medium border-b border-cv-lightgray;
   }
 
   .component-card-body {
     @apply p-3;
+  }
+
+  /* Culture Vault specific styles */
+  .cv-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .cv-button {
+    @apply bg-cv-accent text-cv-white hover:bg-cv-accent/90 px-4 py-2 rounded transition-colors font-medium;
+  }
+
+  .cv-button-outline {
+    @apply border border-cv-accent text-cv-accent hover:bg-cv-accent hover:text-cv-white px-4 py-2 rounded transition-colors font-medium;
   }
 }
 
@@ -129,8 +113,8 @@
 }
 
 .drag-over {
-  background-color: rgba(37, 99, 235, 0.1);
-  outline: 2px dashed #2563eb;
+  background-color: rgba(255, 88, 36, 0.2);
+  outline: 2px dashed #FF5824;
 }
 
 .droppable {
@@ -155,12 +139,12 @@
 
 /* Canvas area */
 .canvas-container {
-  @apply bg-white shadow-lg rounded-lg overflow-hidden;
+  @apply bg-cv-gray shadow-lg rounded-lg overflow-hidden;
   transition: transform 0.2s ease-out;
 }
 
 .canvas-container:hover {
-  @apply outline outline-2 outline-theme-primary/30;
+  @apply outline outline-2 outline-cv-accent/30;
 }
 
 .canvas-element {
@@ -168,20 +152,20 @@
 }
 
 .canvas-element.selected {
-  @apply outline outline-2 outline-theme-primary;
+  @apply outline outline-2 outline-cv-accent;
 }
 
 .canvas-element:hover:not(.selected) {
-  @apply outline outline-1 outline-dashed outline-theme-primary/60;
+  @apply outline outline-1 outline-dashed outline-cv-accent/60;
 }
 
 .canvas-element-controls {
-  @apply absolute -top-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-1 bg-white shadow-md rounded-md border border-gray-200 p-0.5;
+  @apply absolute -top-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-1 bg-cv-gray shadow-md rounded-md border border-cv-lightgray p-0.5;
   z-index: 10;
 }
 
 .canvas-element-resize-handle {
-  @apply absolute w-2 h-2 bg-theme-primary rounded-full border border-white;
+  @apply absolute w-2 h-2 bg-cv-accent rounded-full border border-cv-white;
   z-index: 20;
 }
 

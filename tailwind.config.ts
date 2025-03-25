@@ -1,4 +1,3 @@
-
 import type { Config } from "tailwindcss";
 
 export default {
@@ -20,10 +19,19 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
-				display: ['SF Pro Display', 'Inter', 'system-ui', 'sans-serif'],
+				sans: ['Gravity', 'system-ui', 'sans-serif'],
+				display: ['Bebas Neue', 'SF Pro Display', 'system-ui', 'sans-serif'],
 			},
 			colors: {
+				cv: {
+					black: '#000000',
+					darkgray: '#121212',
+					gray: '#1A1A1A',
+					lightgray: '#333333',
+					white: '#FFFFFF',
+					accent: '#FF5824',
+					secondary: '#4A4A4A',
+				},
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
@@ -69,23 +77,23 @@ export default {
 				},
 				editor: {
 					toolbar: '#1A1A1A',
-					panel: '#222222',
+					panel: '#121212',
 					border: '#333333',
-					surface: '#2A2A2A',
-					highlight: '#3E3E3E',
-					accent: '#007AFF',
+					surface: '#1A1A1A',
+					highlight: '#2A2A2A',
+					accent: '#FF5824',
 					text: '#FFFFFF',
 					muted: '#999999',
 				},
 				theme: {
-					primary: '#007AFF',
-					secondary: '#5AC8FA',
-					accent: '#FF9500',
+					primary: '#FF5824',
+					secondary: '#4A4A4A',
+					accent: '#FF8957',
 					success: '#34C759',
 					warning: '#FF3B30',
 					neutral: '#8E8E93',
 					light: '#F2F2F7',
-					dark: '#1C1C1E',
+					dark: '#000000',
 				},
 			},
 			borderRadius: {
