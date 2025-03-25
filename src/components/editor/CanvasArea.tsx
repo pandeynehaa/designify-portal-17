@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, DragEvent } from "react";
 import { 
   Monitor, Smartphone, Tablet, 
@@ -9,9 +8,10 @@ import { toast } from "../ui/use-toast";
 
 interface CanvasAreaProps {
   activeTemplate: string;
+  zoom: number;
 }
 
-const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
+const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
   const [deviceView, setDeviceView] = useState("desktop");
   const [zoomLevel, setZoomLevel] = useState(100);
   const [activeTool, setActiveTool] = useState("select");
@@ -42,16 +42,13 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
     const canvasRect = canvasRef.current?.getBoundingClientRect();
     if (!canvasRect) return;
     
-    // Get the drop position relative to the canvas
     const x = e.clientX - canvasRect.left;
     const y = e.clientY - canvasRect.top;
     
-    // Check if it's a component or an image
     const componentData = e.dataTransfer.getData("application/component");
     const imageData = e.dataTransfer.getData("application/image");
     
     if (componentData) {
-      // It's a component being dragged from the sidebar
       const component = JSON.parse(componentData);
       const newElement = {
         type: "component",
@@ -67,7 +64,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
         description: `Added ${component.name} to the canvas`
       });
     } else if (imageData) {
-      // It's an image being dragged from the images panel
       const image = JSON.parse(imageData);
       const newElement = {
         type: "image",
@@ -83,7 +79,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
         description: "Image added to the canvas"
       });
     } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      // It's a file being dragged from the file system
       Array.from(e.dataTransfer.files).forEach(file => {
         if (file.type.startsWith('image/')) {
           const reader = new FileReader();
@@ -111,7 +106,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
     }
   };
 
-  // Render the dropped elements on the canvas
   const renderDroppedElements = () => {
     return droppedElements.map(element => {
       const style = {
@@ -186,7 +180,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
             <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleZoomOut}>
               <MinusSquare size={14} className="text-editor-text" />
             </button>
-            <span className="text-xs text-editor-text">{zoomLevel}%</span>
+            <span className="text-xs text-editor-text">{zoom * 100}%</span>
             <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleZoomIn}>
               <PlusSquare size={14} className="text-editor-text" />
             </button>
@@ -216,22 +210,19 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
             "w-[375px] h-[667px]"
           }`}
           style={{ 
-            transform: `scale(${zoomLevel / 100})`,
+            transform: `scale(${zoom})`,
             overflow: "hidden" 
           }}
         >
-          {/* Template content */}
           {activeTemplate === "marketplace" && <MarketplaceTemplate />}
           {activeTemplate === "drops" && <DropsTemplate />}
           {activeTemplate === "token-gate" && <TokenGateTemplate />}
           {activeTemplate === "buy-coin" && <BuyCoinTemplate />}
           
-          {/* Render the dragged and dropped elements */}
           {renderDroppedElements()}
         </div>
       </div>
       
-      {/* Drag and drop instruction overlay */}
       <div className="absolute inset-0 pointer-events-none flex items-center justify-center z-0 opacity-0 transition-opacity duration-300 bg-black/50 text-white text-xl font-medium" id="dropOverlay">
         Drop to add to canvas
       </div>
@@ -239,7 +230,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate }) => {
   );
 };
 
-// Template components (simplified for the prototype)
 const MarketplaceTemplate: React.FC = () => (
   <div className="h-full bg-gray-50 flex flex-col">
     <div className="h-16 border-b border-gray-200 flex items-center px-6 bg-white">
@@ -316,8 +306,7 @@ const TokenGateTemplate: React.FC = () => (
           <div className="w-3/4 h-6 bg-gray-200 rounded-md"></div>
         </div>
         
-        <div className="w-full h-12 bg-blue-600 rounded-md mb-4"></div>
-        <div className="w-full h-4 bg-gray-200 rounded-md"></div>
+        <div className="w-full h-12 bg-blue-600 rounded-md"></div>
       </div>
     </div>
   </div>

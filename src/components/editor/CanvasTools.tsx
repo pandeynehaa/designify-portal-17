@@ -4,7 +4,7 @@ import {
   Move, ZoomIn, ZoomOut, Undo, Redo, 
   Layers, Eye, EyeOff, Lock, Unlock, 
   AlignLeft, AlignCenter, AlignRight,
-  AlignVerticalCenter, Grid, RotateCcw
+  Grid, RotateCcw
 } from "lucide-react";
 
 interface CanvasToolsProps {
