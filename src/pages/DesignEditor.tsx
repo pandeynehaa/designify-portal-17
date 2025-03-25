@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import Navbar from "../components/Navbar";
 import EditorSidebar from "../components/editor/EditorSidebar";
@@ -66,7 +65,6 @@ const DesignEditor: React.FC = () => {
     setZoom(1);
   };
 
-  // Set up event handlers for drag and drop overlay
   useEffect(() => {
     const handleDragOver = (e: DragEvent) => {
       e.preventDefault();
