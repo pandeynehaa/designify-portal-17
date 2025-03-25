@@ -18,6 +18,11 @@ const MarketplaceCard: React.FC<MarketplaceCardProps> = ({ theme }) => {
   return (
     <div className="rounded-xl overflow-hidden bg-white border border-border/60 hover:shadow-card transition-all duration-300 hover:translate-y-[-2px] hover-scale">
       <div className="aspect-[4/3] bg-gray-100 relative overflow-hidden">
+        <img 
+          src={theme.image} 
+          alt={theme.name}
+          className="w-full h-full object-cover"
+        />
         <div className="w-full h-full absolute inset-0 bg-gradient-to-b from-black/10 to-black/30"></div>
         <div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between items-center">
           <div className="flex space-x-1.5">
