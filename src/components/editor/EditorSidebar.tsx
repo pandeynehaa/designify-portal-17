@@ -1,9 +1,11 @@
 
 import React, { useState, DragEvent } from "react";
 import { 
-  Layout, Type, Image, Square, Layers, 
+  Layout, Type, Image, Layers, 
   Grid, Palette, Wand2, Shapes, Sparkles,
-  ChevronRight, ChevronDown
+  ChevronRight, ChevronDown, Search, Plus,
+  BookOpen, Heart, Users, CreditCard, Wallet,
+  ShoppingCart, Star, Package, CircleDollarSign
 } from "lucide-react";
 import { toast } from "../ui/use-toast";
 
@@ -15,6 +17,7 @@ interface EditorSidebarProps {
 const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }) => {
   const [componentsExpanded, setComponentsExpanded] = useState(true);
   const [imagesExpanded, setImagesExpanded] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
   
   const tabs = [
     { id: "layout", icon: Layout, label: "Layout" },
@@ -27,9 +30,40 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
   ];
   
   const componentCategories = [
-    { id: "web3", label: "Web3 Components", items: ["NFT Card", "Wallet Connect", "Token Gate", "Price Display"] },
-    { id: "ui", label: "UI Components", items: ["Button", "Card", "Modal", "Table"] },
-    { id: "layout", label: "Layout", items: ["Container", "Grid", "Flex", "Divider"] },
+    { 
+      id: "web3", 
+      label: "Web3 Components", 
+      items: [
+        { name: "NFT Card", icon: BookOpen },
+        { name: "Wallet Connect", icon: Wallet },
+        { name: "Token Gate", icon: CreditCard },
+        { name: "Price Display", icon: CircleDollarSign },
+        { name: "Gallery Grid", icon: Grid },
+        { name: "Collection List", icon: Package }
+      ] 
+    },
+    { 
+      id: "ui", 
+      label: "UI Components", 
+      items: [
+        { name: "Button", icon: Plus },
+        { name: "Card", icon: Layers },
+        { name: "Modal", icon: Layers },
+        { name: "Table", icon: Grid },
+        { name: "Rating", icon: Star },
+        { name: "Testimonial", icon: Users }
+      ] 
+    },
+    { 
+      id: "layout", 
+      label: "Layout", 
+      items: [
+        { name: "Container", icon: Layout },
+        { name: "Grid", icon: Grid },
+        { name: "Flex", icon: Layout },
+        { name: "Divider", icon: Layout }
+      ] 
+    },
   ];
 
   // Sample images for the Images tab
@@ -89,11 +123,19 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
     window.addEventListener('dragend', resetOverlay);
   };
 
+  // Filter components based on search query
+  const filteredCategories = componentCategories.map(category => ({
+    ...category,
+    items: category.items.filter(item => 
+      item.name.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  })).filter(category => category.items.length > 0);
+
   return (
-    <div className="editor-panel w-64 flex flex-col h-full">
-      <div className="editor-toolbar justify-between">
-        <span className="text-editor-text text-sm font-medium">Editor Tools</span>
-        <button className="editor-button p-1.5">
+    <div className="editor-panel w-64 flex flex-col h-full bg-white border-r border-gray-200 shadow-sm">
+      <div className="editor-toolbar justify-between bg-white border-b border-gray-200">
+        <span className="text-gray-800 text-sm font-medium">Design Tools</span>
+        <button className="editor-button p-1.5 text-gray-600 hover:text-gray-900">
           <Grid size={14} />
         </button>
       </div>
@@ -106,8 +148,8 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
               onClick={() => setActiveTab(tab.id)}
               className={`flex items-center w-full px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                 activeTab === tab.id
-                  ? "bg-editor-accent text-white"
-                  : "text-editor-text hover:bg-editor-surface"
+                  ? "bg-theme-primary text-white"
+                  : "text-gray-700 hover:bg-gray-100"
               }`}
             >
               <tab.icon size={16} className="mr-3" />
@@ -117,11 +159,24 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         </div>
         
         {activeTab === "components" && (
-          <div className="p-2 border-t border-editor-border">
-            {componentCategories.map((category) => (
+          <div className="p-2 border-t border-gray-200">
+            <div className="px-2 pb-3">
+              <div className="relative">
+                <Search size={14} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search components..."
+                  className="w-full py-1.5 pl-9 pr-3 text-sm bg-gray-100 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-theme-primary/20 focus:border-theme-primary"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+            </div>
+            
+            {filteredCategories.map((category) => (
               <div key={category.id} className="mb-3">
                 <button 
-                  className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium text-editor-text hover:bg-editor-surface"
+                  className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
                   onClick={() => setComponentsExpanded(!componentsExpanded)}
                 >
                   <span>{category.label}</span>
@@ -133,16 +188,16 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
                 </button>
                 
                 {componentsExpanded && (
-                  <div className="ml-2 pl-2 border-l border-editor-border mt-1">
+                  <div className="ml-2 pl-2 border-l border-gray-200 mt-1">
                     {category.items.map((item, index) => (
                       <div 
                         key={index}
-                        className="flex items-center px-3 py-1.5 rounded-md text-sm text-editor-muted hover:bg-editor-surface hover:text-editor-text transition-colors cursor-grab"
+                        className="flex items-center px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-grab"
                         draggable
-                        onDragStart={(e) => handleDragStart(e, { name: item, category: category.id })}
+                        onDragStart={(e) => handleDragStart(e, { name: item.name, category: category.id })}
                       >
-                        <Shapes size={14} className="mr-2 opacity-70" />
-                        {item}
+                        <item.icon size={14} className="mr-2 opacity-70" />
+                        {item.name}
                       </div>
                     ))}
                   </div>
@@ -153,10 +208,10 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         )}
 
         {activeTab === "images" && (
-          <div className="p-2 border-t border-editor-border">
+          <div className="p-2 border-t border-gray-200">
             <div className="mb-3">
               <button 
-                className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium text-editor-text hover:bg-editor-surface"
+                className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-100"
                 onClick={() => setImagesExpanded(!imagesExpanded)}
               >
                 <span>Stock Images</span>
@@ -179,10 +234,10 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
                       <img 
                         src={image.url} 
                         alt={image.label} 
-                        className="w-full h-20 object-cover rounded-md border border-editor-border"
+                        className="w-full h-20 object-cover rounded-md border border-gray-200 group-hover:border-theme-primary/50 transition-colors"
                       />
-                      <div className="absolute inset-0 bg-editor-highlight/0 group-hover:bg-editor-highlight/20 rounded-md transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
-                        <span className="text-xs text-white font-medium bg-black/70 px-2 py-1 rounded">Drag me</span>
+                      <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 rounded-md transition-colors flex items-center justify-center opacity-0 group-hover:opacity-100">
+                        <span className="text-xs text-white font-medium px-2 py-1 rounded bg-black/70">Drag me</span>
                       </div>
                     </div>
                   ))}
@@ -191,8 +246,8 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
             </div>
             
             <div className="px-3 py-2">
-              <div className="border-2 border-dashed border-editor-border rounded-lg p-4 text-center cursor-pointer hover:bg-editor-surface/50 transition-colors">
-                <p className="text-sm text-editor-muted">
+              <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center cursor-pointer hover:bg-gray-50 hover:border-theme-primary/30 transition-colors">
+                <p className="text-sm text-gray-500">
                   Drag & drop images here <br /> or click to upload
                 </p>
               </div>
@@ -201,16 +256,16 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         )}
 
         {activeTab === "theme" && (
-          <div className="p-4 border-t border-editor-border">
-            <div className="bg-editor-surface p-3 rounded-md">
-              <div className="text-xs font-medium text-editor-text mb-2">Current Theme</div>
+          <div className="p-4 border-t border-gray-200">
+            <div className="bg-gray-50 p-3 rounded-md">
+              <div className="text-xs font-medium text-gray-700 mb-2">Current Theme</div>
               <div className="flex items-center space-x-2 mb-4">
                 <div className="w-6 h-6 rounded-full bg-theme-primary"></div>
                 <div className="w-6 h-6 rounded-full bg-theme-secondary"></div>
                 <div className="w-6 h-6 rounded-full bg-theme-accent"></div>
                 <div className="w-6 h-6 rounded-full bg-theme-neutral"></div>
               </div>
-              <button className="editor-button-primary w-full justify-center">
+              <button className="w-full py-1.5 px-3 bg-theme-primary text-white rounded-md text-sm font-medium hover:bg-theme-primary/90 transition-colors">
                 Edit Theme
               </button>
             </div>
@@ -218,8 +273,8 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         )}
       </div>
       
-      <div className="p-4 border-t border-editor-border">
-        <button className="editor-button-primary w-full justify-center flex items-center">
+      <div className="p-4 border-t border-gray-200">
+        <button className="w-full py-1.5 px-3 bg-theme-primary text-white rounded-md text-sm font-medium hover:bg-theme-primary/90 transition-colors flex items-center justify-center">
           <Wand2 size={14} className="mr-2" />
           AI Theme Generator
         </button>
