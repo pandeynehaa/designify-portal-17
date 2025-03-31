@@ -1,331 +1,209 @@
 
 import React, { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Sparkles, Plus, Trash2, Download, Share, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogDescription, 
-  DialogFooter, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger 
-} from "@/components/ui/dialog";
-import { toast } from "@/components/ui/use-toast";
-import { 
-  Save, 
-  Plus, 
-  Bookmark, 
-  ArrowRight, 
-  Trash2, 
-  Copy, 
-  Share,
-  Edit 
-} from "lucide-react";
-import { useCanvasState } from "@/hooks/useCanvasState";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { ScrollArea } from "@/components/ui/scroll-area";
-
-export interface SavedDesign {
-  id: string;
-  name: string;
-  template: string;
-  thumbnail: string;
-  createdAt: Date;
-  elements: any[];
-  minted: boolean;
-}
-
-const TEMPLATE_COLORS = {
-  "marketplace": "bg-purple-500/20 border-purple-500 text-purple-300",
-  "drops": "bg-pink-500/20 border-pink-500 text-pink-300",
-  "token-gate": "bg-blue-500/20 border-blue-500 text-blue-300",
-  "buy-coin": "bg-green-500/20 border-green-500 text-green-300"
-};
+import { toast } from "@/components/ui/use-toast";
 
 const SavedDesignsPanel: React.FC = () => {
-  const { droppedElements } = useCanvasState();
-  const [savedDesigns, setSavedDesigns] = useState<SavedDesign[]>([]);
-  const [newDesignName, setNewDesignName] = useState("");
-  const [saveDialogOpen, setSaveDialogOpen] = useState(false);
-  const [mintDialogOpen, setMintDialogOpen] = useState(false);
-  const [selectedDesign, setSelectedDesign] = useState<SavedDesign | null>(null);
-  const [currentTemplate, setCurrentTemplate] = useState<string>("marketplace");
+  const [showMintDialog, setShowMintDialog] = useState(false);
+  const [selectedDesign, setSelectedDesign] = useState<number | null>(null);
   
-  const handleSaveDesign = () => {
-    if (!newDesignName.trim()) {
-      toast({
-        title: "Design Name Required",
-        description: "Please enter a name for your design.",
-        variant: "destructive"
-      });
-      return;
+  // In a real app, these would be fetched from an API or state management
+  const [savedDesigns] = useState([
+    { 
+      id: 1, 
+      name: "Marketplace Theme 1", 
+      template: "marketplace",
+      thumbnail: "https://images.unsplash.com/photo-1639322537228-f710d846310a?w=300",
+      date: "2023-05-15" 
+    },
+    { 
+      id: 2, 
+      name: "Token Gate Design", 
+      template: "token-gate",
+      thumbnail: "https://images.unsplash.com/photo-1639322537234-e7895e08a659?w=300",
+      date: "2023-06-20" 
+    },
+    { 
+      id: 3, 
+      name: "NFT Drops Page", 
+      template: "drops",
+      thumbnail: "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=300",
+      date: "2023-07-10" 
     }
-    
-    // Generate a thumbnail (in a real app this would be a canvas snapshot)
-    const thumbnailUrl = "https://via.placeholder.com/300x200/6d28d9/ffffff?text=Design";
-    
-    const newDesign: SavedDesign = {
-      id: `design-${Date.now()}`,
-      name: newDesignName,
-      template: currentTemplate,
-      thumbnail: thumbnailUrl,
-      createdAt: new Date(),
-      elements: JSON.parse(JSON.stringify(droppedElements)),
-      minted: false
-    };
-    
-    setSavedDesigns([...savedDesigns, newDesign]);
-    setNewDesignName("");
-    setSaveDialogOpen(false);
-    
-    toast({
-      title: "Design Saved",
-      description: `Your design "${newDesignName}" has been saved successfully.`
-    });
+  ]);
+  
+  const handleMintNFT = (designId: number) => {
+    setSelectedDesign(designId);
+    setShowMintDialog(true);
   };
   
-  const handleDeleteDesign = (designId: string) => {
-    setSavedDesigns(savedDesigns.filter(design => design.id !== designId));
-    
+  const handleConfirmMint = () => {
+    // In a real app, this would call an API to mint the NFT
     toast({
-      title: "Design Deleted",
-      description: "Your design has been deleted."
+      title: "NFT Minting Initiated",
+      description: "Your design is being minted as an NFT. This may take a few minutes."
     });
+    setShowMintDialog(false);
+    
+    // Simulate minting completion
+    setTimeout(() => {
+      toast({
+        title: "NFT Minted Successfully",
+        description: "Your design has been minted and is now available in the marketplace."
+      });
+    }, 3000);
   };
   
-  const handleMintDesign = () => {
-    if (!selectedDesign) return;
-    
-    // In a real app, this would initiate the NFT minting process
-    setSavedDesigns(savedDesigns.map(design => 
-      design.id === selectedDesign.id 
-        ? { ...design, minted: true } 
-        : design
-    ));
-    
-    setMintDialogOpen(false);
-    
-    toast({
-      title: "Design Minted",
-      description: `Your design "${selectedDesign.name}" has been minted as an NFT and is now available on the marketplace.`
-    });
-  };
-  
-  const handleDesignClick = (design: SavedDesign) => {
-    // In a real app, this would load the selected design
-    toast({
-      title: "Design Selected",
-      description: `Loading "${design.name}" into the editor.`
-    });
+  const getTemplateLabel = (template: string) => {
+    switch(template) {
+      case 'marketplace': return 'Marketplace';
+      case 'token-gate': return 'Token Gate';
+      case 'drops': return 'NFT Drops';
+      case 'buy-coin': return 'Buy Coin';
+      default: return template;
+    }
   };
   
   const getTemplateColor = (template: string) => {
-    return TEMPLATE_COLORS[template as keyof typeof TEMPLATE_COLORS] || "bg-gray-500/20 border-gray-500 text-gray-300";
+    switch(template) {
+      case 'marketplace': return 'bg-pink-500';
+      case 'token-gate': return 'bg-blue-500';
+      case 'drops': return 'bg-purple-500';
+      case 'buy-coin': return 'bg-green-500';
+      default: return 'bg-gray-500';
+    }
   };
   
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', { 
-      month: 'short', 
-      day: 'numeric', 
-      year: 'numeric'
-    }).format(date);
+  const handleDeleteDesign = (designId: number) => {
+    // In a real app, this would delete the design via an API call
+    toast({
+      title: "Design Deleted",
+      description: "The design has been removed from your saved designs."
+    });
   };
-  
+
   return (
-    <div className="h-full flex flex-col bg-cv-darkgray">
-      <div className="editor-toolbar justify-between bg-cv-gray border-b border-cv-lightgray">
-        <span className="text-cv-white text-sm font-medium">Saved Designs</span>
-        <div>
-          <Dialog open={saveDialogOpen} onOpenChange={setSaveDialogOpen}>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="text-cv-white hover:bg-cv-lightgray/20">
-                <Plus size={16} />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-cv-gray border border-cv-lightgray text-cv-white">
-              <DialogHeader>
-                <DialogTitle>Save Current Design</DialogTitle>
-                <DialogDescription className="text-cv-lightgray">
-                  Save your design to access it later or mint it as an NFT.
-                </DialogDescription>
-              </DialogHeader>
-              
-              <div className="space-y-4 py-4">
-                <div className="space-y-2">
-                  <Label htmlFor="design-name">Design Name</Label>
-                  <Input 
-                    id="design-name" 
-                    value={newDesignName} 
-                    onChange={(e) => setNewDesignName(e.target.value)}
-                    placeholder="My Awesome Design"
-                    className="bg-cv-darkgray border-cv-lightgray"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label>Template</Label>
-                  <div className="grid grid-cols-2 gap-2">
-                    {["marketplace", "drops", "token-gate", "buy-coin"].map(template => (
-                      <Button 
-                        key={template}
-                        type="button"
-                        variant={currentTemplate === template ? "default" : "outline"}
-                        className={`capitalize ${
-                          currentTemplate === template 
-                            ? "bg-cv-accent" 
-                            : "border-cv-lightgray hover:bg-cv-lightgray/20"
-                        }`}
-                        onClick={() => setCurrentTemplate(template)}
-                      >
-                        {template.replace('-', ' ')}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-              
-              <DialogFooter>
-                <Button variant="outline" onClick={() => setSaveDialogOpen(false)}>Cancel</Button>
-                <Button onClick={handleSaveDesign}>Save Design</Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </div>
-      
-      <ScrollArea className="flex-1 p-4">
-        {savedDesigns.length === 0 ? (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6">
-            <Bookmark className="h-12 w-12 text-cv-lightgray mb-4" />
-            <h3 className="text-cv-white font-medium mb-2">No Saved Designs</h3>
-            <p className="text-cv-lightgray text-sm">
-              Save your current design to access it later or mint it as an NFT.
-            </p>
-            <Button 
-              className="mt-6" 
-              onClick={() => setSaveDialogOpen(true)}
-            >
-              Save Current Design
-            </Button>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {savedDesigns.map(design => (
-              <Card 
-                key={design.id} 
-                className="bg-cv-gray border border-cv-lightgray overflow-hidden group relative"
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
-                
-                <img 
-                  src={design.thumbnail} 
-                  alt={design.name} 
-                  className="w-full h-32 object-cover"
-                />
-                
-                <CardContent className="p-3 relative">
-                  <div className="absolute top-3 right-3 flex space-x-1">
-                    <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-6 w-6 text-cv-lightgray hover:text-cv-white hover:bg-cv-lightgray/20"
-                      onClick={() => handleDeleteDesign(design.id)}
-                    >
-                      <Trash2 size={14} />
-                    </Button>
-                  </div>
-                  
-                  <h3 className="font-medium text-cv-white truncate">{design.name}</h3>
-                  
-                  <div className="flex items-center justify-between mt-2">
-                    <Badge className={`${getTemplateColor(design.template)} text-xs`}>
-                      {design.template.replace('-', ' ')}
-                    </Badge>
-                    <span className="text-xs text-cv-lightgray">{formatDate(design.createdAt)}</span>
-                  </div>
-                  
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-cv-darkgray to-transparent p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center z-20">
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-cv-white hover:bg-cv-lightgray/20"
-                      onClick={() => handleDesignClick(design)}
-                    >
-                      <Edit size={14} className="mr-1" /> Edit
-                    </Button>
-                    
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button 
-                          size="sm" 
-                          className={design.minted ? "bg-green-600 hover:bg-green-700" : ""}
-                          onClick={() => {
-                            setSelectedDesign(design);
-                            setMintDialogOpen(true);
-                          }}
-                          disabled={design.minted}
-                        >
-                          {design.minted ? "Minted" : "Mint NFT"}
-                        </Button>
-                      </DialogTrigger>
-                      
-                      <DialogContent className="bg-cv-gray border border-cv-lightgray text-cv-white">
-                        <DialogHeader>
-                          <DialogTitle>Mint Design as NFT</DialogTitle>
-                          <DialogDescription className="text-cv-lightgray">
-                            This will mint your design as an NFT on the blockchain and make it available in the marketplace.
-                          </DialogDescription>
-                        </DialogHeader>
-                        
-                        <div className="py-4">
-                          <Card className="bg-cv-darkgray border border-cv-lightgray p-4">
-                            <img 
-                              src={selectedDesign?.thumbnail} 
-                              alt={selectedDesign?.name} 
-                              className="w-full h-40 object-cover rounded-md mb-4"
-                            />
-                            <h3 className="font-medium text-cv-white">{selectedDesign?.name}</h3>
-                            <p className="text-cv-lightgray text-sm mt-1">
-                              Template: <span className="capitalize">{selectedDesign?.template.replace('-', ' ')}</span>
-                            </p>
-                          </Card>
-                          
-                          <div className="mt-4 space-y-2">
-                            <h4 className="font-medium text-cv-white">Minting Details</h4>
-                            <p className="text-cv-lightgray text-sm">
-                              Your design will be minted as an NFT on the blockchain and listed on the Themes marketplace.
-                            </p>
-                            <p className="text-cv-lightgray text-sm">
-                              You will receive 85% of all sales of your theme.
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <DialogFooter>
-                          <Button variant="outline" onClick={() => setMintDialogOpen(false)}>Cancel</Button>
-                          <Button onClick={handleMintDesign}>Mint as NFT</Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        )}
-      </ScrollArea>
-      
-      <div className="p-4 border-t border-cv-lightgray">
-        <Button 
-          className="w-full"
-          onClick={() => setSaveDialogOpen(true)}
-        >
-          <Save size={16} className="mr-2" /> Save Current Design
+    <div className="p-4 space-y-6">
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-semibold text-cv-white">Saved Designs</h3>
+        <Button size="sm" variant="ghost" className="text-cv-white">
+          <Plus size={16} className="mr-1" /> New
         </Button>
       </div>
+      
+      <div className="space-y-4">
+        {savedDesigns.map(design => (
+          <div key={design.id} className="bg-cv-darkgray border border-cv-lightgray rounded-lg overflow-hidden">
+            <div className="relative">
+              <img 
+                src={design.thumbnail} 
+                alt={design.name} 
+                className="w-full h-32 object-cover"
+              />
+              <Badge className={`absolute top-2 right-2 ${getTemplateColor(design.template)} text-white`}>
+                {getTemplateLabel(design.template)}
+              </Badge>
+            </div>
+            
+            <div className="p-3">
+              <h4 className="text-cv-white font-medium mb-1">{design.name}</h4>
+              <p className="text-cv-white/60 text-xs mb-3">Saved on {design.date}</p>
+              
+              <div className="flex justify-between items-center">
+                <div className="flex space-x-1">
+                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                    <Download size={14} />
+                  </Button>
+                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
+                    <Share size={14} />
+                  </Button>
+                  <Button 
+                    size="sm" 
+                    variant="ghost" 
+                    className="h-8 w-8 p-0 text-red-400 hover:text-red-300"
+                    onClick={() => handleDeleteDesign(design.id)}
+                  >
+                    <Trash2 size={14} />
+                  </Button>
+                </div>
+                
+                <Button 
+                  size="sm"
+                  className="bg-cv-accent hover:bg-cv-accent/90 text-white"
+                  onClick={() => handleMintNFT(design.id)}
+                >
+                  <Sparkles size={14} className="mr-1" /> Mint as NFT
+                </Button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      
+      <div className="mt-4 p-4 border border-dashed border-cv-lightgray rounded-lg text-center">
+        <p className="text-cv-white/70 text-sm mb-3">Want to make your designs available to others?</p>
+        <Button className="bg-cv-accent hover:bg-cv-accent/90">
+          Visit Themes Marketplace <ExternalLink size={14} className="ml-1" />
+        </Button>
+      </div>
+      
+      {/* Mint NFT Dialog */}
+      <Dialog open={showMintDialog} onOpenChange={setShowMintDialog}>
+        <DialogContent className="bg-cv-darkgray border-cv-lightgray text-cv-white">
+          <DialogHeader>
+            <DialogTitle className="text-cv-white flex items-center">
+              <Sparkles className="mr-2 h-5 w-5 text-cv-accent" />
+              Mint Your Design as NFT
+            </DialogTitle>
+            <DialogDescription className="text-cv-white/70">
+              Your design will be minted as an NFT on the blockchain and listed in the Themes Marketplace.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="p-4 bg-cv-black/30 rounded-md">
+            <div className="flex items-center space-x-4">
+              <img 
+                src={savedDesigns.find(d => d.id === selectedDesign)?.thumbnail} 
+                alt="Design preview" 
+                className="w-24 h-24 object-cover rounded border border-cv-lightgray"
+              />
+              <div>
+                <h4 className="text-cv-white font-medium">
+                  {savedDesigns.find(d => d.id === selectedDesign)?.name}
+                </h4>
+                <p className="text-cv-white/60 text-sm mt-1">
+                  Template: {getTemplateLabel(savedDesigns.find(d => d.id === selectedDesign)?.template || '')}
+                </p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="space-y-4 py-2">
+            <div>
+              <label className="text-sm text-cv-white/70 mb-1 block">Minting Fee</label>
+              <p className="text-cv-white font-medium">0.01 ETH</p>
+            </div>
+            
+            <div>
+              <label className="text-sm text-cv-white/70 mb-1 block">Creator Royalties</label>
+              <p className="text-cv-white font-medium">5% on future sales</p>
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button variant="ghost" onClick={() => setShowMintDialog(false)}>
+              Cancel
+            </Button>
+            <Button className="bg-cv-accent hover:bg-cv-accent/90" onClick={handleConfirmMint}>
+              <Sparkles size={14} className="mr-1" /> 
+              Mint NFT
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

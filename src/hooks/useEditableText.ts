@@ -1,23 +1,42 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface UseEditableTextProps {
   initialText: string;
-  onSave?: (newText: string) => void;
+  onSave?: (newText: string, styles?: EditableTextStyles) => void;
+}
+
+export interface EditableTextStyles {
+  fontFamily?: string;
+  fontSize?: number;
+  textColor?: string;
+  isBold?: boolean;
+  isItalic?: boolean;
+  isUnderlined?: boolean;
+  textAlign?: string;
 }
 
 export const useEditableText = ({ initialText, onSave }: UseEditableTextProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
+  const [styles, setStyles] = useState<EditableTextStyles>({});
 
-  const handleTextClick = () => {
+  // Update text if initialText changes (e.g. from parent component)
+  useEffect(() => {
+    setText(initialText);
+  }, [initialText]);
+
+  const handleTextClick = (e?: React.MouseEvent) => {
+    if (e) {
+      e.stopPropagation();
+    }
     setIsEditing(true);
   };
 
   const handleTextBlur = () => {
     setIsEditing(false);
-    if (onSave && text !== initialText) {
-      onSave(text);
+    if (onSave && (text !== initialText || Object.keys(styles).length > 0)) {
+      onSave(text, styles);
     }
   };
 
@@ -32,12 +51,22 @@ export const useEditableText = ({ initialText, onSave }: UseEditableTextProps) =
     }
   };
 
+  const updateStyle = (styleUpdates: Partial<EditableTextStyles>) => {
+    setStyles(prev => ({
+      ...prev,
+      ...styleUpdates
+    }));
+  };
+
   return {
     isEditing,
     text,
+    styles,
     handleTextClick,
     handleTextBlur,
     handleTextChange,
-    handleKeyDown
+    handleKeyDown,
+    updateStyle,
+    setIsEditing
   };
 };
