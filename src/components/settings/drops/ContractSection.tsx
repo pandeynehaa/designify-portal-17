@@ -2,9 +2,9 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
-import { SectionProps } from "./types";
+import { DropsSectionProps } from "./types";
 
-const ContractSection: React.FC<SectionProps> = ({ form }) => {
+const ContractSection: React.FC<DropsSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <FormField
@@ -12,12 +12,12 @@ const ContractSection: React.FC<SectionProps> = ({ form }) => {
         name="contractAddress"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Marketplace Contract Address</FormLabel>
+            <FormLabel>NFT Contract Address</FormLabel>
             <FormControl>
               <Input placeholder="0x..." {...field} />
             </FormControl>
             <FormDescription>
-              The address of your marketplace smart contract
+              The address of your NFT drop contract
             </FormDescription>
           </FormItem>
         )}
@@ -33,7 +33,7 @@ const ContractSection: React.FC<SectionProps> = ({ form }) => {
               <Input placeholder="ethereum" {...field} />
             </FormControl>
             <FormDescription>
-              The blockchain network your marketplace operates on
+              The blockchain network your drop is on
             </FormDescription>
           </FormItem>
         )}

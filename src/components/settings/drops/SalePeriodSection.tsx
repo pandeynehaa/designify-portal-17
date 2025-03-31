@@ -2,22 +2,22 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
-import { SectionProps } from "./types";
+import { DropsSectionProps } from "./types";
 
-const ContractSection: React.FC<SectionProps> = ({ form }) => {
+const SalePeriodSection: React.FC<DropsSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <FormField
         control={form.control}
-        name="contractAddress"
+        name="publicSaleStart"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Marketplace Contract Address</FormLabel>
+            <FormLabel>Public Sale Start</FormLabel>
             <FormControl>
-              <Input placeholder="0x..." {...field} />
+              <Input type="datetime-local" {...field} />
             </FormControl>
             <FormDescription>
-              The address of your marketplace smart contract
+              When the public sale begins
             </FormDescription>
           </FormItem>
         )}
@@ -25,15 +25,15 @@ const ContractSection: React.FC<SectionProps> = ({ form }) => {
 
       <FormField
         control={form.control}
-        name="network"
+        name="publicSaleEnd"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Blockchain Network</FormLabel>
+            <FormLabel>Public Sale End</FormLabel>
             <FormControl>
-              <Input placeholder="ethereum" {...field} />
+              <Input type="datetime-local" {...field} />
             </FormControl>
             <FormDescription>
-              The blockchain network your marketplace operates on
+              When the public sale ends
             </FormDescription>
           </FormItem>
         )}
@@ -42,4 +42,4 @@ const ContractSection: React.FC<SectionProps> = ({ form }) => {
   );
 };
 
-export default ContractSection;
+export default SalePeriodSection;

@@ -2,22 +2,22 @@
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
-import { SectionProps } from "./types";
+import { DropsSectionProps } from "./types";
 
-const ContractSection: React.FC<SectionProps> = ({ form }) => {
+const RevealSection: React.FC<DropsSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <FormField
         control={form.control}
-        name="contractAddress"
+        name="revealType"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Marketplace Contract Address</FormLabel>
+            <FormLabel>Reveal Type</FormLabel>
             <FormControl>
-              <Input placeholder="0x..." {...field} />
+              <Input placeholder="instant or delayed" {...field} />
             </FormControl>
             <FormDescription>
-              The address of your marketplace smart contract
+              Specify whether NFTs are revealed instantly or later
             </FormDescription>
           </FormItem>
         )}
@@ -25,15 +25,15 @@ const ContractSection: React.FC<SectionProps> = ({ form }) => {
 
       <FormField
         control={form.control}
-        name="network"
+        name="royaltyFee"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Blockchain Network</FormLabel>
+            <FormLabel>Royalty Fee (%)</FormLabel>
             <FormControl>
-              <Input placeholder="ethereum" {...field} />
+              <Input type="number" step="0.1" min="0" max="100" {...field} />
             </FormControl>
             <FormDescription>
-              The blockchain network your marketplace operates on
+              Percentage of secondary sales to be paid to creator
             </FormDescription>
           </FormItem>
         )}
@@ -42,4 +42,4 @@ const ContractSection: React.FC<SectionProps> = ({ form }) => {
   );
 };
 
-export default ContractSection;
+export default RevealSection;
