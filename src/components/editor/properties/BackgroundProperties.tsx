@@ -4,18 +4,21 @@ import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TemplateStyles } from "../../../types/templateStyles";
+import ApplyToAllSites from "./ApplyToAllSites";
 
 interface BackgroundPropertiesProps {
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
 const BackgroundProperties: React.FC<BackgroundPropertiesProps> = ({ 
   templateStyles, 
-  updateTemplateStyles 
+  updateTemplateStyles,
+  applyToAllSites
 }) => {
   const [blurAmount, setBlurAmount] = useState(0);
-  const [enable3D, setEnable3D] = useState(false);
+  const [enable3D, setEnable3D] = useState(templateStyles.enable3D || false);
   
   const handleBackgroundChange = (type: string, value: string) => {
     if (type === 'color') {
@@ -33,8 +36,7 @@ const BackgroundProperties: React.FC<BackgroundPropertiesProps> = ({
   
   const handle3DToggle = (checked: boolean) => {
     setEnable3D(checked);
-    // This would toggle 3D effects in the template
-    console.log("3D background:", checked);
+    updateTemplateStyles('enable3D', checked);
   };
 
   return (
@@ -186,6 +188,20 @@ const BackgroundProperties: React.FC<BackgroundPropertiesProps> = ({
           </div>
         </div>
       </div>
+      
+      {/* Add ApplyToAllSites component for bannerBg */}
+      <ApplyToAllSites
+        property="bannerBg"
+        value={templateStyles.bannerBg}
+        onApply={applyToAllSites}
+      />
+      
+      {/* Add ApplyToAllSites component for enable3D */}
+      <ApplyToAllSites
+        property="enable3D"
+        value={templateStyles.enable3D}
+        onApply={applyToAllSites}
+      />
     </div>
   );
 };

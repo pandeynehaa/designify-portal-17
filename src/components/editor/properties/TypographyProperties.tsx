@@ -1,13 +1,19 @@
 import React from "react";
 import { AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline } from "lucide-react";
 import { TemplateStyles } from "../../../types/templateStyles";
+import ApplyToAllSites from "./ApplyToAllSites";
 
 interface TypographyPropertiesProps {
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
-const TypographyProperties: React.FC<TypographyPropertiesProps> = ({ templateStyles, updateTemplateStyles }) => {
+const TypographyProperties: React.FC<TypographyPropertiesProps> = ({ 
+  templateStyles, 
+  updateTemplateStyles,
+  applyToAllSites
+}) => {
   const fonts = [
     { value: "font-display", label: "Bebas Neue (Display)" },
     { value: "font-sans", label: "Gravity (Sans)" },
@@ -142,6 +148,18 @@ const TypographyProperties: React.FC<TypographyPropertiesProps> = ({ templateSty
           </button>
         </div>
       </div>
+
+      <ApplyToAllSites
+        property="headingFont"
+        value={templateStyles.headingFont}
+        onApply={applyToAllSites}
+      />
+      
+      <ApplyToAllSites
+        property="bodyFont"
+        value={templateStyles.bodyFont}
+        onApply={applyToAllSites}
+      />
     </div>
   );
 };

@@ -2,13 +2,19 @@
 import React from "react";
 import { TemplateStyles } from "../../../types/templateStyles";
 import { Button } from "../../ui/button";
+import ApplyToAllSites from "./ApplyToAllSites";
 
 interface ColorPropertiesProps {
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
-const ColorProperties: React.FC<ColorPropertiesProps> = ({ templateStyles, updateTemplateStyles }) => {
+const ColorProperties: React.FC<ColorPropertiesProps> = ({ 
+  templateStyles, 
+  updateTemplateStyles,
+  applyToAllSites
+}) => {
   return (
     <div className="p-4 space-y-4">
       <div>
@@ -100,6 +106,25 @@ const ColorProperties: React.FC<ColorPropertiesProps> = ({ templateStyles, updat
           </Button>
         </div>
       </div>
+
+      {/* Add ApplyToAllSites components for color properties */}
+      <ApplyToAllSites
+        property="accentColor"
+        value={templateStyles.accentColor}
+        onApply={applyToAllSites}
+      />
+      
+      <ApplyToAllSites
+        property="buttonBg"
+        value={templateStyles.buttonBg}
+        onApply={applyToAllSites}
+      />
+      
+      <ApplyToAllSites
+        property="borderColor"
+        value={templateStyles.borderColor}
+        onApply={applyToAllSites}
+      />
     </div>
   );
 };

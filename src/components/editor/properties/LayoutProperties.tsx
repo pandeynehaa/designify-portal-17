@@ -1,12 +1,19 @@
+
 import React from "react";
 import { TemplateStyles } from "../../../types/templateStyles";
+import ApplyToAllSites from "./ApplyToAllSites";
 
 interface LayoutPropertiesProps {
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
-const LayoutProperties: React.FC<LayoutPropertiesProps> = ({ templateStyles, updateTemplateStyles }) => {
+const LayoutProperties: React.FC<LayoutPropertiesProps> = ({ 
+  templateStyles, 
+  updateTemplateStyles,
+  applyToAllSites
+}) => {
   const handleHeightChange = (section: 'headerHeight' | 'bannerHeight', value: string) => {
     updateTemplateStyles(section, value);
   };
@@ -105,6 +112,25 @@ const LayoutProperties: React.FC<LayoutPropertiesProps> = ({ templateStyles, upd
           <option value="2.5rem">Extra Large (40px)</option>
         </select>
       </div>
+      
+      {/* Add ApplyToAllSites components for layout properties */}
+      <ApplyToAllSites
+        property="gridColumns"
+        value={templateStyles.gridColumns}
+        onApply={applyToAllSites}
+      />
+      
+      <ApplyToAllSites
+        property="buttonRadius"
+        value={templateStyles.buttonRadius}
+        onApply={applyToAllSites}
+      />
+      
+      <ApplyToAllSites
+        property="spacing"
+        value={templateStyles.spacing}
+        onApply={applyToAllSites}
+      />
     </div>
   );
 };
