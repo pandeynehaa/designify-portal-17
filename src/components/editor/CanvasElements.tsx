@@ -4,6 +4,7 @@ import { CanvasElement } from "../../types/canvasElement";
 import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
 import NFTElement from "./canvas/NFTElement";
+import StickerElement from "./canvas/StickerElement";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
 import { useCanvasState } from "@/hooks/useCanvasState";
 import { useHotkeys } from "react-hotkeys-hook";
@@ -61,6 +62,8 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
         return <ImageElement key={element.id} element={element} activeTool={activeTool} />;
       case 'nft':
         return <NFTElement key={element.id} element={element} activeTool={activeTool} editMode={editMode} />;
+      case 'sticker':
+        return <StickerElement key={element.id} element={element} activeTool={activeTool} />;
       default:
         return null;
     }

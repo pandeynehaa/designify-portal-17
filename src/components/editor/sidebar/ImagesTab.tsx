@@ -1,16 +1,18 @@
 
 import React, { useState, DragEvent } from "react";
-import { ChevronDown, ChevronRight, Upload, FolderOpen, Sparkles, Image } from "lucide-react";
+import { ChevronDown, ChevronRight, Upload, FolderOpen, Sparkles, Image, Sticker } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
 import AIImageGenerator from "./image/AIImageGenerator";
+import StickerPacks from "./image/StickerPacks";
 
 const ImagesTab: React.FC = () => {
   const [stockImagesExpanded, setStockImagesExpanded] = useState(true);
   const [savedImagesExpanded, setSavedImagesExpanded] = useState(true);
   const [uploadedImagesExpanded, setUploadedImagesExpanded] = useState(true);
+  const [stickersExpanded, setStickersExpanded] = useState(true);
   const [showAIGenerator, setShowAIGenerator] = useState(false);
 
   // Sample images for the Images tab
@@ -143,6 +145,28 @@ const ImagesTab: React.FC = () => {
                 </div>
               ))}
             </div>
+          )}
+        </div>
+        
+        {/* Stickers Section */}
+        <div className="image-section">
+          <button 
+            className="flex items-center justify-between w-full px-3 py-2 rounded-md text-sm font-medium text-cv-white hover:bg-cv-gray"
+            onClick={() => setStickersExpanded(!stickersExpanded)}
+          >
+            <div className="flex items-center">
+              <Sticker size={14} className="mr-2" />
+              <span>Stickers</span>
+            </div>
+            {stickersExpanded ? (
+              <ChevronDown size={14} />
+            ) : (
+              <ChevronRight size={14} />
+            )}
+          </button>
+          
+          {stickersExpanded && (
+            <StickerPacks />
           )}
         </div>
         

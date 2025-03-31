@@ -30,4 +30,8 @@ export interface CanvasElement {
   enable3D?: boolean; // New field for 3D effect toggle
   layerId?: string; // New field for layer assignment
   locked?: boolean; // New field to lock elements
+  rotation?: number; // Field for rotation
+  width?: number; // Field for width
+  height?: number; // Field for height
+  scale?: number; // Field for scale
 }

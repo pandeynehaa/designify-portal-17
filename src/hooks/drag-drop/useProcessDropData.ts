@@ -6,6 +6,7 @@ interface UseProcessDropDataProps {
   handleComponentDrop: (componentData: string, x: number, y: number) => void;
   handleImageDrop: (imageData: string, x: number, y: number) => void;
   handleNFTDrop: (nftData: string, x: number, y: number) => void;
+  handleStickerDrop: (stickerData: string, x: number, y: number) => void;
   handleFileUpload: (files: FileList, x: number, y: number) => void;
 }
 
@@ -14,6 +15,7 @@ export const useProcessDropData = ({
   handleComponentDrop,
   handleImageDrop,
   handleNFTDrop,
+  handleStickerDrop,
   handleFileUpload
 }: UseProcessDropDataProps) => {
   
@@ -23,6 +25,7 @@ export const useProcessDropData = ({
     const imageData = e.dataTransfer.getData("application/image");
     const nftData = e.dataTransfer.getData("application/nft");
     const templateData = e.dataTransfer.getData("application/template-component");
+    const stickerData = e.dataTransfer.getData("application/sticker");
     
     if (templateData) {
       handleTemplateComponentDrop(templateData, x, y);
@@ -32,6 +35,8 @@ export const useProcessDropData = ({
       handleImageDrop(imageData, x, y);
     } else if (nftData) {
       handleNFTDrop(nftData, x, y);
+    } else if (stickerData) {
+      handleStickerDrop(stickerData, x, y);
     } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFileUpload(e.dataTransfer.files, x, y);
     }

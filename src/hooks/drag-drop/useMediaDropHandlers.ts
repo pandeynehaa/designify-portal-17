@@ -59,6 +59,27 @@ export const useMediaDropHandlers = ({
     });
   };
 
+  const handleStickerDrop = (stickerData: string, x: number, y: number) => {
+    const sticker = JSON.parse(stickerData);
+    const newElement = {
+      type: "sticker",
+      id: `sticker-${Date.now()}`,
+      x: x / (zoomLevel / 100),
+      y: y / (zoomLevel / 100),
+      content: sticker.url,
+      width: 100,
+      height: 100,
+      rotation: 0,
+      scale: 1
+    };
+    
+    setDroppedElements(prev => [...prev, newElement]);
+    toast({
+      title: "Sticker Added",
+      description: `Added ${sticker.label || 'sticker'} to the canvas`
+    });
+  };
+
   const handleFileUpload = (files: FileList, x: number, y: number) => {
     Array.from(files).forEach(file => {
       if (file.type.startsWith('image/')) {
@@ -89,6 +110,7 @@ export const useMediaDropHandlers = ({
   return {
     handleImageDrop,
     handleNFTDrop,
+    handleStickerDrop,
     handleFileUpload
   };
 };
