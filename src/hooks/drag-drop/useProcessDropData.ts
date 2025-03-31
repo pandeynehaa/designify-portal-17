@@ -21,6 +21,9 @@ export const useProcessDropData = ({
   
   // Process drop data and delegate to the appropriate handler
   const processDropData = (e: DragEvent<HTMLDivElement>, x: number, y: number) => {
+    // Check if we're dropping on an image placeholder
+    // This is handled by the ImagePlaceholder component directly
+    
     const componentData = e.dataTransfer.getData("application/component");
     const imageData = e.dataTransfer.getData("application/image");
     const nftData = e.dataTransfer.getData("application/nft");

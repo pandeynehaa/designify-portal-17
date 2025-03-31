@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { useDeviceState } from "../../hooks/useDeviceState";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
@@ -36,19 +35,17 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
+    handleInsertImagePlaceholder,
     updateElement,
     updateBackgroundProperties
   } = useCanvasState();
   
-  // Update zoom level when zoom prop changes
   useEffect(() => {
     setZoomLevel(zoom * 100);
   }, [zoom]);
 
-  // Apply 3D effect when templateStyles.enable3D changes
   useEffect(() => {
     if (canvasRef.current) {
-      // Update the canvas element with 3D effect if enabled
       if (templateStyles.enable3D) {
         canvasRef.current.classList.add('vr-perspective');
       } else {
@@ -70,13 +67,11 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
   };
 
   const handleCanvasClick = (e: React.MouseEvent) => {
-    // Only clear selection if clicking directly on the canvas (not on an element)
     if (e.target === e.currentTarget) {
       selectElement(null);
     }
   };
   
-  // Expose updateElement function to window for PropertyPanel
   useEffect(() => {
     (window as any).updateCanvasElement = updateElement;
   }, []);
@@ -94,6 +89,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         onInsertText={handleInsertText}
         onInsertImage={handleInsertImage}
         onInsertComponent={handleInsertComponent}
+        onInsertImagePlaceholder={handleInsertImagePlaceholder}
       />
       
       <div className="flex-1 relative overflow-auto p-4 canvas-content">

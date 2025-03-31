@@ -1,4 +1,3 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { CanvasElement } from "../types/canvasElement";
 import { useCanvasHistory } from "./useCanvasHistory";
@@ -60,6 +59,36 @@ export const useCanvasElements = (
     toast({
       title: "Image Added",
       description: "New image element has been added to the canvas"
+    });
+    
+    return newElement;
+  };
+
+  const handleInsertImagePlaceholder = (layerId: string = "default-layer") => {
+    const newId = `placeholder-${Date.now()}`;
+    const newElement = {
+      type: 'placeholder',
+      id: newId,
+      x: 150,
+      y: 150,
+      width: 300,
+      height: 200,
+      content: 'empty',
+      layerId
+    };
+    
+    setDroppedElements(prev => [...prev, newElement]);
+    
+    // Add to history
+    addToHistory({
+      type: 'add',
+      elements: [newElement],
+      previousElements: [...droppedElements]
+    });
+    
+    toast({
+      title: "Image Placeholder Added",
+      description: "Click or drag an image to the placeholder"
     });
     
     return newElement;
@@ -181,6 +210,7 @@ export const useCanvasElements = (
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
+    handleInsertImagePlaceholder,
     updateElement,
     deleteElement,
     duplicateElement
