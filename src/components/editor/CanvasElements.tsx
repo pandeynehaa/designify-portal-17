@@ -1,9 +1,9 @@
 
 import React from "react";
-import { CanvasElement } from "../../types/canvasElement";
+import { CanvasElement } from "../types/canvasElement";
 import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
-import { useSelectedElement } from "../../hooks/useSelectedElement";
+import { useSelectedElement } from "../hooks/useSelectedElement";
 
 interface CanvasElementsProps {
   droppedElements: CanvasElement[];

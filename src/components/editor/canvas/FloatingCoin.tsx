@@ -17,12 +17,12 @@ const FloatingCoin: React.FC<FloatingCoinProps> = ({ color, textColor }) => {
   const primaryColor = color || "#ffbf00";
   const secondaryColor = "#ff8c00"; // Secondary color for edge
   
-  // Animation - fix the TypeScript errors with rotation and position
+  // Animation - fixed TypeScript errors with rotation and position
   useFrame((state) => {
     if (coinRef.current) {
-      // Access rotation.y instead of y directly
+      // Correctly access rotation.y property
       coinRef.current.rotation.y += 0.005;
-      // Access position.y instead of y directly
+      // Correctly access position.y property
       coinRef.current.position.y = Math.sin(state.clock.getElapsedTime()) * 0.1;
     }
   });
