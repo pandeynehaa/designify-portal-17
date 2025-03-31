@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "../components/Navbar";
@@ -37,12 +36,7 @@ const SiteSettings = () => {
   const handleSave = () => {
     // Show success toast with sparkle icon for gamification
     toast({
-      title: (
-        <div className="flex items-center gap-2">
-          <Sparkles className="h-5 w-5 text-amber-400" />
-          <span>Settings Saved!</span>
-        </div>
-      ),
+      title: "Settings Saved!",
       description: overallProgress >= 75 
         ? "You've completed most of your site settings. Great job!" 
         : "Your site settings have been saved successfully."

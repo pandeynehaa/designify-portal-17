@@ -1,13 +1,17 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { Shield, Check } from "lucide-react";
 
-const TokenGateSettings = () => {
+interface TokenGateSettingsProps {
+  onProgressChange?: (progress: number) => void;
+}
+
+const TokenGateSettings = ({ onProgressChange }: TokenGateSettingsProps) => {
   const form = useForm({
     defaultValues: {
       contractAddress: "0x3456789012abcdef3456789012abcdef34567890",
@@ -23,9 +27,42 @@ const TokenGateSettings = () => {
     }
   });
 
+  const formValues = form.watch();
+  
+  useEffect(() => {
+    const allFields = Object.keys(formValues);
+    const completedFields = allFields.filter(
+      field => {
+        const value = formValues[field as keyof typeof formValues];
+        return value !== undefined && value.toString().trim() !== '';
+      }
+    ).length;
+    
+    const totalProgress = (completedFields / allFields.length) * 100;
+    
+    if (onProgressChange) {
+      onProgressChange(totalProgress);
+    }
+  }, [formValues, onProgressChange]);
+
+  const renderFieldBadge = (fieldValue: any) => {
+    if (fieldValue && fieldValue.toString().trim() !== '') {
+      return (
+        <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 bg-green-500 text-white rounded-full p-0.5">
+          <Check className="h-3 w-3" />
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border p-6">
-      <h2 className="text-2xl font-semibold mb-6">Token Gate Settings</h2>
+      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+        Token Gate Settings
+        <Shield className="h-5 w-5 text-blue-500" />
+      </h2>
+      
       <Form {...form}>
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -33,14 +70,15 @@ const TokenGateSettings = () => {
               control={form.control}
               name="contractAddress"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="relative hover:shadow-md transition-shadow animate-fade-in">
                   <FormLabel>NFT/Token Contract Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="0x..." {...field} />
+                    <Input placeholder="0x..." {...field} className="transition-all focus:ring-2 focus:ring-blue-500" />
                   </FormControl>
                   <FormDescription>
                     The contract address of the NFT or token required for access
                   </FormDescription>
+                  {renderFieldBadge(field.value)}
                 </FormItem>
               )}
             />
@@ -49,14 +87,15 @@ const TokenGateSettings = () => {
               control={form.control}
               name="network"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="relative hover:shadow-md transition-shadow animate-fade-in">
                   <FormLabel>Blockchain Network</FormLabel>
                   <FormControl>
-                    <Input placeholder="ethereum, polygon, etc." {...field} />
+                    <Input placeholder="ethereum, polygon, etc." {...field} className="transition-all focus:ring-2 focus:ring-blue-500" />
                   </FormControl>
                   <FormDescription>
                     The blockchain network where the token exists
                   </FormDescription>
+                  {renderFieldBadge(field.value)}
                 </FormItem>
               )}
             />
@@ -215,6 +254,17 @@ const TokenGateSettings = () => {
               </FormItem>
             )}
           />
+          
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-center gap-3 animate-fade-in">
+            <Shield className="h-6 w-6 text-blue-500" />
+            <div>
+              <h3 className="font-medium text-blue-700">Access Granted!</h3>
+              <p className="text-sm text-blue-600">
+                Creating token gates gives your community exclusive access to content and features.
+                Great for building membership benefits!
+              </p>
+            </div>
+          </div>
         </div>
       </Form>
     </div>
