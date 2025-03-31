@@ -16,7 +16,7 @@ export const useImageElements = (
       id: newId,
       x: 150,
       y: 150,
-      content: 'https://via.placeholder.com/150',
+      content: 'https://via.placeholder.com/300x200/CCCCCC/666666?text=Image',
       layerId
     };
     

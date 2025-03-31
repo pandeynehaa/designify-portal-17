@@ -15,6 +15,7 @@ const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
   const { selectedElement, selectElement } = useSelectedElement();
   const isSelected = selectedElement?.id === element.id;
   const [isDeleting, setIsDeleting] = useState(false);
+  const [imgError, setImgError] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
   useEffect(() => {
@@ -72,6 +73,11 @@ const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
     });
   };
   
+  const handleImageError = () => {
+    setImgError(true);
+    console.log(`Image failed to load: ${element.content}`);
+  };
+  
   const handleMouseEnter = () => {
     // Hovering logic can remain
   };
@@ -88,9 +94,10 @@ const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
         className="relative transition-all duration-300 scale-0 opacity-0 rotate-12"
       >
         <img 
-          src={element.content} 
+          src={imgError ? "/placeholder.svg" : element.content} 
           alt="Dropping image" 
           className="max-w-[300px] max-h-[300px] rounded shadow-sm"
+          onError={handleImageError}
         />
       </div>
     );
@@ -105,9 +112,10 @@ const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
       onMouseLeave={handleMouseLeave}
     >
       <img 
-        src={element.content} 
+        src={imgError ? "/placeholder.svg" : element.content} 
         alt="Dropped image" 
         className="max-w-[300px] max-h-[300px] rounded shadow-sm"
+        onError={handleImageError}
       />
       
       {isSelected && (

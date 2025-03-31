@@ -20,9 +20,11 @@ const ElementProperties: React.FC<ElementPropertiesProps> = ({ element, updateEl
 
   const [content, setContent] = useState(element.content || "");
   const [position, setPosition] = useState({ x: element.x, y: element.y });
+  const [imgError, setImgError] = useState(false);
 
   const handleContentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
+    setImgError(false); // Reset error state when content changes
   };
 
   const handlePositionChange = (axis: 'x' | 'y', value: string) => {
@@ -41,6 +43,10 @@ const ElementProperties: React.FC<ElementPropertiesProps> = ({ element, updateEl
       title: "Element Updated",
       description: "Changes have been saved"
     });
+  };
+
+  const handleImageError = () => {
+    setImgError(true);
   };
 
   return (
@@ -84,7 +90,17 @@ const ElementProperties: React.FC<ElementPropertiesProps> = ({ element, updateEl
                   src={content} 
                   alt="Preview" 
                   className="max-w-full h-auto max-h-32 object-contain mt-2 border border-gray-200 rounded"
+                  onError={handleImageError}
+                  style={{ display: imgError ? 'none' : 'block' }}
                 />
+                {imgError && (
+                  <div className="flex items-center justify-center h-32 bg-gray-100 border border-gray-200 rounded mt-2">
+                    <div className="text-center">
+                      <img src="/placeholder.svg" alt="Placeholder" className="w-10 h-10 mx-auto mb-2" />
+                      <p className="text-xs text-gray-500">Image preview unavailable</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           )}

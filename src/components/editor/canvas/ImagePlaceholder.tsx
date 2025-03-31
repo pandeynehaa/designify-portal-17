@@ -105,7 +105,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ element, activeTool
       try {
         const sticker = JSON.parse(stickerData);
         updateElement(element.id, {
-          content: sticker.url,
+          content: sticker.url || "/placeholder.svg",
           type: "sticker" // Convert from placeholder to sticker
         });
         
@@ -125,7 +125,7 @@ const ImagePlaceholder: React.FC<ImagePlaceholderProps> = ({ element, activeTool
       try {
         const image = JSON.parse(imageData);
         updateElement(element.id, {
-          content: image.url,
+          content: image.url || "/placeholder.svg",
           type: "image" // Convert from placeholder to regular image
         });
         
