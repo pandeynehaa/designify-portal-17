@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -29,7 +30,12 @@ export default {
 					gray: '#1A1A1A',
 					lightgray: '#333333',
 					white: '#FFFFFF',
-					accent: '#FF5824',
+					accent: '#9b87f5',  // Changed from orange to purple
+					purple: {
+						DEFAULT: '#9b87f5',
+						dark: '#7E69AB',
+						light: '#b6a8f8',
+					},
 					secondary: '#4A4A4A',
 				},
 				border: 'hsl(var(--border))',
@@ -81,14 +87,14 @@ export default {
 					border: '#333333',
 					surface: '#1A1A1A',
 					highlight: '#2A2A2A',
-					accent: '#FF5824',
+					accent: '#9b87f5',  // Changed from orange to purple
 					text: '#FFFFFF',
 					muted: '#999999',
 				},
 				theme: {
-					primary: '#FF5824',
+					primary: '#9b87f5',  // Changed from orange to purple
 					secondary: '#4A4A4A',
-					accent: '#FF8957',
+					accent: '#b6a8f8',  // Changed from orange to purple light
 					success: '#34C759',
 					warning: '#FF3B30',
 					neutral: '#8E8E93',

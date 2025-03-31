@@ -118,7 +118,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         </button>
         
         <button 
-          className="bg-cv-accent text-cv-white hover:bg-cv-accent/90 px-3 py-1.5 rounded-md flex items-center text-sm font-medium transition-colors"
+          className="bg-cv-purple text-cv-white hover:bg-cv-purple/90 px-3 py-1.5 rounded-md flex items-center text-sm font-medium transition-colors"
           onClick={() => setShowAIExtractor(true)}
         >
           <Wand2 size={14} className="mr-2" />
