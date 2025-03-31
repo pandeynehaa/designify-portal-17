@@ -91,10 +91,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         zoomLevel={zoomLevel}
         handleZoomIn={handleZoomIn}
         handleZoomOut={handleZoomOut}
-        showGrid={showGrid}
-        toggleGrid={toggleGrid}
-        editMode={editMode}
-        toggleEditMode={toggleEditMode}
         onInsertText={handleInsertText}
         onInsertImage={handleInsertImage}
         onInsertComponent={handleInsertComponent}
@@ -136,7 +132,11 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         zoom={zoom} 
         onZoomIn={handleZoomIn} 
         onZoomOut={handleZoomOut} 
-        onReset={() => setZoomLevel(100)} 
+        onReset={() => setZoomLevel(100)}
+        showGrid={showGrid}
+        toggleGrid={toggleGrid}
+        editMode={editMode}
+        toggleEditMode={toggleEditMode}
       />
     </div>
   );

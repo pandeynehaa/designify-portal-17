@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Grid } from "lucide-react";
+import { Grid, PanelLeft, PanelRight } from "lucide-react";
 import SidebarTabs from "./SidebarTabs"; 
 import ComponentsTab from "./sidebar/ComponentsTab";
 import ImagesTab from "./sidebar/ImagesTab";
@@ -10,6 +10,8 @@ import AIThemeGenerator from "./sidebar/AIThemeGenerator";
 import NFTsTab from "./sidebar/NFTsTab";
 import BackgroundTab from "./sidebar/BackgroundTab";
 import { toast } from "@/components/ui/use-toast";
+import { useCanvasUIState } from "@/hooks/useCanvasUIState";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 interface EditorSidebarProps {
   activeTab: string;
@@ -17,6 +19,8 @@ interface EditorSidebarProps {
 }
 
 const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }) => {
+  const { showLeftSidebar, toggleLeftSidebar } = useCanvasUIState();
+
   const handleGridClick = () => {
     toast({
       title: "Panel Layout",
@@ -25,18 +29,29 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
   };
 
   return (
-    <div className="editor-panel w-64 flex flex-col h-full bg-cv-darkgray border-r border-cv-lightgray shadow-sm">
+    <Collapsible
+      open={showLeftSidebar}
+      onOpenChange={toggleLeftSidebar}
+      className="editor-panel w-64 flex flex-col h-full bg-cv-darkgray border-r border-cv-lightgray shadow-sm transition-all duration-300 ease-in-out"
+    >
       <div className="editor-toolbar justify-between bg-cv-gray border-b border-cv-lightgray">
         <span className="text-cv-white text-sm font-medium">Design Tools</span>
-        <button 
-          className="editor-button p-1.5 text-cv-white hover:text-cv-white"
-          onClick={handleGridClick}
-        >
-          <Grid size={14} />
-        </button>
+        <div className="flex items-center gap-2">
+          <button 
+            className="editor-button p-1.5 text-cv-white hover:text-cv-white"
+            onClick={handleGridClick}
+          >
+            <Grid size={14} />
+          </button>
+          <CollapsibleTrigger asChild>
+            <button className="editor-button p-1.5 text-cv-white hover:text-cv-white">
+              <PanelLeft size={14} />
+            </button>
+          </CollapsibleTrigger>
+        </div>
       </div>
       
-      <div className="flex flex-col flex-1 overflow-y-auto">
+      <CollapsibleContent className="flex flex-col flex-1 overflow-y-auto">
         <SidebarTabs activeTab={activeTab} setActiveTab={setActiveTab} />
         
         {activeTab === "components" && <ComponentsTab />}
@@ -45,10 +60,10 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         {activeTab === "layers" && <LayersTab />}
         {activeTab === "theme" && <ThemeTab />}
         {activeTab === "background" && <BackgroundTab />}
-      </div>
+      </CollapsibleContent>
       
       <AIThemeGenerator />
-    </div>
+    </Collapsible>
   );
 };
 

@@ -13,10 +13,12 @@ import { useEditorUIState } from "../hooks/useEditorUIState";
 import { toast } from "@/components/ui/use-toast";
 import { TemplateType } from "../types/templateStyles";
 import { useSelectedElement } from "../hooks/useSelectedElement";
+import { useCanvasUIState } from "@/hooks/useCanvasUIState";
 
 const DesignEditor: React.FC = () => {
   const location = useLocation();
   const { selectedElement } = useSelectedElement();
+  const { showRightSidebar, setShowRightSidebar } = useCanvasUIState();
   
   // Custom hooks for editor state management
   const { 
@@ -57,8 +59,9 @@ const DesignEditor: React.FC = () => {
   useEffect(() => {
     if (selectedElement && !showPropertyPanel) {
       setShowPropertyPanel(true);
+      setShowRightSidebar(true);
     }
-  }, [selectedElement, showPropertyPanel, setShowPropertyPanel]);
+  }, [selectedElement, showPropertyPanel, setShowPropertyPanel, setShowRightSidebar]);
   
   const handleAIExtract = (themeData: any) => {
     console.log("Extracted theme data:", themeData);

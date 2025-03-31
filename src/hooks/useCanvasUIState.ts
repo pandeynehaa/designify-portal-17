@@ -5,6 +5,8 @@ import { toast } from "@/components/ui/use-toast";
 export const useCanvasUIState = () => {
   const [showGrid, setShowGrid] = useState(true);
   const [editMode, setEditMode] = useState(true);
+  const [showLeftSidebar, setShowLeftSidebar] = useState(true);
+  const [showRightSidebar, setShowRightSidebar] = useState(true);
   
   const toggleGrid = () => {
     setShowGrid(!showGrid);
@@ -19,11 +21,23 @@ export const useCanvasUIState = () => {
         : "Now editing the design. You can modify elements on the canvas."
     });
   };
+  
+  const toggleLeftSidebar = () => {
+    setShowLeftSidebar(!showLeftSidebar);
+  };
+  
+  const toggleRightSidebar = () => {
+    setShowRightSidebar(!showRightSidebar);
+  };
 
   return {
     showGrid,
     toggleGrid,
     editMode,
-    toggleEditMode
+    toggleEditMode,
+    showLeftSidebar,
+    toggleLeftSidebar,
+    showRightSidebar,
+    toggleRightSidebar
   };
 };

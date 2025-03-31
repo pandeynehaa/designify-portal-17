@@ -4,7 +4,7 @@ import {
   Move, ZoomIn, ZoomOut, Undo, Redo, 
   Layers, Eye, EyeOff, Lock, Unlock, 
   AlignLeft, AlignCenter, AlignRight,
-  Grid, RotateCcw
+  Grid, RotateCcw, Edit
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
@@ -13,25 +13,26 @@ interface CanvasToolsProps {
   onZoomIn: () => void;
   onZoomOut: () => void;
   onReset: () => void;
+  showGrid: boolean;
+  toggleGrid: () => void;
+  editMode: boolean;
+  toggleEditMode: () => void;
 }
 
 const CanvasTools: React.FC<CanvasToolsProps> = ({
   zoom,
   onZoomIn,
   onZoomOut,
-  onReset
+  onReset,
+  showGrid,
+  toggleGrid,
+  editMode,
+  toggleEditMode
 }) => {
   const handleMoveClick = () => {
     toast({
       title: "Move Tool",
       description: "Move tool activated"
-    });
-  };
-
-  const handleGridClick = () => {
-    toast({
-      title: "Grid",
-      description: "Grid toggle will be available soon"
     });
   };
 
@@ -82,10 +83,10 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         </button>
         
         <button 
-          className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
-          onClick={handleGridClick}
+          className={`p-1.5 rounded-full hover:bg-gray-100 transition-colors ${showGrid ? 'bg-cv-accent text-white' : ''}`}
+          onClick={toggleGrid}
         >
-          <Grid size={16} className="text-gray-700" />
+          <Grid size={16} className={`${showGrid ? 'text-white' : 'text-gray-700'}`} />
         </button>
         
         <button 
@@ -93,6 +94,20 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
           onClick={handleLayersClick}
         >
           <Layers size={16} className="text-gray-700" />
+        </button>
+        
+        <div className="h-4 w-px bg-gray-200 mx-1"></div>
+        
+        <button
+          className={`p-1.5 rounded-full hover:bg-gray-100 transition-colors ${!editMode ? 'bg-cv-accent text-white' : ''}`}
+          onClick={toggleEditMode}
+          title={editMode ? "Switch to Preview Mode" : "Switch to Edit Mode"}
+        >
+          {editMode ? (
+            <Eye size={16} className="text-gray-700" />
+          ) : (
+            <Edit size={16} className="text-white" />
+          )}
         </button>
       </div>
     </div>

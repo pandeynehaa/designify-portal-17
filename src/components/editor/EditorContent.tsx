@@ -8,6 +8,9 @@ import CanvasTools from "./CanvasTools";
 import { TemplateStyles } from "../../types/templateStyles";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
 import { useCanvasState } from "../../hooks/useCanvasState";
+import { useCanvasUIState } from "@/hooks/useCanvasUIState";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import { PanelRight } from "lucide-react";
 
 interface EditorContentProps {
   activeTab: string;
@@ -40,6 +43,7 @@ const EditorContent: React.FC<EditorContentProps> = ({
 }) => {
   const { selectedElement } = useSelectedElement();
   const { updateElement } = useCanvasState();
+  const { showRightSidebar, toggleRightSidebar } = useCanvasUIState();
   
   // Connect the updateElement function for Canvas and PropertyPanel
   useEffect(() => {
@@ -77,25 +81,34 @@ const EditorContent: React.FC<EditorContentProps> = ({
             templateStyles={templateStyles} 
           />
           
-          <CanvasTools 
-            zoom={zoom} 
-            onZoomIn={handleZoomIn} 
-            onZoomOut={handleZoomOut} 
-            onReset={handleZoomReset} 
-          />
-          
           <CanvasDropOverlay isVisible={dropOverlayVisible} />
         </div>
         
         {/* Property Panel with glass effect */}
         {(showPropertyPanel || selectedElement) && (
           <div className="relative">
-            <PropertyPanel 
-              activeTab={activeTab} 
-              onClose={handlePropertyClose} 
-              templateStyles={templateStyles}
-              updateTemplateStyles={updateTemplateStyles}
-            />
+            <Collapsible 
+              open={showRightSidebar} 
+              onOpenChange={toggleRightSidebar}
+              className="transition-all duration-300 ease-in-out"
+            >
+              <div className="flex items-center justify-end h-10 bg-cv-gray border-b border-cv-lightgray px-2">
+                <CollapsibleTrigger asChild>
+                  <button className="p-1.5 text-cv-white hover:text-cv-white">
+                    <PanelRight size={14} />
+                  </button>
+                </CollapsibleTrigger>
+              </div>
+              
+              <CollapsibleContent>
+                <PropertyPanel 
+                  activeTab={activeTab} 
+                  onClose={handlePropertyClose} 
+                  templateStyles={templateStyles}
+                  updateTemplateStyles={updateTemplateStyles}
+                />
+              </CollapsibleContent>
+            </Collapsible>
             <div className="absolute inset-0 bg-gradient-to-l from-cv-purple/5 to-transparent pointer-events-none"></div>
           </div>
         )}

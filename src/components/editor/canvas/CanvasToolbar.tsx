@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Edit, Crop, MousePointer, Move, Grid as GridIcon, Eye } from "lucide-react";
+import { Edit, Crop, MousePointer, Move } from "lucide-react";
 import DeviceToolbar from "../DeviceToolbar";
 import ZoomControls from "../ZoomControls";
 import InsertMenu from "./InsertMenu";
@@ -13,10 +13,6 @@ interface CanvasToolbarProps {
   zoomLevel: number;
   handleZoomIn: () => void;
   handleZoomOut: () => void;
-  showGrid: boolean;
-  toggleGrid: () => void;
-  editMode: boolean;
-  toggleEditMode: () => void;
   onInsertText: () => void;
   onInsertImage: () => void;
   onInsertComponent: () => void;
@@ -30,10 +26,6 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
   zoomLevel,
   handleZoomIn,
   handleZoomOut,
-  showGrid,
-  toggleGrid,
-  editMode,
-  toggleEditMode,
   onInsertText,
   onInsertImage,
   onInsertComponent
@@ -81,34 +73,6 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
           onClick={() => setActiveTool('crop')}
         >
           <Crop size={14} />
-        </button>
-        
-        <div className="h-5 border-r border-cv-lightgray mx-1"></div>
-        
-        <button
-          className={`px-2 py-1 rounded-md text-xs font-medium transition-colors text-cv-white hover:bg-cv-lightgray ${showGrid ? 'bg-cv-lightgray' : ''}`}
-          onClick={toggleGrid}
-          title="Toggle Grid"
-        >
-          Grid
-        </button>
-        
-        <button
-          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1 ${!editMode ? 'bg-cv-accent text-cv-white' : 'bg-cv-darkgray text-cv-white hover:bg-cv-lightgray'}`}
-          onClick={toggleEditMode}
-          title="Toggle Edit Mode"
-        >
-          {editMode ? (
-            <>
-              <Eye size={14} />
-              <span>Preview</span>
-            </>
-          ) : (
-            <>
-              <Edit size={14} />
-              <span>Edit</span>
-            </>
-          )}
         </button>
       </div>
       

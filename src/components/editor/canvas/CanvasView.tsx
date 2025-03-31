@@ -6,7 +6,6 @@ import CanvasActionButton from "./CanvasActionButton";
 import { TemplateStyles } from "../../../types/templateStyles";
 import { CanvasElement } from "../../../types/canvasElement";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
-import { Edit, Grid3X3 } from "lucide-react";
 
 interface CanvasViewProps {
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -96,22 +95,6 @@ const CanvasView: React.FC<CanvasViewProps> = ({
       {showGrid && activeTool === 'move' && selectedElement && editMode && (
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 grid-overlay"></div>
-        </div>
-      )}
-      
-      {/* Edit Mode Indicator */}
-      {editMode && (
-        <div className="absolute top-4 right-4 bg-cv-accent/90 text-white px-3 py-2 rounded-md flex items-center gap-2 shadow-lg backdrop-blur-sm z-50 animate-pulse">
-          <Edit size={16} />
-          <span className="font-medium text-sm">Edit Mode</span>
-        </div>
-      )}
-      
-      {/* Grid Indicator */}
-      {showGrid && editMode && (
-        <div className="absolute top-4 left-4 bg-cv-gray/90 text-white px-3 py-2 rounded-md flex items-center gap-2 shadow-lg backdrop-blur-sm z-50">
-          <Grid3X3 size={16} />
-          <span className="font-medium text-sm">Grid</span>
         </div>
       )}
     </div>
