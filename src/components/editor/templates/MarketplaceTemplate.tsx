@@ -1,12 +1,49 @@
 
-import React from "react";
+import React, { useState } from "react";
 import { TemplateStyles } from "../../../types/templateStyles";
+import { TextCursor } from "lucide-react";
 
 interface MarketplaceTemplateProps {
   styles: TemplateStyles;
 }
 
 const MarketplaceTemplate: React.FC<MarketplaceTemplateProps> = ({ styles }) => {
+  const [isEditingHeading, setIsEditingHeading] = useState(false);
+  const [isEditingSubheading, setIsEditingSubheading] = useState(false);
+  const [headingText, setHeadingText] = useState("Discover, Collect, and Sell NFTs");
+  const [subheadingText, setSubheadingText] = useState("The world's largest digital marketplace for crypto collectibles and non-fungible tokens");
+
+  const handleTextClick = (textType: 'heading' | 'subheading') => {
+    if (textType === 'heading') {
+      setIsEditingHeading(true);
+    } else {
+      setIsEditingSubheading(true);
+    }
+  };
+
+  const handleTextBlur = (textType: 'heading' | 'subheading') => {
+    if (textType === 'heading') {
+      setIsEditingHeading(false);
+    } else {
+      setIsEditingSubheading(false);
+    }
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, textType: 'heading' | 'subheading') => {
+    if (textType === 'heading') {
+      setHeadingText(e.target.value);
+    } else {
+      setSubheadingText(e.target.value);
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, textType: 'heading' | 'subheading') => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleTextBlur(textType);
+    }
+  };
+
   return (
     <div className="w-full h-full flex flex-col overflow-auto">
       {/* Header */}
@@ -59,10 +96,52 @@ const MarketplaceTemplate: React.FC<MarketplaceTemplateProps> = ({ styles }) => 
         }}
       >
         <div className="text-center z-10">
-          <h1 className={`text-5xl font-bold mb-4 ${styles.headingFont}`}>Discover, Collect, and Sell NFTs</h1>
-          <p className={`text-xl mb-8 max-w-2xl mx-auto ${styles.bodyFont}`}>
-            The world's largest digital marketplace for crypto collectibles and non-fungible tokens
-          </p>
+          <div className="relative inline-block">
+            {isEditingHeading ? (
+              <input
+                type="text"
+                value={headingText}
+                onChange={(e) => handleTextChange(e, 'heading')}
+                onBlur={() => handleTextBlur('heading')}
+                onKeyDown={(e) => handleKeyDown(e, 'heading')}
+                className="text-5xl font-bold mb-4 bg-transparent border-b border-white/50 text-center w-full outline-none px-2"
+                autoFocus
+              />
+            ) : (
+              <h1 
+                className={`text-5xl font-bold mb-4 ${styles.headingFont} cursor-pointer group relative`}
+                onClick={() => handleTextClick('heading')}
+              >
+                {headingText}
+                <span className="absolute -right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <TextCursor size={18} className="text-white/70" />
+                </span>
+              </h1>
+            )}
+          </div>
+          <div className="relative inline-block">
+            {isEditingSubheading ? (
+              <textarea
+                value={subheadingText}
+                onChange={(e) => handleTextChange(e, 'subheading')}
+                onBlur={() => handleTextBlur('subheading')}
+                onKeyDown={(e) => handleKeyDown(e, 'subheading')}
+                className="text-xl mb-8 max-w-2xl mx-auto bg-transparent border-b border-white/50 text-center w-full outline-none px-2 resize-none"
+                autoFocus
+                rows={2}
+              />
+            ) : (
+              <p 
+                className={`text-xl mb-8 max-w-2xl mx-auto ${styles.bodyFont} cursor-pointer group relative`}
+                onClick={() => handleTextClick('subheading')}
+              >
+                {subheadingText}
+                <span className="absolute -right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <TextCursor size={18} className="text-white/70" />
+                </span>
+              </p>
+            )}
+          </div>
           <div className="flex justify-center space-x-4">
             <button 
               style={{ 
