@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Grid } from "lucide-react";
-import SidebarTabs from "./sidebar/SidebarTabs";
+import SidebarTabs from "./SidebarTabs"; // Fixed import path
 import ComponentsTab from "./sidebar/ComponentsTab";
 import ImagesTab from "./sidebar/ImagesTab";
 import ThemeTab from "./sidebar/ThemeTab";
