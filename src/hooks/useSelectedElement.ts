@@ -1,6 +1,6 @@
 
 import { create } from 'zustand';
-import { CanvasElement } from '@/types/canvasElement';
+import { CanvasElement } from '../types/canvasElement';
 
 interface SelectedElementState {
   selectedElement: CanvasElement | null;

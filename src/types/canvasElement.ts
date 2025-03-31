@@ -7,6 +7,4 @@ export interface CanvasElement {
   content?: string;
   visible?: boolean;
   zIndex?: number;
-  width?: string | number;
-  height?: string | number;
 }
