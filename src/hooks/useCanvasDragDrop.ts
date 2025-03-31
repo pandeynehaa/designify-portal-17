@@ -1,6 +1,7 @@
 
 import { DragEvent, useRef } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { CanvasElement } from "../types/canvasElement";
 
 interface ElementPosition {
   type: string;
@@ -13,7 +14,7 @@ interface ElementPosition {
 interface UseCanvasDragDropProps {
   canvasRef: React.RefObject<HTMLDivElement>;
   zoomLevel: number;
-  setDroppedElements: React.Dispatch<React.SetStateAction<ElementPosition[]>>;
+  setDroppedElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>;
 }
 
 export const useCanvasDragDrop = ({
