@@ -1,10 +1,38 @@
 
-import React, { useState } from "react";
+import React, { useState, DragEvent } from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import StickerPacks from "./StickerPacks";
 
-const StickersSection: React.FC = () => {
+interface StickersSectionProps {
+  // We can add props in the future if needed
+}
+
+const StickersSection: React.FC<StickersSectionProps> = () => {
   const [expanded, setExpanded] = useState(false);
+  
+  // Handle dragging of stickers
+  const handleStickerDragStart = (e: DragEvent<HTMLDivElement>, sticker: any) => {
+    e.dataTransfer.setData("application/sticker", JSON.stringify(sticker));
+    e.dataTransfer.effectAllowed = "copy";
+    
+    // Show visual feedback
+    const overlay = document.getElementById('dropOverlay');
+    if (overlay) {
+      overlay.style.opacity = '1';
+      overlay.style.zIndex = '50';
+    }
+    
+    // Reset the drop overlay after dragging ends
+    const resetOverlay = () => {
+      if (overlay) {
+        overlay.style.opacity = '0';
+        overlay.style.zIndex = '0';
+      }
+      window.removeEventListener('dragend', resetOverlay);
+    };
+    
+    window.addEventListener('dragend', resetOverlay);
+  };
 
   return (
     <div className="border-b border-cv-lightgray/30">
@@ -20,7 +48,7 @@ const StickersSection: React.FC = () => {
       
       {expanded && (
         <div className="pb-2">
-          <StickerPacks />
+          <StickerPacks onStickerDragStart={handleStickerDragStart} />
         </div>
       )}
     </div>
