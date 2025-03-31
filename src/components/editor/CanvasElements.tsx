@@ -1,6 +1,6 @@
 
 import React from "react";
-import { CanvasElement } from "../types/canvasElement";
+import { CanvasElement } from "../../types/canvasElement";
 import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
 
