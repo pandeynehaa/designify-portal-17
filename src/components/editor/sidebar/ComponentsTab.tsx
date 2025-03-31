@@ -7,11 +7,26 @@ import {
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
+// Define proper interface for component items
+interface ComponentItem {
+  name: string;
+  icon: React.FC<any>; // Using any for simplicity with Lucide icons
+  isTemplate?: boolean;
+  type?: string;
+}
+
+// Define category interface
+interface ComponentCategory {
+  id: string;
+  label: string;
+  items: ComponentItem[];
+}
+
 const ComponentsTab: React.FC = () => {
   const [componentsExpanded, setComponentsExpanded] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   
-  const componentCategories = [
+  const componentCategories: ComponentCategory[] = [
     { 
       id: "web3", 
       label: "Web3 Components", 
