@@ -30,6 +30,13 @@ export const useCanvasDragDrop = ({
     if (canvasRef.current) {
       canvasRef.current.classList.add("drag-over");
     }
+    
+    // Show visual feedback for dropping area
+    const overlay = document.getElementById('dropOverlay');
+    if (overlay) {
+      overlay.style.opacity = '1';
+      overlay.style.zIndex = '50';
+    }
   };
   
   const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
@@ -38,6 +45,13 @@ export const useCanvasDragDrop = ({
     
     if (canvasRef.current) {
       canvasRef.current.classList.remove("drag-over");
+    }
+    
+    // Hide visual feedback
+    const overlay = document.getElementById('dropOverlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      overlay.style.zIndex = '0';
     }
   };
 
@@ -49,6 +63,13 @@ export const useCanvasDragDrop = ({
       canvasRef.current.classList.remove("drag-over");
     }
     
+    // Hide drop overlay
+    const overlay = document.getElementById('dropOverlay');
+    if (overlay) {
+      overlay.style.opacity = '0';
+      overlay.style.zIndex = '0';
+    }
+    
     const canvasRect = canvasRef.current?.getBoundingClientRect();
     if (!canvasRect) return;
     
@@ -58,8 +79,11 @@ export const useCanvasDragDrop = ({
     const componentData = e.dataTransfer.getData("application/component");
     const imageData = e.dataTransfer.getData("application/image");
     const nftData = e.dataTransfer.getData("application/nft");
+    const templateData = e.dataTransfer.getData("application/template-component");
     
-    if (componentData) {
+    if (templateData) {
+      handleTemplateComponentDrop(templateData, x, y);
+    } else if (componentData) {
       handleComponentDrop(componentData, x, y);
     } else if (imageData) {
       handleImageDrop(imageData, x, y);
@@ -67,6 +91,71 @@ export const useCanvasDragDrop = ({
       handleNFTDrop(nftData, x, y);
     } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFileUpload(e.dataTransfer.files, x, y);
+    }
+  };
+
+  const handleTemplateComponentDrop = (templateData: string, x: number, y: number) => {
+    try {
+      const component = JSON.parse(templateData);
+      
+      // Find existing elements and sort them by Y position
+      setDroppedElements(prev => {
+        // Convert all Y positions to a scale of 0-100 for consistent placement
+        const sortedElements = [...prev].sort((a, b) => a.y - b.y);
+        
+        // Find the insertion point based on Y position
+        let insertIndex = 0;
+        const dropY = y / (zoomLevel / 100);
+        
+        for (let i = 0; i < sortedElements.length; i++) {
+          if (dropY > sortedElements[i].y) {
+            insertIndex = i + 1;
+          }
+        }
+        
+        // Create the new element
+        const newElement = {
+          type: "template-component",
+          id: `template-${component.type}-${Date.now()}`,
+          x: 0, // Center horizontally
+          y: dropY,
+          content: component.type
+        };
+        
+        // Insert at the appropriate position and return new array
+        const newElements = [
+          ...sortedElements.slice(0, insertIndex),
+          newElement,
+          ...sortedElements.slice(insertIndex)
+        ];
+        
+        // Readjust positions to accommodate the new element
+        // This creates space for the new element by pushing down other elements
+        return newElements.map((el, idx) => {
+          if (idx < insertIndex) {
+            return el; // Elements above stay in place
+          } else if (idx === insertIndex) {
+            return newElement; // The new element
+          } else {
+            // Push elements below down to make space
+            return {
+              ...el,
+              y: el.y + 100 // Add vertical space
+            };
+          }
+        });
+      });
+      
+      toast({
+        title: "Template Component Added",
+        description: `Added ${component.type} to the template`
+      });
+    } catch (error) {
+      console.error("Error adding template component:", error);
+      toast({
+        title: "Error",
+        description: "Could not add component to template"
+      });
     }
   };
 

@@ -3,9 +3,10 @@ import { useState } from "react";
 
 interface UseEditableTextProps {
   initialText: string;
+  onSave?: (newText: string) => void;
 }
 
-export const useEditableText = ({ initialText }: UseEditableTextProps) => {
+export const useEditableText = ({ initialText, onSave }: UseEditableTextProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
 
@@ -15,6 +16,9 @@ export const useEditableText = ({ initialText }: UseEditableTextProps) => {
 
   const handleTextBlur = () => {
     setIsEditing(false);
+    if (onSave && text !== initialText) {
+      onSave(text);
+    }
   };
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {

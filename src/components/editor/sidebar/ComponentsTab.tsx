@@ -46,11 +46,33 @@ const ComponentsTab: React.FC = () => {
         { name: "Divider", icon: Layers }
       ] 
     },
+    { 
+      id: "template", 
+      label: "Template Sections", 
+      items: [
+        { name: "Hero Section", icon: Layers, isTemplate: true, type: "hero" },
+        { name: "Features Section", icon: Star, isTemplate: true, type: "features" },
+        { name: "NFT Gallery", icon: Grid, isTemplate: true, type: "gallery" },
+        { name: "Collection Grid", icon: Grid, isTemplate: true, type: "collection-grid" },
+        { name: "Pricing Table", icon: CircleDollarSign, isTemplate: true, type: "pricing" },
+        { name: "FAQ Section", icon: Users, isTemplate: true, type: "faq" }
+      ] 
+    }
   ];
 
   // Handle dragging of components
   const handleDragStart = (e: DragEvent<HTMLDivElement>, component: any) => {
-    e.dataTransfer.setData("application/component", JSON.stringify(component));
+    if (component.isTemplate) {
+      // For template components, use a different data type
+      e.dataTransfer.setData("application/template-component", JSON.stringify({
+        type: component.type,
+        name: component.name
+      }));
+    } else {
+      // Regular components use the existing data type
+      e.dataTransfer.setData("application/component", JSON.stringify(component));
+    }
+    
     e.dataTransfer.effectAllowed = "copy";
     
     // Show visual feedback
@@ -114,9 +136,16 @@ const ComponentsTab: React.FC = () => {
               {category.items.map((item, index) => (
                 <div 
                   key={index}
-                  className="flex items-center px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-grab"
+                  className={`flex items-center px-3 py-1.5 rounded-md text-sm text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors cursor-grab ${
+                    item.isTemplate ? 'border-l-2 border-theme-primary/30' : ''
+                  }`}
                   draggable
-                  onDragStart={(e) => handleDragStart(e, { name: item.name, category: category.id })}
+                  onDragStart={(e) => handleDragStart(e, { 
+                    name: item.name, 
+                    category: category.id,
+                    isTemplate: item.isTemplate,
+                    type: item.type
+                  })}
                 >
                   <item.icon size={14} className="mr-2 opacity-70" />
                   {item.name}

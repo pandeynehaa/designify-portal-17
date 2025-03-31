@@ -32,6 +32,11 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
       return null;
     }
 
+    // Skip template-component elements as they're handled by the template components directly
+    if (element.type === 'template-component') {
+      return null;
+    }
+
     switch (element.type) {
       case 'component':
         return <ComponentElement key={element.id} element={element} activeTool={activeTool} editMode={editMode} />;

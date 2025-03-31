@@ -20,4 +20,5 @@ export interface CanvasElement {
   visible?: boolean;
   zIndex?: number;
   nftData?: NFTData;
+  templateSection?: string; // New field for template sections
 }
