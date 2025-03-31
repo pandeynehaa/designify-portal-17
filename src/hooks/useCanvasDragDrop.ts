@@ -23,7 +23,7 @@ export const useCanvasDragDrop = ({
     setDroppedElements
   });
   
-  const { handleImageDrop, handleNFTDrop, handleFileUpload } = useMediaDropHandlers({
+  const { handleImageDrop, handleNFTDrop, handleStickerDrop, handleFileUpload } = useMediaDropHandlers({
     zoomLevel,
     setDroppedElements
   });
@@ -34,6 +34,7 @@ export const useCanvasDragDrop = ({
     handleComponentDrop,
     handleImageDrop,
     handleNFTDrop,
+    handleStickerDrop,
     handleFileUpload
   });
   

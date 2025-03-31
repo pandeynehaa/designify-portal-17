@@ -4,6 +4,7 @@ import { CanvasElement } from "../../../types/canvasElement";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import ElementControls from "./ElementControls";
 import ResizeHandles from "./ResizeHandles";
+import { useCanvasState } from "@/hooks/useCanvasState";
 
 interface StickerElementProps {
   element: CanvasElement;
@@ -12,6 +13,7 @@ interface StickerElementProps {
 
 const StickerElement: React.FC<StickerElementProps> = ({ element, activeTool }) => {
   const { selectedElement, selectElement } = useSelectedElement();
+  const { updateElement } = useCanvasState();
   const isSelected = selectedElement?.id === element.id;
   
   const [position, setPosition] = useState({ x: element.x, y: element.y });
@@ -30,35 +32,29 @@ const StickerElement: React.FC<StickerElementProps> = ({ element, activeTool }) 
     setSize({ width, height });
     
     // Update the element in the canvas state
-    if (window.updateCanvasElement) {
-      window.updateCanvasElement(element.id, {
-        width,
-        height
-      });
-    }
+    updateElement(element.id, {
+      width,
+      height
+    });
   };
   
   const handleMove = (x: number, y: number) => {
     setPosition({ x, y });
     
     // Update the element in the canvas state
-    if (window.updateCanvasElement) {
-      window.updateCanvasElement(element.id, {
-        x,
-        y
-      });
-    }
+    updateElement(element.id, {
+      x,
+      y
+    });
   };
   
   const handleRotate = (angle: number) => {
     setRotation(angle);
     
     // Update the element in the canvas state
-    if (window.updateCanvasElement) {
-      window.updateCanvasElement(element.id, {
-        rotation: angle
-      });
-    }
+    updateElement(element.id, {
+      rotation: angle
+    });
   };
 
   return (
@@ -83,17 +79,8 @@ const StickerElement: React.FC<StickerElementProps> = ({ element, activeTool }) 
       
       {isSelected && (
         <>
-          <ElementControls 
-            element={element} 
-            onRotate={handleRotate} 
-            currentRotation={rotation} 
-          />
-          <ResizeHandles 
-            width={size.width} 
-            height={size.height} 
-            onResize={handleResize} 
-            lockAspectRatio={true}
-          />
+          <ElementControls element={element} />
+          <ResizeHandles />
         </>
       )}
     </div>
