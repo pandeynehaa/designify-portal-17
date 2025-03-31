@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RotateCcw, Link, CircleFadingPlus, Scale } from "lucide-react";
+import { RotateCcw, Link, CircleFadingPlus, Scale, Maximize } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
 interface NFTPropertiesProps {
@@ -22,7 +22,9 @@ const NFTProperties: React.FC<NFTPropertiesProps> = ({ element, updateElement })
     glowColor: "#ffffff",
     glowSpread: 0,
     rotation: 0,
-    scale: 1
+    scale: 1,
+    width: 300,
+    height: 300
   };
   
   const [values, setValues] = useState({
@@ -31,7 +33,9 @@ const NFTProperties: React.FC<NFTPropertiesProps> = ({ element, updateElement })
     glowSpread: nftData.glowSpread || 0,
     rotation: nftData.rotation || 0,
     scale: nftData.scale || 1,
-    marketplaceLink: nftData.marketplaceLink || "/marketplace"
+    marketplaceLink: nftData.marketplaceLink || "/marketplace",
+    width: nftData.width || 300,
+    height: nftData.height || 300
   });
 
   const handleChange = (field: string, value: any) => {
@@ -107,6 +111,29 @@ const NFTProperties: React.FC<NFTPropertiesProps> = ({ element, updateElement })
                 value={[values.scale]}
                 onValueChange={(value) => handleChange('scale', value[0])}
                 className="flex-1"
+              />
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-4 mt-4">
+            <div>
+              <Label htmlFor="width" className="text-xs text-editor-muted mb-1.5">Width (px)</Label>
+              <Input
+                id="width"
+                type="number"
+                value={values.width}
+                onChange={(e) => handleChange('width', parseInt(e.target.value) || 100)}
+                className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+            <div>
+              <Label htmlFor="height" className="text-xs text-editor-muted mb-1.5">Height (px)</Label>
+              <Input
+                id="height"
+                type="number"
+                value={values.height}
+                onChange={(e) => handleChange('height', parseInt(e.target.value) || 100)}
+                className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
               />
             </div>
           </div>

@@ -9,6 +9,8 @@ export interface NFTData {
   glowSpread?: number;
   rotation?: number;
   scale?: number;
+  width?: number;
+  height?: number;
 }
 
 export interface CanvasElement {

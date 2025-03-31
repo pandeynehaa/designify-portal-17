@@ -44,7 +44,11 @@ export const useMediaDropHandlers = ({
         marketplaceLink: nft.marketplaceLink,
         blurAmount: 0,
         glowColor: "rgba(255, 255, 255, 0)",
-        glowSpread: 0
+        glowSpread: 0,
+        width: 300,
+        height: 300,
+        rotation: 0,
+        scale: 1
       }
     };
     
