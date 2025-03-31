@@ -30,6 +30,7 @@ export const useCanvasState = () => {
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
+    handleInsertImagePlaceholder,
     updateElement,
     deleteElement,
     duplicateElement
@@ -179,6 +180,7 @@ export const useCanvasState = () => {
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
+    handleInsertImagePlaceholder,
     updateElement,
     deleteElement,
     duplicateElement,

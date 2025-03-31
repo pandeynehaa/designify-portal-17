@@ -1,6 +1,10 @@
-import { toast } from "@/components/ui/use-toast";
+
 import { CanvasElement } from "../types/canvasElement";
 import { useCanvasHistory } from "./useCanvasHistory";
+import { useTextElements } from "./canvas-elements/useTextElements";
+import { useImageElements } from "./canvas-elements/useImageElements";
+import { useComponentElements } from "./canvas-elements/useComponentElements";
+import { useElementOperations } from "./canvas-elements/useElementOperations";
 
 export const useCanvasElements = (
   droppedElements: CanvasElement[],
@@ -8,203 +12,11 @@ export const useCanvasElements = (
 ) => {
   const { addToHistory } = useCanvasHistory();
 
-  const handleInsertText = (layerId: string = "default-layer") => {
-    const newId = `text-${Date.now()}`;
-    const newElement = {
-      type: 'component',
-      id: newId,
-      x: 100,
-      y: 100,
-      content: 'Double-click to edit this text',
-      layerId
-    };
-    
-    setDroppedElements(prev => [...prev, newElement]);
-    
-    // Add to history
-    addToHistory({
-      type: 'add',
-      elements: [newElement],
-      previousElements: [...droppedElements]
-    });
-    
-    toast({
-      title: "Text Added",
-      description: "New text element has been added to the canvas. Double-click to edit."
-    });
-    
-    return newElement;
-  };
-
-  const handleInsertImage = (layerId: string = "default-layer") => {
-    const newId = `image-${Date.now()}`;
-    const newElement = {
-      type: 'image',
-      id: newId,
-      x: 150,
-      y: 150,
-      content: 'https://via.placeholder.com/150',
-      layerId
-    };
-    
-    setDroppedElements(prev => [...prev, newElement]);
-    
-    // Add to history
-    addToHistory({
-      type: 'add',
-      elements: [newElement],
-      previousElements: [...droppedElements]
-    });
-    
-    toast({
-      title: "Image Added",
-      description: "New image element has been added to the canvas"
-    });
-    
-    return newElement;
-  };
-
-  const handleInsertImagePlaceholder = (layerId: string = "default-layer") => {
-    const newId = `placeholder-${Date.now()}`;
-    const newElement = {
-      type: 'placeholder',
-      id: newId,
-      x: 150,
-      y: 150,
-      width: 300,
-      height: 200,
-      content: 'empty',
-      layerId
-    };
-    
-    setDroppedElements(prev => [...prev, newElement]);
-    
-    // Add to history
-    addToHistory({
-      type: 'add',
-      elements: [newElement],
-      previousElements: [...droppedElements]
-    });
-    
-    toast({
-      title: "Image Placeholder Added",
-      description: "Click or drag an image to the placeholder"
-    });
-    
-    return newElement;
-  };
-
-  const handleInsertComponent = (layerId: string = "default-layer") => {
-    const newId = `component-${Date.now()}`;
-    const newElement = {
-      type: 'component',
-      id: newId,
-      x: 200,
-      y: 200,
-      content: 'Button',
-      layerId
-    };
-    
-    setDroppedElements(prev => [...prev, newElement]);
-    
-    // Add to history
-    addToHistory({
-      type: 'add',
-      elements: [newElement],
-      previousElements: [...droppedElements]
-    });
-    
-    toast({
-      title: "Component Added",
-      description: "New component has been added to the canvas"
-    });
-    
-    return newElement;
-  };
-  
-  const updateElement = (id: string, updates: Partial<CanvasElement>) => {
-    // Get the original element before update
-    const originalElement = droppedElements.find(el => el.id === id);
-    
-    setDroppedElements(elements => 
-      elements.map(element => 
-        element.id === id ? { ...element, ...updates } : element
-      )
-    );
-    
-    // Add to history
-    if (originalElement) {
-      addToHistory({
-        type: 'update',
-        elements: [{ ...originalElement, ...updates }],
-        previousElements: [originalElement]
-      });
-    }
-    
-    toast({
-      title: "Element Updated",
-      description: "Changes have been applied to the element"
-    });
-  };
-  
-  const deleteElement = (id: string) => {
-    // Get the element before deletion
-    const elementToDelete = droppedElements.find(el => el.id === id);
-    
-    if (elementToDelete) {
-      // Dispatch custom event for animation and sound
-      const deleteEvent = new CustomEvent('canvas-element-delete', { 
-        detail: { id: elementToDelete.id } 
-      });
-      window.dispatchEvent(deleteEvent);
-      
-      // Add slight delay to allow animation to complete before actual deletion
-      setTimeout(() => {
-        setDroppedElements(elements => elements.filter(element => element.id !== id));
-        
-        // Add to history
-        addToHistory({
-          type: 'delete',
-          elements: [],
-          previousElements: [elementToDelete]
-        });
-        
-        toast({
-          title: "Element Deleted",
-          description: "Element has been removed from the canvas"
-        });
-      }, 300); // Match duration with CSS transition
-    }
-  };
-
-  const duplicateElement = (id: string) => {
-    const elementToDuplicate = droppedElements.find(el => el.id === id);
-    if (elementToDuplicate) {
-      const newElement = {
-        ...elementToDuplicate,
-        id: `${elementToDuplicate.type}-${Date.now()}`,
-        x: elementToDuplicate.x + 20,
-        y: elementToDuplicate.y + 20
-      };
-      
-      setDroppedElements([...droppedElements, newElement]);
-      
-      // Add to history
-      addToHistory({
-        type: 'duplicate',
-        elements: [newElement],
-        previousElements: [...droppedElements]
-      });
-      
-      toast({
-        title: "Element Duplicated",
-        description: "A copy of the element has been created"
-      });
-      
-      return newElement;
-    }
-    return null;
-  };
+  // Use specialized hooks for different element types
+  const { handleInsertText } = useTextElements(droppedElements, setDroppedElements, addToHistory);
+  const { handleInsertImage, handleInsertImagePlaceholder } = useImageElements(droppedElements, setDroppedElements, addToHistory);
+  const { handleInsertComponent } = useComponentElements(droppedElements, setDroppedElements, addToHistory);
+  const { updateElement, deleteElement, duplicateElement } = useElementOperations(droppedElements, setDroppedElements, addToHistory);
 
   return {
     handleInsertText,
