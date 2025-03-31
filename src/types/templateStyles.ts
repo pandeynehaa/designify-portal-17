@@ -20,6 +20,7 @@ export interface TemplateStyles {
   bodyFont: string;
   gridColumns: number;
   spacing: string;
+  enable3D?: boolean; // Add the enable3D property as optional with boolean type
 }
 
 export type TemplateType = "marketplace" | "drops" | "token-gate" | "buy-coin";

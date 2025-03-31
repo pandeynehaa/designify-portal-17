@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { TemplateStyles, TemplateType } from "../types/templateStyles";
 import { toast } from "@/components/ui/use-toast";
@@ -25,7 +24,8 @@ export const useTemplateStyles = () => {
       headingFont: "font-display",
       bodyFont: "font-sans",
       gridColumns: 4,
-      spacing: "1.5rem"
+      spacing: "1.5rem",
+      enable3D: false // Initialize with 3D effect off
     },
     drops: {
       headerBg: "#18181E",
@@ -46,7 +46,8 @@ export const useTemplateStyles = () => {
       headingFont: "font-display",
       bodyFont: "font-sans",
       gridColumns: 3,
-      spacing: "1.5rem"
+      spacing: "1.5rem",
+      enable3D: false // Initialize with 3D effect off
     },
     "token-gate": {
       headerBg: "#18181E",
@@ -67,7 +68,8 @@ export const useTemplateStyles = () => {
       headingFont: "font-display",
       bodyFont: "font-sans",
       gridColumns: 2,
-      spacing: "1.5rem"
+      spacing: "1.5rem",
+      enable3D: false // Initialize with 3D effect off
     },
     "buy-coin": {
       headerBg: "#18181E",
@@ -88,7 +90,8 @@ export const useTemplateStyles = () => {
       headingFont: "font-display",
       bodyFont: "font-sans",
       gridColumns: 1,
-      spacing: "1.5rem"
+      spacing: "1.5rem",
+      enable3D: false // Initialize with 3D effect off
     }
   });
 
