@@ -47,6 +47,11 @@ const ElementControls: React.FC<ElementControlsProps> = ({ element }) => {
     e.stopPropagation();
     deleteElement(element.id);
     selectElement(null);
+    
+    toast({
+      title: "Element Deleted",
+      description: "The selected element has been removed from the canvas"
+    });
   };
 
   const handleUndoClick = (e: React.MouseEvent) => {
@@ -116,7 +121,7 @@ const ElementControls: React.FC<ElementControlsProps> = ({ element }) => {
       </DropdownMenu>
       
       <button 
-        className="p-1 bg-cv-darkgray text-cv-white hover:bg-cv-accent transition-colors rounded"
+        className="p-1 bg-cv-darkgray text-cv-white hover:bg-red-500 transition-colors rounded"
         onClick={handleDeleteClick}
         title="Delete"
       >

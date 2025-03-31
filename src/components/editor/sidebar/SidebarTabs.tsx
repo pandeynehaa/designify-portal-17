@@ -1,8 +1,13 @@
 
 import React from "react";
 import { 
-  Layout, Type, Image, Layers, 
-  Palette, Wand2, Sparkles, Grid3X3
+  Layers, 
+  PanelTop, 
+  Image, 
+  Grid3X3, 
+  Palette, 
+  Bookmark,
+  CircleDashed 
 } from "lucide-react";
 
 interface SidebarTabsProps {
@@ -10,32 +15,31 @@ interface SidebarTabsProps {
   setActiveTab: (tab: string) => void;
 }
 
-const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) => {
-  const tabs = [
-    { id: "layout", icon: Layout, label: "Layout" },
-    { id: "typography", icon: Type, label: "Typography" },
-    { id: "images", icon: Image, label: "Images" },
-    { id: "components", icon: Grid3X3, label: "Components" },
-    { id: "layers", icon: Layers, label: "Layers" },
-    { id: "colors", icon: Palette, label: "Colors" },
-    { id: "effects", icon: Sparkles, label: "Effects" },
-    { id: "theme", icon: Wand2, label: "Theme" },
-  ];
+const tabs = [
+  { id: "components", icon: <Grid3X3 size={18} />, label: "Components" },
+  { id: "images", icon: <Image size={18} />, label: "Images" },
+  { id: "items", icon: <CircleDashed size={18} />, label: "NFTs" },
+  { id: "layers", icon: <Layers size={18} />, label: "Layers" },
+  { id: "saved", icon: <Bookmark size={18} />, label: "Saved" },
+  { id: "theme", icon: <Palette size={18} />, label: "Theme" },
+  { id: "background", icon: <PanelTop size={18} />, label: "Background" }
+];
 
+const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="p-2">
-      {tabs.map((tab) => (
+    <div className="flex overflow-x-auto bg-cv-gray border-b border-cv-lightgray">
+      {tabs.map(tab => (
         <button
           key={tab.id}
-          onClick={() => setActiveTab(tab.id)}
-          className={`flex items-center w-full px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+          className={`flex-1 flex flex-col items-center justify-center py-2 px-1 min-w-[70px] transition-colors ${
             activeTab === tab.id
-              ? "bg-cv-accent text-cv-white"
-              : "text-cv-white hover:bg-cv-lightgray"
+              ? "text-cv-accent border-b-2 border-cv-accent"
+              : "text-cv-white hover:text-cv-lightgray hover:bg-cv-lightgray/10"
           }`}
+          onClick={() => setActiveTab(tab.id)}
         >
-          <tab.icon size={16} className="mr-3" />
-          {tab.label}
+          <div className="mb-1">{tab.icon}</div>
+          <span className="text-xs font-medium">{tab.label}</span>
         </button>
       ))}
     </div>

@@ -6,6 +6,7 @@ import ImageElement from "./canvas/ImageElement";
 import NFTElement from "./canvas/NFTElement";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
 import { useCanvasState } from "@/hooks/useCanvasState";
+import { useHotkeys } from "react-hotkeys-hook";
 
 interface CanvasElementsProps {
   droppedElements: CanvasElement[];
@@ -18,8 +19,16 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
   activeTool,
   editMode = true // Default to edit mode
 }) => {
-  const { selectElement } = useSelectedElement();
-  const { layers } = useCanvasState();
+  const { selectElement, selectedElement } = useSelectedElement();
+  const { layers, deleteElement } = useCanvasState();
+  
+  // Add keyboard shortcut for deletion
+  useHotkeys('delete', () => {
+    if (selectedElement) {
+      deleteElement(selectedElement.id);
+      selectElement(null);
+    }
+  }, [selectedElement, deleteElement, selectElement]);
   
   const handleCanvasClick = (e: React.MouseEvent) => {
     // Only clear selection if clicking directly on the canvas (not on an element)

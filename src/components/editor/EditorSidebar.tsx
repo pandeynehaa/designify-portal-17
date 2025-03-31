@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Grid, PanelLeft, PanelRight } from "lucide-react";
+import { Grid, PanelLeft, PanelRight, Save } from "lucide-react";
 import SidebarTabs from "./SidebarTabs"; 
 import ComponentsTab from "./sidebar/ComponentsTab";
 import ImagesTab from "./sidebar/ImagesTab";
@@ -9,6 +9,7 @@ import LayersPanel from "./sidebar/LayersPanel";
 import AIThemeGenerator from "./sidebar/AIThemeGenerator";
 import NFTsTab from "./sidebar/NFTsTab";
 import BackgroundTab from "./sidebar/BackgroundTab";
+import SavedDesignsPanel from "./sidebar/SavedDesignsPanel";
 import { toast } from "@/components/ui/use-toast";
 import { useCanvasUIState } from "@/hooks/useCanvasUIState";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -58,6 +59,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         {activeTab === "images" && <ImagesTab />}
         {activeTab === "items" && <NFTsTab />}
         {activeTab === "layers" && <LayersPanel />}
+        {activeTab === "saved" && <SavedDesignsPanel />}
         {activeTab === "theme" && <ThemeTab />}
         {activeTab === "background" && <BackgroundTab />}
       </CollapsibleContent>
