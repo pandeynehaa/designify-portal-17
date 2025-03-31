@@ -29,12 +29,12 @@ export const useCanvasState = () => {
         id: newId,
         x: 100,
         y: 100,
-        content: 'New Text Element'
+        content: 'Double-click to edit this text'
       }
     ]);
     toast({
       title: "Text Added",
-      description: "New text element has been added to the canvas"
+      description: "New text element has been added to the canvas. Double-click to edit."
     });
   };
 

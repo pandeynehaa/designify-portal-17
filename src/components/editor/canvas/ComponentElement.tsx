@@ -5,7 +5,9 @@ import ElementControls from "./ElementControls";
 import ResizeHandles from "./ResizeHandles";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import { toast } from "@/components/ui/use-toast";
-import { Move } from "lucide-react";
+import { Move, TextCursor } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ComponentElementProps {
   element: CanvasElement;
@@ -19,6 +21,9 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
   const dragOffset = useRef({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: element.x, y: element.y });
   const elementRef = useRef<HTMLDivElement>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedText, setEditedText] = useState(element.content || "");
+  const inputRef = useRef<HTMLTextAreaElement | HTMLInputElement>(null);
   
   // Grid snap size in pixels
   const gridSize = 20;
@@ -27,6 +32,11 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
     // Update position when element props change
     setPosition({ x: element.x, y: element.y });
   }, [element.x, element.y]);
+
+  useEffect(() => {
+    // Update edited text when element content changes
+    setEditedText(element.content || "");
+  }, [element.content]);
   
   useEffect(() => {
     // Add mouse event listeners for dragging
@@ -75,6 +85,13 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
       document.removeEventListener('mouseup', handleMouseUp);
     };
   }, [activeTool, element.id, position]);
+
+  // Focus input when entering edit mode
+  useEffect(() => {
+    if (isEditing && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
   
   const handleMouseDown = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -102,6 +119,46 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
       });
     }
   };
+
+  const handleDoubleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    // Only enable editing for text components
+    if (element.type === 'component') {
+      setIsEditing(true);
+      selectElement(element);
+    }
+  };
+
+  const handleTextChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setEditedText(e.target.value);
+  };
+
+  const handleTextBlur = () => {
+    setIsEditing(false);
+    
+    // Only update if the text has changed
+    if (editedText !== element.content) {
+      // Update the actual element content in the canvas state
+      if (typeof (window as any).updateCanvasElement === 'function') {
+        (window as any).updateCanvasElement(element.id, { 
+          content: editedText
+        });
+      }
+      
+      toast({
+        title: "Text Updated",
+        description: "Text content has been updated"
+      });
+    }
+  };
+
+  const handleTextKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleTextBlur();
+    }
+  };
   
   const style = {
     position: 'absolute' as const,
@@ -109,6 +166,8 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
     top: `${position.y}px`,
     cursor: activeTool === 'move' ? 'move' : 'pointer',
     transition: isDragging.current ? 'none' : 'box-shadow 0.2s ease',
+    minWidth: '100px', // Ensure a minimum size for text elements
+    minHeight: '30px'
   };
   
   return (
@@ -120,16 +179,48 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
         activeTool === 'move' ? 'hover:shadow-md' : ''
       } ${isSelected ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}`}
       onMouseDown={handleMouseDown}
+      onDoubleClick={handleDoubleClick}
     >
-      {element.content}
+      {isEditing ? (
+        editedText && editedText.length > 50 ? (
+          <Textarea
+            ref={inputRef as React.RefObject<HTMLTextAreaElement>}
+            value={editedText}
+            onChange={handleTextChange}
+            onBlur={handleTextBlur}
+            onKeyDown={handleTextKeyDown}
+            className="w-full h-full min-h-[80px] p-0 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            autoFocus
+          />
+        ) : (
+          <Input
+            ref={inputRef as React.RefObject<HTMLInputElement>}
+            value={editedText}
+            onChange={handleTextChange}
+            onBlur={handleTextBlur}
+            onKeyDown={handleTextKeyDown}
+            className="w-full h-full p-0 border-0 focus-visible:ring-0 focus-visible:ring-offset-0"
+            autoFocus
+          />
+        )
+      ) : (
+        element.content
+      )}
       
       {isSelected && activeTool === 'move' && (
         <div className="absolute -top-5 -left-5 bg-cv-accent text-white p-1 rounded-full shadow-sm">
           <Move size={14} />
         </div>
       )}
+
+      {isSelected && !isEditing && (
+        <div className="absolute -top-5 -right-5 bg-cv-accent text-white p-1 rounded-full shadow-sm cursor-pointer"
+             onClick={() => setIsEditing(true)}>
+          <TextCursor size={14} />
+        </div>
+      )}
       
-      {isSelected && (
+      {isSelected && !isEditing && (
         <>
           <ElementControls element={element} />
           <ResizeHandles />
