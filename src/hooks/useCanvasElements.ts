@@ -113,21 +113,30 @@ export const useCanvasElements = (
     // Get the element before deletion
     const elementToDelete = droppedElements.find(el => el.id === id);
     
-    setDroppedElements(elements => elements.filter(element => element.id !== id));
-    
-    // Add to history
     if (elementToDelete) {
-      addToHistory({
-        type: 'delete',
-        elements: [],
-        previousElements: [elementToDelete]
+      // Dispatch custom event for animation and sound
+      const deleteEvent = new CustomEvent('canvas-element-delete', { 
+        detail: { id: elementToDelete.id } 
       });
+      window.dispatchEvent(deleteEvent);
+      
+      // Add slight delay to allow animation to complete before actual deletion
+      setTimeout(() => {
+        setDroppedElements(elements => elements.filter(element => element.id !== id));
+        
+        // Add to history
+        addToHistory({
+          type: 'delete',
+          elements: [],
+          previousElements: [elementToDelete]
+        });
+        
+        toast({
+          title: "Element Deleted",
+          description: "Element has been removed from the canvas"
+        });
+      }, 300); // Match duration with CSS transition
     }
-    
-    toast({
-      title: "Element Deleted",
-      description: "Element has been removed from the canvas"
-    });
   };
 
   const duplicateElement = (id: string) => {

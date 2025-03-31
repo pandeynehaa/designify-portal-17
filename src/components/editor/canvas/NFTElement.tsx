@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { CanvasElement } from "../../../types/canvasElement";
 import ElementControls from "./ElementControls";
@@ -20,6 +21,8 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
     width: element.nftData?.width || 300,
     height: element.nftData?.height || 300
   });
+  const [isDeleting, setIsDeleting] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const elementRef = useRef<HTMLDivElement>(null);
   const resizing = useRef(false);
   const initialSize = useRef({ width: 0, height: 0 });
@@ -45,6 +48,44 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
       });
     }
   }, [element.nftData]);
+  
+  useEffect(() => {
+    // Create audio element for delete sound
+    audioRef.current = new Audio("/sounds/swoosh.mp3");
+    
+    return () => {
+      // Cleanup
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+  
+  // Listen for delete events via a custom event
+  useEffect(() => {
+    const handleDeleteAnimation = (e: CustomEvent) => {
+      if (e.detail.id === element.id) {
+        // Play sound effect
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch(err => console.log('Audio play error:', err));
+        }
+        
+        // Trigger animation
+        setIsDeleting(true);
+        
+        // After animation completes, actual deletion happens in useCanvasElements
+      }
+    };
+    
+    // Add event listener
+    window.addEventListener('canvas-element-delete' as any, handleDeleteAnimation as any);
+    
+    return () => {
+      window.removeEventListener('canvas-element-delete' as any, handleDeleteAnimation as any);
+    };
+  }, [element.id]);
   
   const style = {
     position: 'absolute' as const,
@@ -140,6 +181,29 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
       onResizeStart: handleResizeStart
     };
   };
+
+  // If element is being deleted, apply animation classes
+  if (isDeleting) {
+    return (
+      <div
+        ref={elementRef}
+        style={{
+          ...style,
+          boxShadow: 'none', // Remove shadow during animation
+          filter: 'none',    // Remove filters during animation
+        }}
+        className="relative transition-all duration-300 scale-0 opacity-0 rotate-90"
+      >
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+          <img 
+            src={nftData.image} 
+            alt={nftData.name || "NFT Item"} 
+            className="max-w-full max-h-full object-contain rounded shadow-sm"
+          />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
