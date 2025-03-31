@@ -67,16 +67,21 @@ const DesignEditor: React.FC = () => {
   };
   
   return (
-    <div className="flex flex-col h-screen bg-cv-black">
+    <div className="flex flex-col h-screen bg-gradient-to-br from-cv-black to-cv-darkgray">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
+      
       <Navbar />
       
       <div className="flex-1 flex flex-col overflow-hidden">
-        <EditorHeader 
-          activeTemplate={activeTemplate}
-          setActiveTemplate={setActiveTemplate}
-          setShowThemeMapper={setShowThemeMapper}
-          setShowAIExtractor={setShowAIExtractor}
-        />
+        <div className="relative">
+          <EditorHeader 
+            activeTemplate={activeTemplate}
+            setActiveTemplate={setActiveTemplate}
+            setShowThemeMapper={setShowThemeMapper}
+            setShowAIExtractor={setShowAIExtractor}
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-cv-purple/5 to-transparent pointer-events-none"></div>
+        </div>
         
         <EditorContent 
           activeTab={activeTab}

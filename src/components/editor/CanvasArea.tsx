@@ -69,7 +69,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
   }, []);
   
   return (
-    <div className="flex flex-col flex-1 h-full">
+    <div className="flex flex-col flex-1 h-full bg-cv-gray/30 backdrop-blur-md rounded-lg">
       <CanvasToolbar
         deviceView={deviceView}
         setDeviceView={setDeviceView}
@@ -87,30 +87,36 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         onInsertComponent={handleInsertComponent}
       />
       
-      <CanvasEventHandlers
-        canvasRef={canvasRef}
-        zoomLevel={zoomLevel}
-        setDroppedElements={setDroppedElements}
-      >
-        <CanvasView
+      <div className="flex-1 relative overflow-hidden p-4">
+        <CanvasEventHandlers
           canvasRef={canvasRef}
-          deviceView={deviceView}
-          zoom={zoom}
-          showGrid={showGrid}
-          droppedElements={droppedElements}
-          activeTool={activeTool}
-          editMode={editMode}
-          activeTemplate={activeTemplate}
-          templateStyles={templateStyles}
-          handleCanvasClick={handleCanvasClick}
-        />
-      </CanvasEventHandlers>
+          zoomLevel={zoomLevel}
+          setDroppedElements={setDroppedElements}
+        >
+          <div className="w-full h-full flex items-center justify-center">
+            <CanvasView
+              canvasRef={canvasRef}
+              deviceView={deviceView}
+              zoom={zoom}
+              showGrid={showGrid}
+              droppedElements={droppedElements}
+              activeTool={activeTool}
+              editMode={editMode}
+              activeTemplate={activeTemplate}
+              templateStyles={templateStyles}
+              handleCanvasClick={handleCanvasClick}
+            />
+          </div>
+        </CanvasEventHandlers>
+      </div>
       
       <div 
-        className={`absolute inset-0 pointer-events-none flex items-center justify-center z-0 opacity-0 transition-opacity duration-300 bg-black/50 text-white text-xl font-medium`} 
+        className="absolute inset-0 pointer-events-none flex items-center justify-center z-0 opacity-0 transition-opacity duration-300 bg-black/50 text-white text-xl font-medium"
         id="dropOverlay"
       >
-        Drop to add to canvas
+        <div className="bg-white/10 backdrop-blur-xl p-6 rounded-xl border border-white/20 shadow-2xl">
+          Drop to add to canvas
+        </div>
       </div>
       
       <CanvasTools 

@@ -1,5 +1,8 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
 @import url('https://fonts.cdnfonts.com/css/gravity');
+@import url('https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -26,7 +29,7 @@
     --border: 0 0% 20%;
     --input: 0 0% 20%;
     --ring: 252 82% 74%;
-    --radius: 0.5rem;
+    --radius: 0.8rem;
     
     /* Editor specific variables */
     --editor-bg: 0 0% 0%;
@@ -44,51 +47,79 @@
     --theme-secondary: 0 0% 29%;
     --theme-accent: 252 83% 82%;
     --theme-neutral: 0 0% 25%;
+    
+    /* VR UI inspired variables */
+    --vr-blur: 12px;
+    --vr-shadow-sm: 0 4px 12px rgba(0,0,0,0.1);
+    --vr-shadow-md: 0 8px 24px rgba(0,0,0,0.15);
+    --vr-shadow-lg: 0 16px 48px rgba(0,0,0,0.2);
+    --vr-glass-light: rgba(255, 255, 255, 0.1);
+    --vr-glass-dark: rgba(0, 0, 0, 0.15);
+    --vr-border-light: rgba(255, 255, 255, 0.2);
+    --vr-border-dark: rgba(0, 0, 0, 0.1);
   }
 
   body {
     @apply bg-cv-black text-cv-white;
-    font-family: 'Gravity', system-ui, sans-serif;
+    font-family: 'SF Pro Display', 'Inter', 'Gravity', system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 1px;
+    font-family: 'SF Pro Display', 'Bebas Neue', sans-serif;
+    letter-spacing: -0.5px;
+    @apply text-shadow-sm;
   }
 }
 
 @layer components {
   .editor-panel {
-    @apply bg-cv-darkgray border-r border-cv-lightgray;
+    @apply bg-cv-darkgray/90 backdrop-blur-md border-r border-cv-lightgray/50 shadow-lg;
   }
   
   .editor-toolbar {
-    @apply h-10 flex items-center bg-cv-gray border-b border-cv-lightgray px-3;
+    @apply h-12 flex items-center bg-cv-gray/90 backdrop-blur-md border-b border-cv-lightgray/50 px-4 shadow-sm;
   }
   
   .editor-button {
-    @apply text-cv-white hover:bg-cv-lightgray rounded-md transition-colors;
+    @apply text-cv-white bg-cv-gray/50 backdrop-blur-sm hover:bg-cv-lightgray rounded-lg transition-all duration-200 shadow-inner;
   }
   
   .editor-button-primary {
-    @apply bg-cv-purple hover:bg-cv-purple/90 text-cv-white px-3 py-1.5 rounded-md flex items-center transition-colors;
+    @apply bg-cv-purple/90 backdrop-blur-sm hover:bg-cv-purple text-cv-white px-4 py-2 rounded-lg flex items-center transition-all duration-200 shadow-md hover:shadow-lg;
   }
   
   .toolbar-button-hover {
     @apply hover:text-cv-white transition-colors;
   }
 
+  /* Glass Morphism Components */
+  .glass-panel {
+    @apply backdrop-blur-xl bg-white/5 border border-white/10 shadow-lg rounded-xl;
+  }
+  
+  .glass-panel-dark {
+    @apply backdrop-blur-xl bg-black/20 border border-white/5 shadow-lg rounded-xl;
+  }
+  
+  .glass-button {
+    @apply backdrop-blur-md bg-white/10 hover:bg-white/15 border border-white/10 shadow-md hover:shadow transition-all duration-200 rounded-lg px-4 py-2;
+  }
+  
+  .glass-input {
+    @apply backdrop-blur-md bg-white/5 border border-white/10 shadow-inner rounded-lg px-3 py-2 focus:ring-2 focus:ring-cv-purple/30 focus:outline-none transition-all duration-200;
+  }
+
   /* Component Styles */
   .component-card {
-    @apply bg-cv-gray border border-cv-lightgray rounded-md overflow-hidden shadow-sm hover:shadow-md transition-shadow;
+    @apply glass-panel transition-transform duration-300 hover:scale-102 hover:shadow-xl;
   }
 
   .component-card-header {
-    @apply bg-cv-darkgray p-2 text-sm font-medium border-b border-cv-lightgray;
+    @apply bg-cv-darkgray/80 backdrop-blur-sm p-3 text-sm font-medium border-b border-cv-lightgray/30;
   }
 
   .component-card-body {
-    @apply p-3;
+    @apply p-4;
   }
 
   /* Culture Vault specific styles */
@@ -97,11 +128,32 @@
   }
 
   .cv-button {
-    @apply bg-cv-purple text-cv-white hover:bg-cv-purple/90 px-4 py-2 rounded transition-colors font-medium;
+    @apply bg-cv-purple/90 backdrop-blur-sm text-cv-white hover:bg-cv-purple/100 px-4 py-2 rounded-lg transition-all duration-200 font-medium shadow-md hover:shadow-lg;
   }
 
   .cv-button-outline {
-    @apply border border-cv-purple text-cv-purple hover:bg-cv-purple hover:text-cv-white px-4 py-2 rounded transition-colors font-medium;
+    @apply border border-cv-purple/80 text-cv-purple hover:bg-cv-purple/10 px-4 py-2 rounded-lg transition-all duration-200 font-medium;
+  }
+  
+  /* VR-inspired UI components */
+  .vr-panel {
+    @apply backdrop-blur-xl bg-white/5 border border-white/20 rounded-xl shadow-lg transition-all duration-300;
+  }
+  
+  .vr-button {
+    @apply bg-cv-purple/80 backdrop-blur-sm hover:bg-cv-purple text-white shadow-inner rounded-lg transition-all duration-300 hover:shadow-md;
+  }
+  
+  .vr-input {
+    @apply bg-cv-gray/40 backdrop-blur-sm border border-cv-lightgray/30 rounded-lg shadow-inner focus:ring-2 focus:ring-cv-purple/30 focus:outline-none transition-all duration-200;
+  }
+  
+  .text-shadow-sm {
+    text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  }
+  
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
 }
 
@@ -109,11 +161,18 @@
 .dragging {
   opacity: 0.5;
   cursor: grabbing;
+  filter: drop-shadow(0 12px 24px rgba(0,0,0,0.3));
+  transform: scale(1.02);
+  transition: all 0.3s ease;
 }
 
 .drag-over {
   background-color: rgba(155, 135, 245, 0.2);
+  backdrop-filter: blur(var(--vr-blur));
   outline: 2px dashed #9b87f5;
+  transform: scale(1.02);
+  box-shadow: var(--vr-shadow-md);
+  transition: all 0.3s ease;
 }
 
 .droppable {
@@ -125,6 +184,10 @@
   0% {
     transform: scale(0.8);
     opacity: 0.5;
+    filter: blur(4px);
+  }
+  50% {
+    filter: blur(0);
   }
   100% {
     transform: scale(1);
@@ -133,39 +196,51 @@
 }
 
 .dropped-element {
-  animation: drop-animation 0.3s ease-out forwards;
+  animation: drop-animation 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
 }
 
 /* Canvas area */
 .canvas-container {
-  @apply bg-cv-gray shadow-lg rounded-lg overflow-hidden;
-  transition: transform 0.2s ease-out;
+  @apply glass-panel-dark shadow-2xl rounded-xl overflow-hidden;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
 }
 
 .canvas-container:hover {
-  @apply outline outline-2 outline-cv-purple/30;
+  @apply outline outline-2 outline-cv-purple/40;
+  transform: translateY(-4px);
+  box-shadow: var(--vr-shadow-lg);
 }
 
 .canvas-element {
   @apply relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .canvas-element.selected {
   @apply outline outline-2 outline-cv-purple;
+  transform: translateZ(10px);
+  box-shadow: var(--vr-shadow-md);
 }
 
 .canvas-element:hover:not(.selected) {
   @apply outline outline-1 outline-dashed outline-cv-purple/60;
+  transform: translateZ(5px);
 }
 
 .canvas-element-controls {
-  @apply absolute -top-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-1 bg-cv-gray shadow-md rounded-md border border-cv-lightgray p-0.5;
+  @apply absolute -top-6 left-1/2 transform -translate-x-1/2 flex items-center space-x-1 bg-cv-gray/90 backdrop-blur-sm shadow-md rounded-lg border border-cv-lightgray/50 p-1;
   z-index: 10;
 }
 
 .canvas-element-resize-handle {
-  @apply absolute w-2 h-2 bg-cv-accent rounded-full border border-cv-white;
+  @apply absolute w-3 h-3 bg-cv-accent rounded-full border border-cv-white shadow-md;
   z-index: 20;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+.canvas-element-resize-handle:hover {
+  transform: scale(1.2);
+  background-color: #b6a8f8;
 }
 
 .resize-handle-n { @apply top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 cursor-ns-resize; }
@@ -176,3 +251,75 @@
 .resize-handle-se { @apply bottom-0 right-0 transform translate-x-1/2 translate-y-1/2 cursor-se-resize; }
 .resize-handle-sw { @apply bottom-0 left-0 transform -translate-x-1/2 translate-y-1/2 cursor-sw-resize; }
 .resize-handle-nw { @apply top-0 left-0 transform -translate-x-1/2 -translate-y-1/2 cursor-nw-resize; }
+
+/* VR-inspired perspective effects */
+.vr-perspective {
+  perspective: 1000px;
+}
+
+.vr-tilt {
+  transition: transform 0.2s ease;
+}
+
+.vr-tilt:hover {
+  transform: perspective(800px) rotateX(5deg) rotateY(5deg) translateZ(10px);
+}
+
+.vr-depth-sm {
+  box-shadow: var(--vr-shadow-sm);
+}
+
+.vr-depth-md {
+  box-shadow: var(--vr-shadow-md);
+}
+
+.vr-depth-lg {
+  box-shadow: var(--vr-shadow-lg);
+}
+
+/* Glassmorphism utilities */
+.backdrop-blur-xs {
+  backdrop-filter: blur(4px);
+}
+
+.backdrop-blur-sm {
+  backdrop-filter: blur(8px);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: blur(12px);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: blur(16px);
+}
+
+.backdrop-blur-xl {
+  backdrop-filter: blur(24px);
+}
+
+/* Scale utilities for subtle hover effects */
+.scale-102 {
+  transform: scale(1.02);
+}
+
+.scale-105 {
+  transform: scale(1.05);
+}
+
+.scale-110 {
+  transform: scale(1.1);
+}
+
+/* Parallax scrolling effect */
+.parallax-bg {
+  transform: translateZ(-10px) scale(2);
+}
+
+.parallax-mid {
+  transform: translateZ(-5px) scale(1.5);
+}
+
+.parallax-front {
+  transform: translateZ(0);
+}
