@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Edit, Crop, MousePointer, Move, Grid as GridIcon } from "lucide-react";
+import { Edit, Crop, MousePointer, Move, Grid as GridIcon, Eye } from "lucide-react";
 import DeviceToolbar from "../DeviceToolbar";
 import ZoomControls from "../ZoomControls";
 import InsertMenu from "./InsertMenu";
@@ -94,11 +94,21 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
         </button>
         
         <button
-          className={`px-2 py-1 rounded-md text-xs font-medium transition-colors text-cv-white hover:bg-cv-lightgray ${!editMode ? 'bg-cv-lightgray' : ''}`}
+          className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors flex items-center gap-1 ${!editMode ? 'bg-cv-accent text-cv-white' : 'bg-cv-darkgray text-cv-white hover:bg-cv-lightgray'}`}
           onClick={toggleEditMode}
-          title="Toggle Preview Mode"
+          title="Toggle Edit Mode"
         >
-          Preview
+          {editMode ? (
+            <>
+              <Eye size={14} />
+              <span>Preview</span>
+            </>
+          ) : (
+            <>
+              <Edit size={14} />
+              <span>Edit</span>
+            </>
+          )}
         </button>
       </div>
       

@@ -6,6 +6,7 @@ import CanvasActionButton from "./CanvasActionButton";
 import { TemplateStyles } from "../../../types/templateStyles";
 import { CanvasElement } from "../../../types/canvasElement";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
+import { Edit } from "lucide-react";
 
 interface CanvasViewProps {
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -66,7 +67,9 @@ const CanvasView: React.FC<CanvasViewProps> = ({
         deviceView === "desktop" ? "w-[1200px] h-[800px]" : 
         deviceView === "tablet" ? "w-[768px] h-[1024px]" : 
         "w-[375px] h-[667px]"
-      } ${showGrid ? 'bg-grid-pattern' : ''} ${selectedElement ? 'editing-element' : ''}`}
+      } ${showGrid && editMode ? 'bg-grid-pattern' : ''} ${selectedElement ? 'editing-element' : ''} ${
+        !editMode ? 'preview-mode' : 'edit-mode'
+      }`}
       style={{ 
         transform: `scale(${zoom})`,
         overflow: "hidden",
@@ -75,13 +78,21 @@ const CanvasView: React.FC<CanvasViewProps> = ({
       onClick={handleCanvasClick}
     >
       <TemplateRenderer activeTemplate={activeTemplate} templateStyles={templateStyles} />
-      <CanvasElements droppedElements={droppedElements} activeTool={activeTool} />
+      <CanvasElements droppedElements={droppedElements} activeTool={activeTool} editMode={editMode} />
       <CanvasActionButton editMode={editMode} templateStyles={templateStyles} />
       
       {/* Overlay grid guides when moving - appears only when in move mode and something is selected */}
-      {showGrid && activeTool === 'move' && selectedElement && (
+      {showGrid && activeTool === 'move' && selectedElement && editMode && (
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute inset-0 grid-overlay"></div>
+        </div>
+      )}
+      
+      {/* Edit Mode Indicator */}
+      {editMode && (
+        <div className="absolute top-4 right-4 bg-cv-accent/90 text-white px-3 py-2 rounded-md flex items-center gap-2 shadow-lg backdrop-blur-sm z-50 animate-pulse">
+          <Edit size={16} />
+          <span className="font-medium text-sm">Edit Mode</span>
         </div>
       )}
     </div>

@@ -12,9 +12,14 @@ import { Textarea } from "@/components/ui/textarea";
 interface ComponentElementProps {
   element: CanvasElement;
   activeTool: string;
+  editMode?: boolean;
 }
 
-const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool }) => {
+const ComponentElement: React.FC<ComponentElementProps> = ({ 
+  element, 
+  activeTool,
+  editMode = true // Default to edit mode
+}) => {
   const { selectedElement, selectElement } = useSelectedElement();
   const isSelected = selectedElement?.id === element.id;
   const isDragging = useRef(false);
@@ -41,7 +46,7 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
   useEffect(() => {
     // Add mouse event listeners for dragging
     const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging.current && activeTool === 'move') {
+      if (isDragging.current && activeTool === 'move' && editMode) {
         e.preventDefault();
         
         // Calculate new position
@@ -57,7 +62,7 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
     };
     
     const handleMouseUp = () => {
-      if (isDragging.current && activeTool === 'move') {
+      if (isDragging.current && activeTool === 'move' && editMode) {
         isDragging.current = false;
         document.body.style.cursor = 'default';
         
@@ -84,7 +89,7 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [activeTool, element.id, position]);
+  }, [activeTool, element.id, position, editMode]);
 
   // Focus input when entering edit mode
   useEffect(() => {
@@ -94,6 +99,8 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
   }, [isEditing]);
   
   const handleMouseDown = (e: React.MouseEvent) => {
+    if (!editMode) return; // Disable interactions in preview mode
+    
     e.stopPropagation();
     
     // Select the element
@@ -121,6 +128,8 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
   };
 
   const handleDoubleClick = (e: React.MouseEvent) => {
+    if (!editMode) return; // Disable text editing in preview mode
+    
     e.stopPropagation();
     
     // Only enable editing for text components
@@ -164,10 +173,11 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
     position: 'absolute' as const,
     left: `${position.x}px`,
     top: `${position.y}px`,
-    cursor: activeTool === 'move' ? 'move' : 'pointer',
+    cursor: editMode && activeTool === 'move' ? 'move' : editMode ? 'pointer' : 'default',
     transition: isDragging.current ? 'none' : 'box-shadow 0.2s ease',
     minWidth: '100px', // Ensure a minimum size for text elements
-    minHeight: '30px'
+    minHeight: '30px',
+    opacity: editMode ? 1 : 0.95, // Slightly transparent in preview mode
   };
   
   return (
@@ -175,9 +185,10 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
       ref={elementRef}
       key={element.id} 
       style={style} 
-      className={`p-2 bg-white border rounded shadow-sm ${
+      className={`p-2 bg-white border rounded ${
+        !editMode ? 'shadow-md pointer-events-none' : 
         activeTool === 'move' ? 'hover:shadow-md' : ''
-      } ${isSelected ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}`}
+      } ${isSelected && editMode ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}`}
       onMouseDown={handleMouseDown}
       onDoubleClick={handleDoubleClick}
     >
@@ -207,20 +218,20 @@ const ComponentElement: React.FC<ComponentElementProps> = ({ element, activeTool
         element.content
       )}
       
-      {isSelected && activeTool === 'move' && (
+      {isSelected && activeTool === 'move' && editMode && (
         <div className="absolute -top-5 -left-5 bg-cv-accent text-white p-1 rounded-full shadow-sm">
           <Move size={14} />
         </div>
       )}
 
-      {isSelected && !isEditing && (
+      {isSelected && !isEditing && editMode && (
         <div className="absolute -top-5 -right-5 bg-cv-accent text-white p-1 rounded-full shadow-sm cursor-pointer"
              onClick={() => setIsEditing(true)}>
           <TextCursor size={14} />
         </div>
       )}
       
-      {isSelected && !isEditing && (
+      {isSelected && !isEditing && editMode && (
         <>
           <ElementControls element={element} />
           <ResizeHandles />

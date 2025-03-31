@@ -16,7 +16,9 @@ export const useCanvasState = () => {
     setEditMode(!editMode);
     toast({
       title: editMode ? "Preview Mode" : "Edit Mode",
-      description: editMode ? "Now viewing the design in preview mode" : "Now editing the design"
+      description: editMode 
+        ? "Now viewing the design in preview mode. Elements cannot be edited." 
+        : "Now editing the design. You can modify elements on the canvas."
     });
   };
 

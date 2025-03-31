@@ -8,9 +8,14 @@ import { useSelectedElement } from "../../hooks/useSelectedElement";
 interface CanvasElementsProps {
   droppedElements: CanvasElement[];
   activeTool: string;
+  editMode?: boolean;
 }
 
-const CanvasElements: React.FC<CanvasElementsProps> = ({ droppedElements, activeTool }) => {
+const CanvasElements: React.FC<CanvasElementsProps> = ({ 
+  droppedElements, 
+  activeTool,
+  editMode = true // Default to edit mode
+}) => {
   const { selectElement } = useSelectedElement();
   
   const handleCanvasClick = (e: React.MouseEvent) => {
@@ -28,7 +33,7 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({ droppedElements, active
 
     switch (element.type) {
       case 'component':
-        return <ComponentElement key={element.id} element={element} activeTool={activeTool} />;
+        return <ComponentElement key={element.id} element={element} activeTool={activeTool} editMode={editMode} />;
       case 'image':
         return <ImageElement key={element.id} element={element} activeTool={activeTool} />;
       default:
