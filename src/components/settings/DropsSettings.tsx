@@ -1,13 +1,16 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { Check, Medal } from "lucide-react";
 
-const DropsSettings = () => {
+interface DropsSettingsProps {
+  onProgressChange?: (progress: number) => void;
+}
+
+const DropsSettings = ({ onProgressChange }: DropsSettingsProps) => {
   const form = useForm({
     defaultValues: {
       contractAddress: "0x2345678901abcdef2345678901abcdef23456789",
@@ -27,9 +30,42 @@ const DropsSettings = () => {
     }
   });
 
+  const formValues = form.watch();
+  
+  useEffect(() => {
+    const allFields = Object.keys(formValues);
+    const completedFields = allFields.filter(
+      field => {
+        const value = formValues[field as keyof typeof formValues];
+        return value !== undefined && value.toString().trim() !== '';
+      }
+    ).length;
+    
+    const totalProgress = (completedFields / allFields.length) * 100;
+    
+    if (onProgressChange) {
+      onProgressChange(totalProgress);
+    }
+  }, [formValues, onProgressChange]);
+
+  const renderFieldBadge = (fieldValue: any) => {
+    if (fieldValue && fieldValue.toString().trim() !== '') {
+      return (
+        <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 bg-green-500 text-white rounded-full p-0.5">
+          <Check className="h-3 w-3" />
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border p-6">
-      <h2 className="text-2xl font-semibold mb-6">NFT Drops Contract Settings</h2>
+      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+        NFT Drops Contract Settings
+        <Medal className="h-5 w-5 text-purple-500" />
+      </h2>
+      
       <Form {...form}>
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -280,6 +316,17 @@ const DropsSettings = () => {
               </FormItem>
             )}
           />
+
+          <div className="mt-6 p-4 bg-purple-50 rounded-lg border border-purple-100 flex items-center gap-3 animate-fade-in">
+            <Medal className="h-6 w-6 text-purple-500" />
+            <div>
+              <h3 className="font-medium text-purple-700">Drop Creator Level Up!</h3>
+              <p className="text-sm text-purple-600">
+                NFT drops with presale periods and limited supply create scarcity and demand. 
+                Your configuration is shaping up nicely!
+              </p>
+            </div>
+          </div>
         </div>
       </Form>
     </div>

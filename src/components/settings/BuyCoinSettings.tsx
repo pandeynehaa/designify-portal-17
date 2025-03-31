@@ -1,13 +1,16 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { Check, Award } from "lucide-react";
 
-const BuyCoinSettings = () => {
+interface BuyCoinSettingsProps {
+  onProgressChange?: (progress: number) => void;
+}
+
+const BuyCoinSettings = ({ onProgressChange }: BuyCoinSettingsProps) => {
   const form = useForm({
     defaultValues: {
       contractAddress: "0x4567890123abcdef4567890123abcdef45678901",
@@ -28,9 +31,42 @@ const BuyCoinSettings = () => {
     }
   });
 
+  const formValues = form.watch();
+  
+  useEffect(() => {
+    const allFields = Object.keys(formValues);
+    const completedFields = allFields.filter(
+      field => {
+        const value = formValues[field as keyof typeof formValues];
+        return value !== undefined && value.toString().trim() !== '';
+      }
+    ).length;
+    
+    const totalProgress = (completedFields / allFields.length) * 100;
+    
+    if (onProgressChange) {
+      onProgressChange(totalProgress);
+    }
+  }, [formValues, onProgressChange]);
+
+  const renderFieldBadge = (fieldValue: any) => {
+    if (fieldValue && fieldValue.toString().trim() !== '') {
+      return (
+        <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 bg-green-500 text-white rounded-full p-0.5">
+          <Check className="h-3 w-3" />
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border p-6">
-      <h2 className="text-2xl font-semibold mb-6">Token Sale Settings</h2>
+      <h2 className="text-2xl font-semibold mb-6 flex items-center gap-2">
+        Token Sale Settings
+        <Award className="h-5 w-5 text-amber-500" />
+      </h2>
+      
       <Form {...form}>
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -299,6 +335,17 @@ const BuyCoinSettings = () => {
               </FormItem>
             )}
           />
+
+          <div className="mt-6 p-4 bg-amber-50 rounded-lg border border-amber-100 flex items-center gap-3 animate-fade-in">
+            <Award className="h-6 w-6 text-amber-500" />
+            <div>
+              <h3 className="font-medium text-amber-700">Achievement Unlocked!</h3>
+              <p className="text-sm text-amber-600">
+                You're setting up token economics for your project. This is an advanced feature that 
+                will give your users more ways to engage with your platform!
+              </p>
+            </div>
+          </div>
         </div>
       </Form>
     </div>

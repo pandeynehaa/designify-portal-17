@@ -1,13 +1,16 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
+import { ArrowUp, Award, Check, Trophy } from "lucide-react";
 
-const MarketplaceSettings = () => {
+interface MarketplaceSettingsProps {
+  onProgressChange?: (progress: number) => void;
+}
+
+const MarketplaceSettings = ({ onProgressChange }: MarketplaceSettingsProps) => {
   const form = useForm({
     defaultValues: {
       contractAddress: "0x1234567890abcdef1234567890abcdef12345678",
@@ -22,6 +25,47 @@ const MarketplaceSettings = () => {
     }
   });
 
+  const formValues = form.watch();
+  
+  useEffect(() => {
+    const requiredFields = [
+      'contractAddress', 'network', 'marketplaceFee', 'royaltyFee',
+      'curatorAddress', 'treasuryAddress'
+    ];
+    const optionalFields = ['enableAuctions', 'enableFixedPrice', 'enableOffers'];
+    
+    const completedRequired = requiredFields.filter(
+      field => formValues[field as keyof typeof formValues]?.toString().trim() !== ''
+    ).length;
+    
+    const completedOptional = optionalFields.filter(
+      field => formValues[field as keyof typeof formValues] !== undefined
+    ).length;
+    
+    const requiredWeight = 0.7;
+    const optionalWeight = 0.3;
+    
+    const requiredProgress = (completedRequired / requiredFields.length) * requiredWeight * 100;
+    const optionalProgress = (completedOptional / optionalFields.length) * optionalWeight * 100;
+    
+    const totalProgress = requiredProgress + optionalProgress;
+    
+    if (onProgressChange) {
+      onProgressChange(totalProgress);
+    }
+  }, [formValues, onProgressChange]);
+
+  const renderFieldBadge = (fieldValue: any) => {
+    if (fieldValue && fieldValue.toString().trim() !== '') {
+      return (
+        <div className="absolute right-0 top-0 -translate-y-1/2 translate-x-1/2 bg-green-500 text-white rounded-full p-0.5">
+          <Check className="h-3 w-3" />
+        </div>
+      );
+    }
+    return null;
+  };
+
   return (
     <div className="bg-card rounded-lg border border-border p-6">
       <h2 className="text-2xl font-semibold mb-6">Marketplace Smart Contract Settings</h2>
@@ -32,14 +76,15 @@ const MarketplaceSettings = () => {
               control={form.control}
               name="contractAddress"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="relative hover:shadow-md transition-shadow animate-fade-in">
                   <FormLabel>Marketplace Contract Address</FormLabel>
                   <FormControl>
-                    <Input placeholder="0x..." {...field} />
+                    <Input placeholder="0x..." {...field} className="transition-all focus:ring-2 focus:ring-blue-500" />
                   </FormControl>
                   <FormDescription>
                     The address of your marketplace smart contract
                   </FormDescription>
+                  {renderFieldBadge(field.value)}
                 </FormItem>
               )}
             />
@@ -48,14 +93,15 @@ const MarketplaceSettings = () => {
               control={form.control}
               name="network"
               render={({ field }) => (
-                <FormItem>
+                <FormItem className="relative hover:shadow-md transition-shadow animate-fade-in">
                   <FormLabel>Blockchain Network</FormLabel>
                   <FormControl>
-                    <Input placeholder="ethereum" {...field} />
+                    <Input placeholder="ethereum" {...field} className="transition-all focus:ring-2 focus:ring-blue-500" />
                   </FormControl>
                   <FormDescription>
                     The blockchain network your marketplace operates on
                   </FormDescription>
+                  {renderFieldBadge(field.value)}
                 </FormItem>
               )}
             />
@@ -204,6 +250,17 @@ const MarketplaceSettings = () => {
                 </FormItem>
               )}
             />
+          </div>
+
+          <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-100 flex items-center gap-3 animate-fade-in">
+            <Trophy className="h-6 w-6 text-blue-500" />
+            <div>
+              <h3 className="font-medium text-blue-700">Pro Tip!</h3>
+              <p className="text-sm text-blue-600">
+                Setting appropriate marketplace fees helps balance revenue and user adoption. 
+                Most successful marketplaces charge between 2-5%.
+              </p>
+            </div>
           </div>
         </div>
       </Form>
