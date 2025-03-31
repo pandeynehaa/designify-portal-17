@@ -13,18 +13,20 @@ const CanvasDropOverlay: React.FC<CanvasDropOverlayProps> = ({ isVisible }) => {
         isVisible ? 'opacity-100 z-50' : 'opacity-0'
       } bg-black/50`}
     >
-      <style jsx global>{`
-        @keyframes wiggle {
-          0%, 100% { transform: rotate(-2deg); }
-          25% { transform: rotate(0deg); }
-          50% { transform: rotate(2deg); }
-          75% { transform: rotate(0deg); }
-        }
-        
-        .wiggle-animation {
-          animation: wiggle 0.5s ease-in-out infinite;
-        }
-      `}</style>
+      <style>
+        {`
+          @keyframes wiggle {
+            0%, 100% { transform: rotate(-2deg); }
+            25% { transform: rotate(0deg); }
+            50% { transform: rotate(2deg); }
+            75% { transform: rotate(0deg); }
+          }
+          
+          .wiggle-animation {
+            animation: wiggle 0.5s ease-in-out infinite;
+          }
+        `}
+      </style>
       <div className="bg-white/10 backdrop-blur-xl p-6 rounded-xl border border-white/20 shadow-2xl">
         Drop to add to canvas
       </div>
