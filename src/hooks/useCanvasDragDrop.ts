@@ -1,7 +1,7 @@
 
 import { DragEvent, useRef } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { CanvasElement } from "../types/canvasElement";
+import { CanvasElement } from "@/types/canvasElement";
 
 interface ElementPosition {
   type: string;

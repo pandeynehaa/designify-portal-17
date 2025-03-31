@@ -1,9 +1,9 @@
 
 import React from "react";
-import { CanvasElement } from "../../../types/canvasElement";
+import { CanvasElement } from "@/types/canvasElement";
 import ElementControls from "./ElementControls";
 import ResizeHandles from "./ResizeHandles";
-import { useSelectedElement } from "../../../hooks/useSelectedElement";
+import { useSelectedElement } from "@/hooks/useSelectedElement";
 import { toast } from "@/components/ui/use-toast";
 
 interface ComponentElementProps {
