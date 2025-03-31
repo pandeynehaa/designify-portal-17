@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, Dispatch, SetStateAction } from "react";
 import { 
   Save, FileCode, Settings, Image, Wand2, Code, Grid, 
   Download, ChevronDown, Undo, Redo, Layers 
@@ -11,10 +11,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { TemplateType } from "../../types/templateStyles";
 
 interface EditorHeaderProps {
   activeTemplate: string;
-  setActiveTemplate: (template: string) => void;
+  setActiveTemplate: Dispatch<SetStateAction<TemplateType>>;
   setShowThemeMapper: (show: boolean) => void;
   setShowAIExtractor: (show: boolean) => void;
 }
@@ -34,7 +35,7 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
     { name: "Buy Coin", slug: "buy-coin" }
   ];
 
-  const handleSiteChange = (siteName: string, slug: string) => {
+  const handleSiteChange = (siteName: string, slug: TemplateType) => {
     setSelectedSite(siteName);
     setActiveTemplate(slug);
     toast({

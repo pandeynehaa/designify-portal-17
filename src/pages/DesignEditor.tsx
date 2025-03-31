@@ -52,10 +52,6 @@ const DesignEditor: React.FC = () => {
     });
   };
   
-  const handleSetActiveTemplate = (template: string) => {
-    setActiveTemplate(template as TemplateType);
-  };
-  
   return (
     <div className="flex flex-col h-screen bg-cv-black">
       <Navbar />
@@ -63,7 +59,7 @@ const DesignEditor: React.FC = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <EditorHeader 
           activeTemplate={activeTemplate}
-          setActiveTemplate={handleSetActiveTemplate}
+          setActiveTemplate={setActiveTemplate}
           setShowThemeMapper={setShowThemeMapper}
           setShowAIExtractor={setShowAIExtractor}
         />
