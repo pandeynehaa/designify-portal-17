@@ -47,7 +47,7 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
     left: `${position.x}px`,
     top: `${position.y}px`,
     cursor: editMode && activeTool === 'move' ? 'move' : editMode ? 'pointer' : 'default',
-    transition: 'box-shadow 0.2s ease',
+    transition: isDragging ? 'none' : 'box-shadow 0.2s ease',
     minWidth: '100px', // Ensure a minimum size for text elements
     minHeight: '30px',
     opacity: editMode ? 1 : 0.95, // Slightly transparent in preview mode

@@ -8,6 +8,8 @@ import TopCollections from "./marketplace/TopCollections";
 import { useEditableText } from "../../../hooks/useEditableText";
 import { useCanvasState } from "../../../hooks/useCanvasState";
 import CanvasElements from "../CanvasElements";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Heart, Grid, List } from "lucide-react";
 
 interface MarketplaceTemplateProps {
   styles: TemplateStyles;
@@ -15,17 +17,55 @@ interface MarketplaceTemplateProps {
 
 const MarketplaceTemplate: React.FC<MarketplaceTemplateProps> = ({ styles }) => {
   const { droppedElements, editMode } = useCanvasState();
+  const [view, setView] = useState<"grid" | "list">("grid");
   
   // Filter template components meant for this template
   const templateComponents = droppedElements.filter(
     el => el.type === "template-component" && el.content
   );
   
+  // Mock featured NFTs for template
+  const featuredNFTs = [
+    {
+      id: "1",
+      name: "Digital Dreamscape #42",
+      image: "https://via.placeholder.com/400x400/4F46E5/FFFFFF?text=Featured+1",
+      creator: "Digital Dreams Studio",
+      price: "0.85",
+      likes: 342
+    },
+    {
+      id: "2",
+      name: "Neon Warrior #15",
+      image: "https://via.placeholder.com/400x400/10B981/FFFFFF?text=Featured+2",
+      creator: "NeonArtLab",
+      price: "1.2",
+      likes: 221
+    },
+    {
+      id: "3",
+      name: "Cosmic Journey #7",
+      image: "https://via.placeholder.com/400x400/8B5CF6/FFFFFF?text=Featured+3",
+      creator: "Cosmic Creators",
+      price: "0.75",
+      likes: 189
+    },
+    {
+      id: "4",
+      name: "Abstract Reality #19",
+      image: "https://via.placeholder.com/400x400/EC4899/FFFFFF?text=Featured+4",
+      creator: "Abstract Studios",
+      price: "2.5",
+      likes: 278
+    }
+  ];
+  
   // Group the template sections into an array for easier manipulation
   const templateSections = [
     { id: "header", component: <MarketplaceHeader styles={styles} /> },
     { id: "hero", component: <MarketplaceHero styles={styles} /> },
-    { id: "featured", component: <FeaturedCollections styles={styles} /> },
+    { id: "featured", component: <FeaturedNFTs styles={styles} nfts={featuredNFTs} /> },
+    { id: "collections", component: <FeaturedCollections styles={styles} /> },
     { id: "top", component: <TopCollections styles={styles} /> },
     { id: "footer", component: <MarketplaceFooter styles={styles} /> }
   ];
@@ -95,6 +135,63 @@ const MarketplaceTemplate: React.FC<MarketplaceTemplateProps> = ({ styles }) => 
   return (
     <div className="w-full h-full flex flex-col overflow-auto">
       {renderTemplateWithComponents()}
+    </div>
+  );
+};
+
+// Featured NFTs component for the marketplace template
+const FeaturedNFTs: React.FC<{ styles: TemplateStyles; nfts: any[] }> = ({ styles, nfts }) => {
+  return (
+    <div 
+      className="w-full p-6"
+      style={{ 
+        backgroundColor: styles.collectionBg,
+        color: styles.collectionTextColor
+      }}
+    >
+      <div className="mb-6 flex justify-between items-center">
+        <h2 className={`text-2xl font-bold ${styles.headingFont}`}>Featured NFTs</h2>
+        <button className="text-sm hover:underline">View All</button>
+      </div>
+      
+      <div 
+        className="grid gap-6"
+        style={{ 
+          gridTemplateColumns: `repeat(${styles.gridColumns}, minmax(0, 1fr))`,
+          gap: styles.spacing 
+        }}
+      >
+        {nfts.map((nft, index) => (
+          <div 
+            key={index}
+            className="overflow-hidden relative group"
+            style={{ 
+              backgroundColor: styles.cardBg,
+              color: styles.cardTextColor,
+              borderRadius: "0.5rem"
+            }}
+          >
+            <div className="aspect-square bg-gray-800 relative overflow-hidden">
+              <img 
+                src={nft.image} 
+                alt={nft.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </div>
+            <div className="p-4">
+              <h3 className="font-medium truncate">{nft.name}</h3>
+              <div className="text-sm opacity-75 mb-1">by {nft.creator}</div>
+              <div className="flex justify-between items-center">
+                <span>{nft.price} ETH</span>
+                <span className="text-xs opacity-75">
+                  <Heart size={12} className="inline mr-1" />
+                  {nft.likes}
+                </span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
