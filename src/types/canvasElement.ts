@@ -28,5 +28,6 @@ export interface CanvasElement {
   blurAmount?: number; // New field for blur effect
   opacity?: number; // New field for opacity (0-100)
   enable3D?: boolean; // New field for 3D effect toggle
+  layerId?: string; // New field for layer assignment
+  locked?: boolean; // New field to lock elements
 }
-

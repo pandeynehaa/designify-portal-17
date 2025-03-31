@@ -5,6 +5,7 @@ import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
 import NFTElement from "./canvas/NFTElement";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
+import { useCanvasState } from "@/hooks/useCanvasState";
 
 interface CanvasElementsProps {
   droppedElements: CanvasElement[];
@@ -18,6 +19,7 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
   editMode = true // Default to edit mode
 }) => {
   const { selectElement } = useSelectedElement();
+  const { layers } = useCanvasState();
   
   const handleCanvasClick = (e: React.MouseEvent) => {
     // Only clear selection if clicking directly on the canvas (not on an element)
@@ -29,6 +31,12 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
   const renderElement = (element: CanvasElement) => {
     // Skip rendering if element is explicitly set to not visible
     if (element.visible === false) {
+      return null;
+    }
+
+    // Skip rendering if the element's layer is not visible
+    const elementLayer = layers.find(layer => layer.id === element.layerId);
+    if (elementLayer && !elementLayer.visible) {
       return null;
     }
 
@@ -49,8 +57,17 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
     }
   };
 
-  // Sort elements by z-index if available
+  // Sort elements by z-index if available, then by layer z-index
   const sortedElements = [...droppedElements].sort((a, b) => {
+    // First sort by layer z-index
+    const aLayer = layers.find(layer => layer.id === a.layerId) || { zIndex: 0 };
+    const bLayer = layers.find(layer => layer.id === b.layerId) || { zIndex: 0 };
+    
+    if (aLayer.zIndex !== bLayer.zIndex) {
+      return aLayer.zIndex - bLayer.zIndex;
+    }
+    
+    // Then sort by element z-index within the same layer
     const aZIndex = a.zIndex ?? 0;
     const bZIndex = b.zIndex ?? 0;
     return aZIndex - bZIndex;

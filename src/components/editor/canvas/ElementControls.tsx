@@ -1,17 +1,25 @@
 
 import React from "react";
-import { Pencil, Trash2, Copy, Move, Undo, Redo } from "lucide-react";
+import { Pencil, Trash2, Copy, Move, Undo, Redo, Layers } from "lucide-react";
 import { CanvasElement } from "../../../types/canvasElement";
 import { useCanvasState } from "../../../hooks/useCanvasState";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import { toast } from "@/components/ui/use-toast";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 interface ElementControlsProps {
   element: CanvasElement;
 }
 
 const ElementControls: React.FC<ElementControlsProps> = ({ element }) => {
-  const { deleteElement, duplicateElement, undoAction, redoAction } = useCanvasState();
+  const { deleteElement, duplicateElement, undoAction, redoAction, layers, moveElementToLayer } = useCanvasState();
   const { selectElement } = useSelectedElement();
 
   const handleMoveClick = (e: React.MouseEvent) => {
@@ -74,6 +82,39 @@ const ElementControls: React.FC<ElementControlsProps> = ({ element }) => {
       >
         <Copy size={12} />
       </button>
+      
+      {/* Layer Menu Dropdown */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button 
+            className="p-1 bg-cv-darkgray text-cv-white hover:bg-cv-accent transition-colors rounded"
+            title="Change Layer"
+          >
+            <Layers size={12} />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="bg-cv-gray border-cv-lightgray text-cv-white">
+          <DropdownMenuLabel className="text-xs">Move to Layer</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          {layers.map(layer => (
+            <DropdownMenuItem
+              key={layer.id}
+              onClick={() => {
+                moveElementToLayer(element.id, layer.id);
+                toast({
+                  title: "Element Moved",
+                  description: `Moved to ${layer.name}`
+                });
+              }}
+              className="text-xs cursor-pointer hover:bg-cv-lightgray/20"
+              disabled={layer.id === element.layerId || layer.locked}
+            >
+              {layer.name} {layer.id === element.layerId && "(Current)"}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuContent>
+      </DropdownMenu>
+      
       <button 
         className="p-1 bg-cv-darkgray text-cv-white hover:bg-cv-accent transition-colors rounded"
         onClick={handleDeleteClick}

@@ -5,7 +5,7 @@ import SidebarTabs from "./SidebarTabs";
 import ComponentsTab from "./sidebar/ComponentsTab";
 import ImagesTab from "./sidebar/ImagesTab";
 import ThemeTab from "./sidebar/ThemeTab";
-import LayersTab from "./sidebar/LayersTab";
+import LayersPanel from "./sidebar/LayersPanel";
 import AIThemeGenerator from "./sidebar/AIThemeGenerator";
 import NFTsTab from "./sidebar/NFTsTab";
 import BackgroundTab from "./sidebar/BackgroundTab";
@@ -57,7 +57,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         {activeTab === "components" && <ComponentsTab />}
         {activeTab === "images" && <ImagesTab />}
         {activeTab === "items" && <NFTsTab />}
-        {activeTab === "layers" && <LayersTab />}
+        {activeTab === "layers" && <LayersPanel />}
         {activeTab === "theme" && <ThemeTab />}
         {activeTab === "background" && <BackgroundTab />}
       </CollapsibleContent>
