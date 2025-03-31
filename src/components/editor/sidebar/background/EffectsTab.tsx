@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
 import { toast } from "@/components/ui/use-toast";
@@ -21,6 +21,26 @@ const EffectsTab: React.FC<EffectsTabProps> = ({
   onOpacityChange,
   on3DToggle
 }) => {
+  // Apply 3D effect to canvas when enabled
+  useEffect(() => {
+    // Update the class on the canvas element when 3D effect changes
+    const canvasElement = document.querySelector('#canvas-area .vr-perspective');
+    if (canvasElement) {
+      if (enable3D) {
+        canvasElement.classList.add('parallax-effect');
+      } else {
+        canvasElement.classList.remove('parallax-effect');
+      }
+    }
+  }, [enable3D]);
+
+  const handleApplyEffects = () => {
+    toast({
+      title: "Effects Applied",
+      description: `Applied blur: ${blurAmount}px, opacity: ${opacity}%, 3D effect: ${enable3D ? 'On' : 'Off'}`
+    });
+  };
+
   return (
     <div className="space-y-4">
       <div className="bg-cv-darkgray/50 rounded-md p-3 backdrop-blur-sm">
@@ -67,10 +87,7 @@ const EffectsTab: React.FC<EffectsTabProps> = ({
       <div className="bg-cv-darkgray/50 rounded-md p-3 backdrop-blur-sm">
         <button 
           className="w-full px-3 py-2 bg-cv-accent rounded-md text-white text-sm hover:bg-cv-purple transition-colors"
-          onClick={() => toast({
-            title: "Effects Applied",
-            description: "All background effects have been applied"
-          })}
+          onClick={handleApplyEffects}
         >
           Apply Effects
         </button>

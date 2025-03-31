@@ -36,13 +36,26 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
-    updateElement
+    updateElement,
+    updateBackgroundProperties
   } = useCanvasState();
   
   // Update zoom level when zoom prop changes
   useEffect(() => {
     setZoomLevel(zoom * 100);
   }, [zoom]);
+
+  // Apply 3D effect when templateStyles.enable3D changes
+  useEffect(() => {
+    if (canvasRef.current) {
+      // Update the canvas element with 3D effect if enabled
+      if (templateStyles.enable3D) {
+        canvasRef.current.classList.add('vr-perspective');
+      } else {
+        canvasRef.current.classList.remove('vr-perspective');
+      }
+    }
+  }, [templateStyles.enable3D]);
   
   const handleZoomIn = () => {
     if (zoomLevel < 200) {
@@ -87,13 +100,13 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         onInsertComponent={handleInsertComponent}
       />
       
-      <div className="flex-1 relative overflow-hidden p-4">
+      <div className="flex-1 relative overflow-auto p-4 canvas-content">
         <CanvasEventHandlers
           canvasRef={canvasRef}
           zoomLevel={zoomLevel}
           setDroppedElements={setDroppedElements}
         >
-          <div className="w-full h-full flex items-center justify-center">
+          <div className="w-full h-full flex items-center justify-center vr-perspective">
             <CanvasView
               canvasRef={canvasRef}
               deviceView={deviceView}

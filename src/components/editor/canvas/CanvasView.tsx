@@ -6,7 +6,7 @@ import CanvasActionButton from "./CanvasActionButton";
 import { TemplateStyles } from "../../../types/templateStyles";
 import { CanvasElement } from "../../../types/canvasElement";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
-import { Edit } from "lucide-react";
+import { Edit, Grid3X3 } from "lucide-react";
 
 interface CanvasViewProps {
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -41,29 +41,40 @@ const CanvasView: React.FC<CanvasViewProps> = ({
     if (!showGrid) return {};
     
     const baseGridStyle = {
-      backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)',
+      backgroundImage: 'linear-gradient(to right, rgba(100,100,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,100,255,0.1) 1px, transparent 1px)',
       backgroundSize: `${gridSize}px ${gridSize}px`,
+      backgroundPositionX: '0px',
+      backgroundPositionY: '0px',
+      boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.05)'
     };
     
     // Enhanced grid for move tool
     if (activeTool === 'move') {
       return {
         ...baseGridStyle,
-        backgroundImage: 'linear-gradient(to right, rgba(100,100,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,100,255,0.1) 1px, transparent 1px)',
-        // Add darker lines for major grid lines (every 5 cells)
-        backgroundPositionX: '0px',
-        backgroundPositionY: '0px',
-        boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.05)'
+        backgroundImage: 'linear-gradient(to right, rgba(100,100,255,0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,100,255,0.15) 1px, transparent 1px)',
       };
     }
     
     return baseGridStyle;
   };
 
+  // Get 3D parallax effect styles based on templateStyles
+  const get3DStyles = () => {
+    if (templateStyles.enable3D) {
+      return {
+        transform: `perspective(1000px) rotateX(2deg)`,
+        transformStyle: 'preserve-3d' as 'preserve-3d',
+        boxShadow: '0 20px 40px rgba(0,0,0,0.2)'
+      };
+    }
+    return {};
+  };
+
   return (
     <div 
       ref={canvasRef}
-      className={`bg-white rounded-md shadow-2xl transition-all duration-300 transform origin-top relative ${
+      className={`bg-white rounded-md shadow-2xl transition-all duration-300 transform origin-top relative max-h-[80vh] overflow-auto ${
         deviceView === "desktop" ? "w-[1200px] h-[800px]" : 
         deviceView === "tablet" ? "w-[768px] h-[1024px]" : 
         "w-[375px] h-[667px]"
@@ -72,8 +83,8 @@ const CanvasView: React.FC<CanvasViewProps> = ({
       }`}
       style={{ 
         transform: `scale(${zoom})`,
-        overflow: "hidden",
-        ...getGridStyle()
+        ...getGridStyle(),
+        ...get3DStyles()
       }}
       onClick={handleCanvasClick}
     >
@@ -93,6 +104,14 @@ const CanvasView: React.FC<CanvasViewProps> = ({
         <div className="absolute top-4 right-4 bg-cv-accent/90 text-white px-3 py-2 rounded-md flex items-center gap-2 shadow-lg backdrop-blur-sm z-50 animate-pulse">
           <Edit size={16} />
           <span className="font-medium text-sm">Edit Mode</span>
+        </div>
+      )}
+      
+      {/* Grid Indicator */}
+      {showGrid && editMode && (
+        <div className="absolute top-4 left-4 bg-cv-gray/90 text-white px-3 py-2 rounded-md flex items-center gap-2 shadow-lg backdrop-blur-sm z-50">
+          <Grid3X3 size={16} />
+          <span className="font-medium text-sm">Grid</span>
         </div>
       )}
     </div>

@@ -254,73 +254,24 @@
 /* VR-inspired perspective effects */
 .vr-perspective {
   perspective: 1000px;
+  transform-style: preserve-3d;
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.vr-tilt {
-  transition: transform 0.2s ease;
+.parallax-effect {
+  animation: float 6s ease-in-out infinite;
 }
 
-.vr-tilt:hover {
-  transform: perspective(800px) rotateX(5deg) rotateY(5deg) translateZ(10px);
-}
-
-.vr-depth-sm {
-  box-shadow: var(--vr-shadow-sm);
-}
-
-.vr-depth-md {
-  box-shadow: var(--vr-shadow-md);
-}
-
-.vr-depth-lg {
-  box-shadow: var(--vr-shadow-lg);
-}
-
-/* Glassmorphism utilities */
-.backdrop-blur-xs {
-  backdrop-filter: blur(4px);
-}
-
-.backdrop-blur-sm {
-  backdrop-filter: blur(8px);
-}
-
-.backdrop-blur-md {
-  backdrop-filter: blur(12px);
-}
-
-.backdrop-blur-lg {
-  backdrop-filter: blur(16px);
-}
-
-.backdrop-blur-xl {
-  backdrop-filter: blur(24px);
-}
-
-/* Scale utilities for subtle hover effects */
-.scale-102 {
-  transform: scale(1.02);
-}
-
-.scale-105 {
-  transform: scale(1.05);
-}
-
-.scale-110 {
-  transform: scale(1.1);
-}
-
-/* Parallax scrolling effect */
-.parallax-bg {
-  transform: translateZ(-10px) scale(2);
-}
-
-.parallax-mid {
-  transform: translateZ(-5px) scale(1.5);
-}
-
-.parallax-front {
-  transform: translateZ(0);
+@keyframes float {
+  0% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(0deg) translateZ(10px);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(3deg) rotateY(2deg) translateZ(20px);
+  }
+  100% {
+    transform: perspective(1000px) rotateX(2deg) rotateY(0deg) translateZ(10px);
+  }
 }
 
 /* Grid snapping styles */
@@ -338,4 +289,17 @@
 .canvas-element.selected[style*="cursor: move"] {
   z-index: 100;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Improved canvas scrolling */
+.canvas-content {
+  overflow-y: auto;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Canvas visuals */
+#canvas-area {
+  isolation: isolate;
 }
