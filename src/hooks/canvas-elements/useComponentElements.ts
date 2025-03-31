@@ -2,11 +2,12 @@
 import { toast } from "@/components/ui/use-toast";
 import { CanvasElement } from "../../types/canvasElement";
 import { useCanvasHistory } from "../useCanvasHistory";
+import { HistoryAction } from "../../types/hookTypes";
 
 export const useComponentElements = (
   droppedElements: CanvasElement[],
   setDroppedElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>,
-  addToHistory: ReturnType<typeof useCanvasHistory>["addToHistory"]
+  addToHistory: (action: HistoryAction) => void
 ) => {
   const handleInsertComponent = (layerId: string = "default-layer") => {
     const newId = `component-${Date.now()}`;

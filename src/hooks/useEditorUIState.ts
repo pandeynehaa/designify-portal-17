@@ -1,7 +1,8 @@
 
 import { useState } from "react";
+import { EditorUIStateReturn } from "../types/hookTypes";
 
-export const useEditorUIState = () => {
+export const useEditorUIState = (): EditorUIStateReturn => {
   const [activeTab, setActiveTab] = useState("layout");
   const [showPropertyPanel, setShowPropertyPanel] = useState(true);
   const [showAIExtractor, setShowAIExtractor] = useState(false);

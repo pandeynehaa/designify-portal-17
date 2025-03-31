@@ -1,7 +1,8 @@
 
 import { useState } from "react";
+import { CanvasZoomReturn } from "../types/hookTypes";
 
-export const useCanvasZoom = (initialZoom: number = 1) => {
+export const useCanvasZoom = (initialZoom: number = 1): CanvasZoomReturn => {
   const [zoom, setZoom] = useState(initialZoom);
   
   const handleZoomIn = () => {

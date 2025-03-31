@@ -1,22 +1,8 @@
 
 import { useState, useEffect } from "react";
+import { EditableTextProps, EditableTextReturn, EditableTextStyles } from "../types/hookTypes";
 
-interface UseEditableTextProps {
-  initialText: string;
-  onSave?: (newText: string, styles?: EditableTextStyles) => void;
-}
-
-export interface EditableTextStyles {
-  fontFamily?: string;
-  fontSize?: number;
-  textColor?: string;
-  isBold?: boolean;
-  isItalic?: boolean;
-  isUnderlined?: boolean;
-  textAlign?: string;
-}
-
-export const useEditableText = ({ initialText, onSave }: UseEditableTextProps) => {
+export const useEditableText = ({ initialText, onSave }: EditableTextProps): EditableTextReturn => {
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(initialText);
   const [styles, setStyles] = useState<EditableTextStyles>({});

@@ -1,16 +1,9 @@
-
 import { useRef } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { toast } from "@/components/ui/use-toast";
+import { CanvasHistoryReturn, HistoryAction } from "../types/hookTypes";
 
-// History action types
-export type HistoryAction = {
-  type: 'add' | 'update' | 'delete' | 'duplicate' | 'batch';
-  elements: CanvasElement[];
-  previousElements?: CanvasElement[];
-};
-
-export const useCanvasHistory = () => {
+export const useCanvasHistory = (): CanvasHistoryReturn => {
   // History management
   const history = useRef<HistoryAction[]>([]);
   const currentHistoryIndex = useRef<number>(-1);

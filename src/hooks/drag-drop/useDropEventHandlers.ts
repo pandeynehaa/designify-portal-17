@@ -1,5 +1,6 @@
 
 import { useState, DragEvent } from "react";
+import { CanvasDragDropReturn } from "../../types/hookTypes";
 
 interface UseDropEventHandlersProps {
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -9,7 +10,7 @@ interface UseDropEventHandlersProps {
 export const useDropEventHandlers = ({
   canvasRef,
   onDrop
-}: UseDropEventHandlersProps) => {
+}: UseDropEventHandlersProps): CanvasDragDropReturn => {
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => {

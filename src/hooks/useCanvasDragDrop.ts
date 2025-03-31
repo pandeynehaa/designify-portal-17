@@ -1,22 +1,16 @@
 
-import { DragEvent } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { useDropEventHandlers } from "./drag-drop/useDropEventHandlers";
 import { useComponentDropHandlers } from "./drag-drop/useComponentDropHandlers";
 import { useMediaDropHandlers } from "./drag-drop/useMediaDropHandlers";
 import { useProcessDropData } from "./drag-drop/useProcessDropData";
-
-interface UseCanvasDragDropProps {
-  canvasRef: React.RefObject<HTMLDivElement>;
-  zoomLevel: number;
-  setDroppedElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>;
-}
+import { CanvasDragDropProps, CanvasDragDropReturn } from "../types/hookTypes";
 
 export const useCanvasDragDrop = ({
   canvasRef,
   zoomLevel,
   setDroppedElements
-}: UseCanvasDragDropProps) => {
+}: CanvasDragDropProps): CanvasDragDropReturn => {
   // Get specialized handlers
   const { handleTemplateComponentDrop, handleComponentDrop } = useComponentDropHandlers({
     zoomLevel,

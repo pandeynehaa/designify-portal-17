@@ -6,8 +6,9 @@ import { useCanvasHistory } from "./useCanvasHistory";
 import { useCanvasElements } from "./useCanvasElements";
 import { useCanvasEffects } from "./useCanvasEffects";
 import { useLayerManagement } from "./canvas-layers/useLayerManagement";
+import { CanvasStateReturn } from "../types/hookTypes";
 
-export const useCanvasState = () => {
+export const useCanvasState = (): CanvasStateReturn => {
   const [droppedElements, setDroppedElements] = useState<CanvasElement[]>([]);
   
   // Use our hooks for different concerns

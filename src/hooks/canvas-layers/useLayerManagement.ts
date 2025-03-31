@@ -3,11 +3,12 @@ import { useState } from "react";
 import { Layer } from "../../types/layer";
 import { CanvasElement } from "../../types/canvasElement";
 import { v4 as uuidv4 } from "uuid";
+import { LayerManagementReturn } from "../../types/hookTypes";
 
 export const useLayerManagement = (
   droppedElements: CanvasElement[],
   setDroppedElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>
-) => {
+): LayerManagementReturn => {
   const [layers, setLayers] = useState<Layer[]>([
     {
       id: "default-layer",

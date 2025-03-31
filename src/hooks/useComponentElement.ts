@@ -3,14 +3,13 @@ import { useState, useRef, useEffect } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { toast } from "@/components/ui/use-toast";
 import { useSelectedElement } from "./useSelectedElement";
+import { ComponentElementProps, ComponentElementReturn } from "../types/hookTypes";
 
-interface UseComponentElementProps {
-  element: CanvasElement;
-  activeTool: string;
-  editMode: boolean;
-}
-
-export const useComponentElement = ({ element, activeTool, editMode }: UseComponentElementProps) => {
+export const useComponentElement = ({ 
+  element, 
+  activeTool, 
+  editMode 
+}: ComponentElementProps): ComponentElementReturn => {
   const { selectedElement, selectElement } = useSelectedElement();
   const isSelected = selectedElement?.id === element.id;
   const isDragging = useRef(false);

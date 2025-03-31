@@ -2,20 +2,16 @@
 import { toast } from "@/components/ui/use-toast";
 import { CanvasElement } from "../types/canvasElement";
 import { useCanvasHistory } from "./useCanvasHistory";
+import { CanvasEffectsReturn, NFTEffectsProps, BackgroundPropertiesProps } from "../types/hookTypes";
 
 export const useCanvasEffects = (
   droppedElements: CanvasElement[],
   setDroppedElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>
-) => {
+): CanvasEffectsReturn => {
   const { addToHistory } = useCanvasHistory();
 
   // Update NFT effects
-  const updateNFTEffects = (id: string, effects: { 
-    blurAmount?: number; 
-    glowColor?: string; 
-    glowSpread?: number;
-    rotation?: number;
-  }) => {
+  const updateNFTEffects = (id: string, effects: NFTEffectsProps) => {
     // Get the original element before update
     const originalElement = droppedElements.find(el => el.id === id);
     
@@ -59,13 +55,7 @@ export const useCanvasEffects = (
   };
   
   // Update background properties
-  const updateBackgroundProperties = (id: string, properties: {
-    backgroundType?: 'color' | 'gradient' | 'image';
-    backgroundValue?: string;
-    blurAmount?: number;
-    opacity?: number;
-    enable3D?: boolean;
-  }) => {
+  const updateBackgroundProperties = (id: string, properties: BackgroundPropertiesProps) => {
     // Get the original element before update
     const originalElement = droppedElements.find(el => el.id === id);
     

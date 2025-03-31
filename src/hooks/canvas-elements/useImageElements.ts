@@ -2,11 +2,12 @@
 import { toast } from "@/components/ui/use-toast";
 import { CanvasElement } from "../../types/canvasElement";
 import { useCanvasHistory } from "../useCanvasHistory";
+import { HistoryAction } from "../../types/hookTypes";
 
 export const useImageElements = (
   droppedElements: CanvasElement[],
   setDroppedElements: React.Dispatch<React.SetStateAction<CanvasElement[]>>,
-  addToHistory: ReturnType<typeof useCanvasHistory>["addToHistory"]
+  addToHistory: (action: HistoryAction) => void
 ) => {
   const handleInsertImage = (layerId: string = "default-layer") => {
     const newId = `image-${Date.now()}`;

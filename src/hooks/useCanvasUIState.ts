@@ -1,8 +1,9 @@
 
 import { useState } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { CanvasUIStateReturn } from "../types/hookTypes";
 
-export const useCanvasUIState = () => {
+export const useCanvasUIState = (): CanvasUIStateReturn => {
   const [showGrid, setShowGrid] = useState(true);
   const [editMode, setEditMode] = useState(true);
   const [showLeftSidebar, setShowLeftSidebar] = useState(true);
