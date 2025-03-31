@@ -1,15 +1,16 @@
-import React, { useState, useRef, DragEvent, useEffect } from "react";
-import { toast } from "../ui/use-toast";
+
+import React, { useState, useRef } from "react";
+import { useDeviceState } from "../../hooks/useDeviceState";
 import DeviceToolbar from "./DeviceToolbar";
 import ZoomControls from "./ZoomControls";
 import CanvasElements from "./CanvasElements";
-import MarketplaceTemplate from "./templates/MarketplaceTemplate";
-import DropsTemplate from "./templates/DropsTemplate";
-import TokenGateTemplate from "./templates/TokenGateTemplate";
-import BuyCoinTemplate from "./templates/BuyCoinTemplate";
+import CanvasTools from "./CanvasTools";
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "@/components/ui/menubar";
-import { Edit, Crop, MousePointer, Move, Plus, Type, Image as ImageIcon, Layers } from "lucide-react";
+import { Edit, Crop, MousePointer, Move, Type, Image as ImageIcon, Layers } from "lucide-react";
 import { TemplateStyles } from "../../types/templateStyles";
+import CanvasEventHandlers from "./canvas/CanvasEventHandlers";
+import TemplateRenderer from "./canvas/TemplateRenderer";
+import CanvasActionButton from "./canvas/CanvasActionButton";
 
 interface CanvasAreaProps {
   activeTemplate: string;
@@ -17,16 +18,19 @@ interface CanvasAreaProps {
   templateStyles: TemplateStyles;
 }
 
-const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom, templateStyles }) => {
-  const [deviceView, setDeviceView] = useState("desktop");
+const CanvasArea: React.FC<CanvasAreaProps> = ({ 
+  activeTemplate, 
+  zoom, 
+  templateStyles 
+}) => {
+  const { deviceView, setDeviceView, activeTool, setActiveTool } = useDeviceState();
   const [zoomLevel, setZoomLevel] = useState(zoom * 100);
-  const [activeTool, setActiveTool] = useState("select");
   const canvasRef = useRef<HTMLDivElement>(null);
   const [droppedElements, setDroppedElements] = useState<Array<{type: string, id: string, x: number, y: number, content?: string}>>([]);
   const [showGrid, setShowGrid] = useState(true);
   const [editMode, setEditMode] = useState(true);
   
-  useEffect(() => {
+  React.useEffect(() => {
     setZoomLevel(zoom * 100);
   }, [zoom]);
   
@@ -42,128 +46,12 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom, templateS
     }
   };
 
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (canvasRef.current) {
-      canvasRef.current.classList.add("drag-over");
-    }
-  };
-  
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (canvasRef.current) {
-      canvasRef.current.classList.remove("drag-over");
-    }
-  };
-
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    if (canvasRef.current) {
-      canvasRef.current.classList.remove("drag-over");
-    }
-    
-    const canvasRect = canvasRef.current?.getBoundingClientRect();
-    if (!canvasRect) return;
-    
-    const x = e.clientX - canvasRect.left;
-    const y = e.clientY - canvasRect.top;
-    
-    const componentData = e.dataTransfer.getData("application/component");
-    const imageData = e.dataTransfer.getData("application/image");
-    
-    if (componentData) {
-      const component = JSON.parse(componentData);
-      const newElement = {
-        type: "component",
-        id: `component-${Date.now()}`,
-        x: x / (zoomLevel / 100),
-        y: y / (zoomLevel / 100),
-        content: component.name
-      };
-      
-      setDroppedElements(prev => [...prev, newElement]);
-      toast({
-        title: "Component Added",
-        description: `Added ${component.name} to the canvas`
-      });
-    } else if (imageData) {
-      const image = JSON.parse(imageData);
-      const newElement = {
-        type: "image",
-        id: `image-${Date.now()}`,
-        x: x / (zoomLevel / 100),
-        y: y / (zoomLevel / 100),
-        content: image.url
-      };
-      
-      setDroppedElements(prev => [...prev, newElement]);
-      toast({
-        title: "Image Added",
-        description: "Image added to the canvas"
-      });
-    } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      handleFileUpload(e.dataTransfer.files, x, y);
-    }
-  };
-
-  const handleFileUpload = (files: FileList, x: number, y: number) => {
-    Array.from(files).forEach(file => {
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          if (event.target?.result) {
-            const newElement = {
-              type: "image",
-              id: `image-${Date.now()}`,
-              x: x / (zoomLevel / 100),
-              y: y / (zoomLevel / 100),
-              content: event.target.result as string
-            };
-            
-            setDroppedElements(prev => [...prev, newElement]);
-          }
-        };
-        reader.readAsDataURL(file);
-        
-        toast({
-          title: "Image Uploaded",
-          description: "Your image was added to the canvas"
-        });
-      }
-    });
-  };
-
-  const renderActiveTemplate = () => {
-    switch (activeTemplate) {
-      case "marketplace":
-        return <MarketplaceTemplate styles={templateStyles} />;
-      case "drops":
-        return <DropsTemplate />;
-      case "token-gate":
-        return <TokenGateTemplate />;
-      case "buy-coin":
-        return <BuyCoinTemplate />;
-      default:
-        return null;
-    }
-  };
-
   const toggleGrid = () => {
     setShowGrid(!showGrid);
   };
   
   const toggleEditMode = () => {
     setEditMode(!editMode);
-    toast({
-      title: editMode ? "Preview Mode" : "Edit Mode",
-      description: editMode ? "Viewing the site as it will appear to users" : "You can now edit the site"
-    });
   };
   
   return (
@@ -252,11 +140,10 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom, templateS
         />
       </div>
       
-      <div 
-        className="flex-1 flex items-center justify-center bg-[#111111] overflow-auto relative p-8"
-        onDragOver={handleDragOver}
-        onDragLeave={handleDragLeave}
-        onDrop={handleDrop}
+      <CanvasEventHandlers
+        canvasRef={canvasRef}
+        zoomLevel={zoomLevel}
+        setDroppedElements={setDroppedElements}
       >
         <div 
           ref={canvasRef}
@@ -272,20 +159,11 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom, templateS
             backgroundSize: showGrid ? '20px 20px' : '0',
           }}
         >
-          {renderActiveTemplate()}
+          <TemplateRenderer activeTemplate={activeTemplate} templateStyles={templateStyles} />
           <CanvasElements droppedElements={droppedElements} activeTool={activeTool} />
-          
-          {editMode && (
-            <button 
-              className="absolute right-4 bottom-4 p-2 rounded-full text-white shadow-lg transition-colors"
-              style={{ backgroundColor: templateStyles.buttonBg }}
-              title="Add Element"
-            >
-              <Plus size={20} />
-            </button>
-          )}
+          <CanvasActionButton editMode={editMode} templateStyles={templateStyles} />
         </div>
-      </div>
+      </CanvasEventHandlers>
       
       <div 
         className={`absolute inset-0 pointer-events-none flex items-center justify-center z-0 opacity-0 transition-opacity duration-300 bg-black/50 text-white text-xl font-medium`} 
@@ -293,6 +171,13 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom, templateS
       >
         Drop to add to canvas
       </div>
+      
+      <CanvasTools 
+        zoom={zoom} 
+        onZoomIn={handleZoomIn} 
+        onZoomOut={handleZoomOut} 
+        onReset={() => setZoomLevel(100)} 
+      />
     </div>
   );
 };

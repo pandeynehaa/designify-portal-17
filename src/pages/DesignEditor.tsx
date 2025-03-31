@@ -10,6 +10,7 @@ import { useCanvasZoom } from "../hooks/useCanvasZoom";
 import { useTemplateStyles } from "../hooks/useTemplateStyles";
 import { useEditorUIState } from "../hooks/useEditorUIState";
 import { toast } from "@/components/ui/use-toast";
+import { TemplateType } from "../types/templateStyles";
 
 const DesignEditor: React.FC = () => {
   // Custom hooks for editor state management
@@ -51,6 +52,10 @@ const DesignEditor: React.FC = () => {
     });
   };
   
+  const handleSetActiveTemplate = (template: string) => {
+    setActiveTemplate(template as TemplateType);
+  };
+  
   return (
     <div className="flex flex-col h-screen bg-cv-black">
       <Navbar />
@@ -58,7 +63,7 @@ const DesignEditor: React.FC = () => {
       <div className="flex-1 flex flex-col overflow-hidden">
         <EditorHeader 
           activeTemplate={activeTemplate}
-          setActiveTemplate={setActiveTemplate}
+          setActiveTemplate={handleSetActiveTemplate}
           setShowThemeMapper={setShowThemeMapper}
           setShowAIExtractor={setShowAIExtractor}
         />
