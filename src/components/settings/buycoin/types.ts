@@ -16,3 +16,9 @@ export interface BuyCoinFormValues {
   maxPurchaseAmount: string;
   treasuryAddress: string;
 }
+
+export interface SectionProps {
+  form: any;
+  sectionName: string;
+  updateProgress?: (sectionName: string, isComplete: boolean) => void;
+}
