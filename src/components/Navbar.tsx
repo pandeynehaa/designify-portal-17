@@ -42,8 +42,11 @@ const Navbar = () => {
           <Link to="/" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
             Dashboard
           </Link>
-          <Link to="/editor" className="text-sm font-medium text-foreground hover:text-foreground transition-colors">
+          <Link to="/editor" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
             Design Editor
+          </Link>
+          <Link to="/site-settings" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+            Site Settings
           </Link>
           <Link to="/marketplace" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
             Marketplace
