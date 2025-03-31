@@ -99,7 +99,7 @@ const MarketplaceTemplate: React.FC<MarketplaceTemplateProps> = ({ styles }) => 
   );
 };
 
-// New MarketplaceFooter component
+// MarketplaceFooter component
 const MarketplaceFooter: React.FC<{ styles: TemplateStyles }> = ({ styles }) => {
   return (
     <footer 

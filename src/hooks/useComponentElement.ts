@@ -14,6 +14,7 @@ export const useComponentElement = ({ element, activeTool, editMode }: UseCompon
   const { selectedElement, selectElement } = useSelectedElement();
   const isSelected = selectedElement?.id === element.id;
   const isDragging = useRef(false);
+  const [isDraggingState, setIsDraggingState] = useState(false); // For UI updates
   const dragOffset = useRef({ x: 0, y: 0 });
   const [position, setPosition] = useState({ x: element.x, y: element.y });
   const [isEditing, setIsEditing] = useState(false);
@@ -53,6 +54,7 @@ export const useComponentElement = ({ element, activeTool, editMode }: UseCompon
     const handleMouseUp = () => {
       if (isDragging.current && activeTool === 'move' && editMode) {
         isDragging.current = false;
+        setIsDraggingState(false);
         document.body.style.cursor = 'default';
         
         // Update the actual element position in the canvas state
@@ -91,6 +93,7 @@ export const useComponentElement = ({ element, activeTool, editMode }: UseCompon
     // If we're in move mode, start dragging
     if (activeTool === 'move') {
       isDragging.current = true;
+      setIsDraggingState(true);
       document.body.style.cursor = 'move';
       
       // Calculate the offset from the mouse to the element corner
@@ -157,6 +160,7 @@ export const useComponentElement = ({ element, activeTool, editMode }: UseCompon
     handleDoubleClick,
     handleTextBlur,
     handleTextKeyDown,
-    setIsEditing
+    setIsEditing,
+    isDragging: isDraggingState
   };
 };

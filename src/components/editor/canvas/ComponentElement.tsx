@@ -27,7 +27,8 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
     handleDoubleClick,
     handleTextBlur,
     handleTextKeyDown,
-    setIsEditing
+    setIsEditing,
+    isDragging
   } = useComponentElement({ element, activeTool, editMode });
 
   const { selectElement } = useSelectedElement();
@@ -59,7 +60,8 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
       className={`p-2 bg-white border rounded ${
         !editMode ? 'shadow-md pointer-events-none' : 
         activeTool === 'move' ? 'hover:shadow-md' : ''
-      } ${isSelected && editMode ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}`}
+      } ${isSelected && editMode ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}
+      ${isDragging ? 'wiggle-animation z-50' : ''}`}
       onMouseDown={handleMouseDown}
       onDoubleClick={handleDoubleClick}
       onClick={handleClick}

@@ -36,6 +36,9 @@ export const useCanvasDragDrop = ({
     if (overlay) {
       overlay.style.opacity = '1';
       overlay.style.zIndex = '50';
+      
+      // Add wiggle animation class
+      overlay.classList.add('wiggle-animation');
     }
   };
   
@@ -52,6 +55,9 @@ export const useCanvasDragDrop = ({
     if (overlay) {
       overlay.style.opacity = '0';
       overlay.style.zIndex = '0';
+      
+      // Remove wiggle animation
+      overlay.classList.remove('wiggle-animation');
     }
   };
 
@@ -68,6 +74,7 @@ export const useCanvasDragDrop = ({
     if (overlay) {
       overlay.style.opacity = '0';
       overlay.style.zIndex = '0';
+      overlay.classList.remove('wiggle-animation');
     }
     
     const canvasRect = canvasRef.current?.getBoundingClientRect();
