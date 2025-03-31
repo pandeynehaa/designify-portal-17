@@ -6,6 +6,7 @@ import ComponentsTab from "./sidebar/ComponentsTab";
 import ImagesTab from "./sidebar/ImagesTab";
 import ThemeTab from "./sidebar/ThemeTab";
 import AIThemeGenerator from "./sidebar/AIThemeGenerator";
+import { toast } from "@/components/ui/use-toast";
 
 interface EditorSidebarProps {
   activeTab: string;
@@ -13,11 +14,21 @@ interface EditorSidebarProps {
 }
 
 const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }) => {
+  const handleGridClick = () => {
+    toast({
+      title: "Panel Layout",
+      description: "Panel layout options will be available soon"
+    });
+  };
+
   return (
     <div className="editor-panel w-64 flex flex-col h-full bg-cv-darkgray border-r border-cv-lightgray shadow-sm">
       <div className="editor-toolbar justify-between bg-cv-gray border-b border-cv-lightgray">
         <span className="text-cv-white text-sm font-medium">Design Tools</span>
-        <button className="editor-button p-1.5 text-cv-white hover:text-cv-white">
+        <button 
+          className="editor-button p-1.5 text-cv-white hover:text-cv-white"
+          onClick={handleGridClick}
+        >
           <Grid size={14} />
         </button>
       </div>

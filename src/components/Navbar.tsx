@@ -1,10 +1,33 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Bell, Settings, User, ChevronDown, ExternalLink } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleBellClick = () => {
+    toast({
+      title: "Notifications",
+      description: "You have no new notifications"
+    });
+  };
+
+  const handleSettingsClick = () => {
+    toast({
+      title: "Settings",
+      description: "Settings panel will be available soon"
+    });
+  };
+
+  const handleUserClick = () => {
+    toast({
+      title: "User Profile",
+      description: "User profile will be available soon"
+    });
+  };
 
   return (
     <nav className="h-16 px-6 border-b border-border/40 bg-background/80 backdrop-blur-sm flex items-center justify-between sticky top-0 z-50">
@@ -25,28 +48,28 @@ const Navbar = () => {
           <Link to="/marketplace" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
             Marketplace
           </Link>
-          <Link to="/themes" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
+          <Link to="/marketplace" className="text-sm font-medium text-foreground/80 hover:text-foreground transition-colors">
             Themes
           </Link>
           <div 
-            className="flex items-center space-x-1 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors cursor-pointer"
+            className="flex items-center space-x-1 text-sm font-medium text-foreground/80 hover:text-foreground transition-colors cursor-pointer relative"
             onClick={() => setDropdownOpen(!dropdownOpen)}
           >
             <span>Templates</span>
             <ChevronDown size={14} />
             
             {dropdownOpen && (
-              <div className="absolute top-12 bg-popover border border-border rounded-lg shadow-lg py-2 w-48 animate-fade-in">
-                <Link to="/templates/marketplace" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
+              <div className="absolute top-12 bg-popover border border-border rounded-lg shadow-lg py-2 w-48 animate-fade-in z-50">
+                <Link to="/marketplace" onClick={() => setDropdownOpen(false)} className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
                   Marketplace
                 </Link>
-                <Link to="/templates/drops" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
+                <Link to="/editor" onClick={() => {setDropdownOpen(false); navigate("/editor", { state: { template: "drops" } });}} className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
                   Drops Page
                 </Link>
-                <Link to="/templates/token-gate" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
+                <Link to="/editor" onClick={() => {setDropdownOpen(false); navigate("/editor", { state: { template: "token-gate" } });}} className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
                   Token Gate
                 </Link>
-                <Link to="/templates/buy-coin" className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
+                <Link to="/editor" onClick={() => {setDropdownOpen(false); navigate("/editor", { state: { template: "buy-coin" } });}} className="block px-4 py-2 text-sm hover:bg-muted transition-colors">
                   Buy Coin
                 </Link>
               </div>
@@ -61,17 +84,26 @@ const Navbar = () => {
           <ExternalLink size={12} />
         </a>
         
-        <button className="p-2 rounded-full hover:bg-muted transition-colors">
+        <button 
+          className="p-2 rounded-full hover:bg-muted transition-colors"
+          onClick={handleBellClick}
+        >
           <Bell size={18} className="text-foreground/70" />
         </button>
         
-        <button className="p-2 rounded-full hover:bg-muted transition-colors">
+        <button 
+          className="p-2 rounded-full hover:bg-muted transition-colors"
+          onClick={handleSettingsClick}
+        >
           <Settings size={18} className="text-foreground/70" />
         </button>
         
-        <div className="h-8 w-8 rounded-full bg-theme-primary/10 border border-theme-primary/20 flex items-center justify-center">
+        <button 
+          className="h-8 w-8 rounded-full bg-theme-primary/10 border border-theme-primary/20 flex items-center justify-center"
+          onClick={handleUserClick}
+        >
           <User size={16} className="text-theme-primary" />
-        </div>
+        </button>
       </div>
     </nav>
   );

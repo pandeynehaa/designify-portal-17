@@ -44,6 +44,41 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
     });
   };
 
+  const handleSave = () => {
+    toast({
+      title: "Design Saved",
+      description: "Your design has been saved successfully"
+    });
+  };
+
+  const handleUndo = () => {
+    toast({
+      title: "Undo",
+      description: "Action undone"
+    });
+  };
+
+  const handleRedo = () => {
+    toast({
+      title: "Redo",
+      description: "Action redone"
+    });
+  };
+
+  const handleLayers = () => {
+    toast({
+      title: "Layers Panel",
+      description: "Layers panel will be available soon"
+    });
+  };
+
+  const handleDownload = () => {
+    toast({
+      title: "Download",
+      description: "Your design is being prepared for download"
+    });
+  };
+
   return (
     <div className="h-12 bg-cv-darkgray border-b border-cv-lightgray flex items-center px-4 overflow-x-auto shadow-sm">
       <div className="flex items-center space-x-2 mr-6">
@@ -98,13 +133,22 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
       </div>
       
       <div className="flex items-center space-x-1 mr-auto">
-        <button className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors">
+        <button 
+          className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors"
+          onClick={handleUndo}
+        >
           <Undo size={16} />
         </button>
-        <button className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors">
+        <button 
+          className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors"
+          onClick={handleRedo}
+        >
           <Redo size={16} />
         </button>
-        <button className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors">
+        <button 
+          className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors"
+          onClick={handleLayers}
+        >
           <Layers size={16} />
         </button>
       </div>
@@ -128,10 +172,16 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
         
         <div className="h-6 border-r border-cv-lightgray mx-1"></div>
         
-        <button className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors">
+        <button 
+          className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors"
+          onClick={handleSave}
+        >
           <Save size={16} />
         </button>
-        <button className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors">
+        <button 
+          className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors"
+          onClick={handleDownload}
+        >
           <Download size={16} />
         </button>
       </div>

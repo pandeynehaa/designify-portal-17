@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Monitor, Smartphone, Tablet, MousePointer, Move } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 interface DeviceToolbarProps {
   deviceView: string;
@@ -15,23 +16,39 @@ const DeviceToolbar: React.FC<DeviceToolbarProps> = ({
   activeTool,
   setActiveTool
 }) => {
+  const handleDeviceChange = (view: string) => {
+    setDeviceView(view);
+    toast({
+      title: "Device Changed",
+      description: `View changed to ${view} mode`
+    });
+  };
+
+  const handleToolChange = (tool: string) => {
+    setActiveTool(tool);
+    toast({
+      title: "Tool Selected",
+      description: `${tool.charAt(0).toUpperCase() + tool.slice(1)} tool activated`
+    });
+  };
+
   return (
     <div className="flex items-center space-x-3">
       <button
         className={`p-1.5 rounded-md ${deviceView === "desktop" ? "bg-editor-highlight" : "hover:bg-editor-surface"} toolbar-button-hover`}
-        onClick={() => setDeviceView("desktop")}
+        onClick={() => handleDeviceChange("desktop")}
       >
         <Monitor size={16} className="text-editor-text" />
       </button>
       <button
         className={`p-1.5 rounded-md ${deviceView === "tablet" ? "bg-editor-highlight" : "hover:bg-editor-surface"} toolbar-button-hover`}
-        onClick={() => setDeviceView("tablet")}
+        onClick={() => handleDeviceChange("tablet")}
       >
         <Tablet size={16} className="text-editor-text" />
       </button>
       <button
         className={`p-1.5 rounded-md ${deviceView === "mobile" ? "bg-editor-highlight" : "hover:bg-editor-surface"} toolbar-button-hover`}
-        onClick={() => setDeviceView("mobile")}
+        onClick={() => handleDeviceChange("mobile")}
       >
         <Smartphone size={16} className="text-editor-text" />
       </button>
@@ -40,13 +57,13 @@ const DeviceToolbar: React.FC<DeviceToolbarProps> = ({
       
       <button
         className={`p-1.5 rounded-md ${activeTool === "select" ? "bg-editor-highlight" : "hover:bg-editor-surface"} toolbar-button-hover`}
-        onClick={() => setActiveTool("select")}
+        onClick={() => handleToolChange("select")}
       >
         <MousePointer size={14} className="text-editor-text" />
       </button>
       <button
         className={`p-1.5 rounded-md ${activeTool === "move" ? "bg-editor-highlight" : "hover:bg-editor-surface"} toolbar-button-hover`}
-        onClick={() => setActiveTool("move")}
+        onClick={() => handleToolChange("move")}
       >
         <Move size={14} className="text-editor-text" />
       </button>

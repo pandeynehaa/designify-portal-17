@@ -1,5 +1,6 @@
 
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EditorHeader from "../components/editor/EditorHeader";
 import EditorContent from "../components/editor/EditorContent";
@@ -13,6 +14,8 @@ import { toast } from "@/components/ui/use-toast";
 import { TemplateType } from "../types/templateStyles";
 
 const DesignEditor: React.FC = () => {
+  const location = useLocation();
+  
   // Custom hooks for editor state management
   const { 
     activeTab, 
@@ -35,6 +38,17 @@ const DesignEditor: React.FC = () => {
   
   const { zoom, handleZoomIn, handleZoomOut, handleZoomReset } = useCanvasZoom(1);
   const { dropOverlayVisible } = useCanvasDrop();
+  
+  // Check if we need to set a specific template from navigation
+  useEffect(() => {
+    if (location.state && location.state.template) {
+      setActiveTemplate(location.state.template as TemplateType);
+      toast({
+        title: "Template Loaded",
+        description: `The ${location.state.template} template has been loaded`
+      });
+    }
+  }, [location.state, setActiveTemplate]);
   
   const handleAIExtract = (themeData: any) => {
     console.log("Extracted theme data:", themeData);

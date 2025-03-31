@@ -11,6 +11,7 @@ import { TemplateStyles } from "../../types/templateStyles";
 import CanvasEventHandlers from "./canvas/CanvasEventHandlers";
 import TemplateRenderer from "./canvas/TemplateRenderer";
 import CanvasActionButton from "./canvas/CanvasActionButton";
+import { toast } from "@/components/ui/use-toast";
 
 interface CanvasAreaProps {
   activeTemplate: string;
@@ -52,6 +53,63 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
   
   const toggleEditMode = () => {
     setEditMode(!editMode);
+    toast({
+      title: editMode ? "Preview Mode" : "Edit Mode",
+      description: editMode ? "Now viewing the design in preview mode" : "Now editing the design"
+    });
+  };
+
+  const handleInsertText = () => {
+    const newId = `text-${Date.now()}`;
+    setDroppedElements([
+      ...droppedElements,
+      {
+        type: 'component',
+        id: newId,
+        x: 100,
+        y: 100,
+        content: 'New Text Element'
+      }
+    ]);
+    toast({
+      title: "Text Added",
+      description: "New text element has been added to the canvas"
+    });
+  };
+
+  const handleInsertImage = () => {
+    const newId = `image-${Date.now()}`;
+    setDroppedElements([
+      ...droppedElements,
+      {
+        type: 'image',
+        id: newId,
+        x: 150,
+        y: 150
+      }
+    ]);
+    toast({
+      title: "Image Added",
+      description: "New image element has been added to the canvas"
+    });
+  };
+
+  const handleInsertComponent = () => {
+    const newId = `component-${Date.now()}`;
+    setDroppedElements([
+      ...droppedElements,
+      {
+        type: 'component',
+        id: newId,
+        x: 200,
+        y: 200,
+        content: 'Button'
+      }
+    ]);
+    toast({
+      title: "Component Added",
+      description: "New component has been added to the canvas"
+    });
   };
   
   return (
@@ -71,15 +129,15 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
             <MenubarMenu>
               <MenubarTrigger className="px-2 hover:bg-cv-lightgray text-cv-white">Insert</MenubarTrigger>
               <MenubarContent className="bg-cv-darkgray border border-cv-lightgray">
-                <MenubarItem className="text-cv-white hover:bg-cv-lightgray cursor-pointer">
+                <MenubarItem className="text-cv-white hover:bg-cv-lightgray cursor-pointer" onClick={handleInsertText}>
                   <Type className="mr-2 h-4 w-4" />
                   <span>Text</span>
                 </MenubarItem>
-                <MenubarItem className="text-cv-white hover:bg-cv-lightgray cursor-pointer">
+                <MenubarItem className="text-cv-white hover:bg-cv-lightgray cursor-pointer" onClick={handleInsertImage}>
                   <ImageIcon className="mr-2 h-4 w-4" />
                   <span>Image</span>
                 </MenubarItem>
-                <MenubarItem className="text-cv-white hover:bg-cv-lightgray cursor-pointer">
+                <MenubarItem className="text-cv-white hover:bg-cv-lightgray cursor-pointer" onClick={handleInsertComponent}>
                   <Layers className="mr-2 h-4 w-4" />
                   <span>Component</span>
                 </MenubarItem>

@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Eye, Share2, PlusSquare, MinusSquare } from "lucide-react";
+import { toast } from "@/components/ui/use-toast";
 
 interface ZoomControlsProps {
   zoomLevel: number;
@@ -13,6 +14,20 @@ const ZoomControls: React.FC<ZoomControlsProps> = ({
   handleZoomIn,
   handleZoomOut
 }) => {
+  const handleEyeClick = () => {
+    toast({
+      title: "Preview Mode",
+      description: "Previewing the design at actual size"
+    });
+  };
+  
+  const handleShareClick = () => {
+    toast({
+      title: "Share Design",
+      description: "Sharing options will be available soon"
+    });
+  };
+
   return (
     <div className="flex items-center space-x-3">
       <div className="flex items-center space-x-1">
@@ -27,10 +42,10 @@ const ZoomControls: React.FC<ZoomControlsProps> = ({
       
       <div className="h-4 border-r border-editor-border mx-1"></div>
       
-      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover">
+      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleEyeClick}>
         <Eye size={16} className="text-editor-text" />
       </button>
-      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover">
+      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleShareClick}>
         <Share2 size={16} className="text-editor-text" />
       </button>
     </div>
