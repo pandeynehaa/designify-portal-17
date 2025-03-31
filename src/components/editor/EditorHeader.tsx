@@ -29,10 +29,10 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
   const [selectedSite, setSelectedSite] = useState("Web3 Marketplace");
 
   const siteOptions = [
-    { name: "Web3 Marketplace", slug: "marketplace" },
-    { name: "NFT Drop", slug: "drops" },
-    { name: "Token Gate", slug: "token-gate" },
-    { name: "Buy Coin", slug: "buy-coin" }
+    { name: "Web3 Marketplace", slug: "marketplace" as TemplateType },
+    { name: "NFT Drop", slug: "drops" as TemplateType },
+    { name: "Token Gate", slug: "token-gate" as TemplateType },
+    { name: "Buy Coin", slug: "buy-coin" as TemplateType }
   ];
 
   const handleSiteChange = (siteName: string, slug: TemplateType) => {
