@@ -1,7 +1,7 @@
 
 import React, { useRef } from "react";
 import { useFrame } from "@react-three/fiber";
-import { MeshProps } from "@react-three/fiber";
+import { Mesh } from "three";
 import { useTexture } from "@react-three/drei";
 
 interface FloatingCoinProps {
@@ -10,7 +10,7 @@ interface FloatingCoinProps {
 }
 
 const FloatingCoin: React.FC<FloatingCoinProps> = ({ color, textColor }) => {
-  const coinRef = useRef<MeshProps>();
+  const coinRef = useRef<Mesh>(null);
   
   // Use gradient colors
   const primaryColor = color || "#ffbf00";
