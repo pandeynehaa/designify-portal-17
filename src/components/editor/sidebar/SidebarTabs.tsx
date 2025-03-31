@@ -2,7 +2,7 @@
 import React from "react";
 import { 
   Layout, Type, Image, Layers, 
-  Grid, Palette, Wand2, Sparkles
+  Palette, Wand2, Sparkles, Grid3X3
 } from "lucide-react";
 
 interface SidebarTabsProps {
@@ -15,7 +15,7 @@ const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) =>
     { id: "layout", icon: Layout, label: "Layout" },
     { id: "typography", icon: Type, label: "Typography" },
     { id: "images", icon: Image, label: "Images" },
-    { id: "components", icon: Layers, label: "Components" },
+    { id: "components", icon: Grid3X3, label: "Components" },
     { id: "layers", icon: Layers, label: "Layers" },
     { id: "colors", icon: Palette, label: "Colors" },
     { id: "effects", icon: Sparkles, label: "Effects" },

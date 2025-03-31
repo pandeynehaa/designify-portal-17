@@ -19,11 +19,11 @@ const TemplateRenderer: React.FC<TemplateRendererProps> = ({
     case "marketplace":
       return <MarketplaceTemplate styles={templateStyles} />;
     case "drops":
-      return <DropsTemplate />;
+      return <DropsTemplate styles={templateStyles} />;
     case "token-gate":
-      return <TokenGateTemplate />;
+      return <TokenGateTemplate styles={templateStyles} />;
     case "buy-coin":
-      return <BuyCoinTemplate />;
+      return <BuyCoinTemplate styles={templateStyles} />;
     default:
       return null;
   }
