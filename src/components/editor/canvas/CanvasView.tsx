@@ -33,6 +33,31 @@ const CanvasView: React.FC<CanvasViewProps> = ({
   handleCanvasClick
 }) => {
   const { selectedElement } = useSelectedElement();
+  const gridSize = 20; // Match the grid size used in ComponentElement
+
+  // Grid style enhancements for better visibility when using move tool
+  const getGridStyle = () => {
+    if (!showGrid) return {};
+    
+    const baseGridStyle = {
+      backgroundImage: 'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)',
+      backgroundSize: `${gridSize}px ${gridSize}px`,
+    };
+    
+    // Enhanced grid for move tool
+    if (activeTool === 'move') {
+      return {
+        ...baseGridStyle,
+        backgroundImage: 'linear-gradient(to right, rgba(100,100,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(100,100,255,0.1) 1px, transparent 1px)',
+        // Add darker lines for major grid lines (every 5 cells)
+        backgroundPositionX: '0px',
+        backgroundPositionY: '0px',
+        boxShadow: 'inset 0 0 0 1px rgba(0,0,0,0.05)'
+      };
+    }
+    
+    return baseGridStyle;
+  };
 
   return (
     <div 
@@ -45,14 +70,20 @@ const CanvasView: React.FC<CanvasViewProps> = ({
       style={{ 
         transform: `scale(${zoom})`,
         overflow: "hidden",
-        backgroundImage: showGrid ? 'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)' : 'none',
-        backgroundSize: showGrid ? '20px 20px' : '0',
+        ...getGridStyle()
       }}
       onClick={handleCanvasClick}
     >
       <TemplateRenderer activeTemplate={activeTemplate} templateStyles={templateStyles} />
       <CanvasElements droppedElements={droppedElements} activeTool={activeTool} />
       <CanvasActionButton editMode={editMode} templateStyles={templateStyles} />
+      
+      {/* Overlay grid guides when moving - appears only when in move mode and something is selected */}
+      {showGrid && activeTool === 'move' && selectedElement && (
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 grid-overlay"></div>
+        </div>
+      )}
     </div>
   );
 };

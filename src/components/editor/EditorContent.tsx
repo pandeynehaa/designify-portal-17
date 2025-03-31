@@ -7,6 +7,7 @@ import CanvasDropOverlay from "./CanvasDropOverlay";
 import CanvasTools from "./CanvasTools";
 import { TemplateStyles } from "../../types/templateStyles";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
+import { useCanvasState } from "../../hooks/useCanvasState";
 
 interface EditorContentProps {
   activeTab: string;
@@ -38,8 +39,13 @@ const EditorContent: React.FC<EditorContentProps> = ({
   updateTemplateStyles
 }) => {
   const { selectedElement } = useSelectedElement();
+  const { updateElement } = useCanvasState();
   
-  // Check if we should automatically show the property panel when an element is selected
+  // Connect the updateElement function for Canvas and PropertyPanel
+  useEffect(() => {
+    (window as any).updateCanvasElement = updateElement;
+  }, [updateElement]);
+  
   useEffect(() => {
     if (selectedElement && !showPropertyPanel) {
       // Auto-show property panel when element is selected
@@ -47,16 +53,6 @@ const EditorContent: React.FC<EditorContentProps> = ({
       // handlePropertyShow();
     }
   }, [selectedElement, showPropertyPanel]);
-
-  // Connect to the updateElement function from CanvasArea
-  useEffect(() => {
-    // This ensures PropertyPanel has access to updateElement
-    if (typeof (window as any).updateCanvasElement === 'function') {
-      const updateElement = (window as any).updateCanvasElement;
-      // Now we have access to updateElement
-      console.log("Update element function is available");
-    }
-  }, []);
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
