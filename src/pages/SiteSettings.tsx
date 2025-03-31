@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Navbar from "../components/Navbar";
@@ -8,7 +9,8 @@ import BuyCoinSettings from "../components/settings/BuyCoinSettings";
 import SettingsProgress from "../components/settings/SettingsProgress";
 import { toast } from "@/components/ui/use-toast";
 import { useForm } from "react-hook-form";
-import { Sparkles } from "lucide-react";
+import { Sparkles, CheckCircle2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 const SiteSettings = () => {
   const [activeTab, setActiveTab] = useState("marketplace");
@@ -78,30 +80,17 @@ const SiteSettings = () => {
 
         <Tabs defaultValue="marketplace" value={activeTab} onValueChange={setActiveTab} className="w-full">
           <TabsList className="grid grid-cols-4 mb-8">
-            <TabsTrigger value="marketplace" className="relative">
-              Marketplace
-              {tabProgress.marketplace >= 100 && (
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse"></span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="drops" className="relative">
-              Drops
-              {tabProgress.drops >= 100 && (
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse"></span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="token-gate" className="relative">
-              Token Gate
-              {tabProgress["token-gate"] >= 100 && (
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse"></span>
-              )}
-            </TabsTrigger>
-            <TabsTrigger value="buy-coin" className="relative">
-              Buy Coin
-              {tabProgress["buy-coin"] >= 100 && (
-                <span className="absolute -top-1 -right-1 h-3 w-3 bg-green-500 rounded-full animate-pulse"></span>
-              )}
-            </TabsTrigger>
+            {Object.keys(tabProgress).map((tab) => (
+              <TabsTrigger key={tab} value={tab} className="relative">
+                {tab.charAt(0).toUpperCase() + tab.slice(1).replace("-", " ")}
+                <span className={cn(
+                  "absolute -top-1 -right-1 h-3 w-3 rounded-full transition-colors",
+                  tabProgress[tab as keyof typeof tabProgress] >= 100 
+                    ? "bg-green-500 animate-pulse" 
+                    : "bg-gray-300"
+                )}></span>
+              </TabsTrigger>
+            ))}
           </TabsList>
           
           <TabsContent value="marketplace">

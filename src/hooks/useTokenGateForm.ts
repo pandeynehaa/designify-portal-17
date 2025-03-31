@@ -1,6 +1,7 @@
 
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import { useSettingsProgress } from "./useSettingsProgress";
 
 interface UseTokenGateFormProps {
   onProgressChange?: (progress: number) => void;
@@ -24,21 +25,32 @@ export const useTokenGateForm = ({ onProgressChange }: UseTokenGateFormProps = {
 
   const formValues = form.watch();
   
-  useEffect(() => {
-    const allFields = Object.keys(formValues);
-    const completedFields = allFields.filter(
-      field => {
-        const value = formValues[field as keyof typeof formValues];
-        return value !== undefined && value.toString().trim() !== '';
-      }
-    ).length;
-    
-    const totalProgress = (completedFields / allFields.length) * 100;
-    
-    if (onProgressChange) {
-      onProgressChange(totalProgress);
-    }
-  }, [formValues, onProgressChange]);
+  // Define required and optional fields for tracking progress
+  const requiredFields = [
+    'contractAddress', 
+    'network', 
+    'tokenType', 
+    'minTokensRequired',
+    'accessDuration',
+    'adminAddress'
+  ];
+  
+  const optionalFields = [
+    'allowERC1155',
+    'multipleCollectionsEnabled',
+    'additionalCollections',
+    'customRedirectUrl'
+  ];
+
+  // Use the shared settings progress hook
+  useSettingsProgress({
+    watch: form.watch,
+    requiredFields,
+    optionalFields,
+    onProgressChange,
+    requiredWeight: 0.8,
+    optionalWeight: 0.2
+  });
 
   return {
     form,

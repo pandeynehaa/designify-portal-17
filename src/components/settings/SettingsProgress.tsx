@@ -26,14 +26,21 @@ const SettingsProgress = ({ progress, activeTab }: SettingsProgressProps) => {
     return "Awesome! You've completed this section.";
   };
 
+  const isComplete = progress >= 100;
+
   return (
     <div className="mb-8 space-y-3 bg-card rounded-lg border border-border p-4 animate-fade-in">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <h3 className="font-medium">Setup Progress</h3>
-          {progress >= 100 && (
-            <CheckCircle2 className="h-5 w-5 text-green-500 animate-scale-in" />
-          )}
+          <CheckCircle2 
+            className={cn(
+              "h-5 w-5 transition-all duration-300",
+              isComplete 
+                ? "text-green-500 animate-scale-in" 
+                : "text-gray-300"
+            )} 
+          />
         </div>
         <div className="flex items-center">
           <span className="font-bold text-lg mr-2">{Math.min(100, Math.floor(progress))}%</span>
