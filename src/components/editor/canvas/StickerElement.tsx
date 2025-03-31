@@ -80,7 +80,12 @@ const StickerElement: React.FC<StickerElementProps> = ({ element, activeTool }) 
       {isSelected && (
         <>
           <ElementControls element={element} />
-          <ResizeHandles />
+          <ResizeHandles 
+            onResizeStart={(e, direction) => {
+              // Handle resize start
+              console.log('Resize started in direction:', direction);
+            }}
+          />
         </>
       )}
     </div>
