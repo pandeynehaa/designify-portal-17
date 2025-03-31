@@ -7,6 +7,7 @@ import ImagesTab from "./sidebar/ImagesTab";
 import ThemeTab from "./sidebar/ThemeTab";
 import LayersTab from "./sidebar/LayersTab";
 import AIThemeGenerator from "./sidebar/AIThemeGenerator";
+import NFTsTab from "./sidebar/NFTsTab";
 import { toast } from "@/components/ui/use-toast";
 
 interface EditorSidebarProps {
@@ -39,6 +40,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         
         {activeTab === "components" && <ComponentsTab />}
         {activeTab === "images" && <ImagesTab />}
+        {activeTab === "items" && <NFTsTab />}
         {activeTab === "layers" && <LayersTab />}
         {activeTab === "theme" && <ThemeTab />}
       </div>
