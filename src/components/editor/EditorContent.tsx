@@ -46,13 +46,13 @@ const EditorContent: React.FC<EditorContentProps> = ({
     (window as any).updateCanvasElement = updateElement;
   }, [updateElement]);
   
+  // Auto-show property panel when element is selected
   useEffect(() => {
     if (selectedElement && !showPropertyPanel) {
       // Auto-show property panel when element is selected
-      // This is optional and can be removed if not desired
-      // handlePropertyShow();
+      setActiveTab("element");
     }
-  }, [selectedElement, showPropertyPanel]);
+  }, [selectedElement, showPropertyPanel, setActiveTab]);
 
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -88,7 +88,7 @@ const EditorContent: React.FC<EditorContentProps> = ({
         </div>
         
         {/* Property Panel with glass effect */}
-        {showPropertyPanel && (
+        {(showPropertyPanel || selectedElement) && (
           <div className="relative">
             <PropertyPanel 
               activeTab={activeTab} 

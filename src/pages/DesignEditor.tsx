@@ -12,9 +12,11 @@ import { useTemplateStyles } from "../hooks/useTemplateStyles";
 import { useEditorUIState } from "../hooks/useEditorUIState";
 import { toast } from "@/components/ui/use-toast";
 import { TemplateType } from "../types/templateStyles";
+import { useSelectedElement } from "../hooks/useSelectedElement";
 
 const DesignEditor: React.FC = () => {
   const location = useLocation();
+  const { selectedElement } = useSelectedElement();
   
   // Custom hooks for editor state management
   const { 
@@ -24,6 +26,7 @@ const DesignEditor: React.FC = () => {
     showThemeMapper,
     setShowAIExtractor,
     setShowThemeMapper,
+    setShowPropertyPanel,
     handlePropertyClose, 
     handleTabClick 
   } = useEditorUIState();
@@ -49,6 +52,13 @@ const DesignEditor: React.FC = () => {
       });
     }
   }, [location.state, setActiveTemplate]);
+  
+  // Auto-show property panel when an element is selected
+  useEffect(() => {
+    if (selectedElement && !showPropertyPanel) {
+      setShowPropertyPanel(true);
+    }
+  }, [selectedElement, showPropertyPanel, setShowPropertyPanel]);
   
   const handleAIExtract = (themeData: any) => {
     console.log("Extracted theme data:", themeData);

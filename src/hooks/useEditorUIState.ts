@@ -11,6 +11,10 @@ export const useEditorUIState = () => {
     setShowPropertyPanel(false);
   };
   
+  const handlePropertyShow = () => {
+    setShowPropertyPanel(true);
+  };
+  
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
     setShowPropertyPanel(true);
@@ -26,6 +30,7 @@ export const useEditorUIState = () => {
     showThemeMapper,
     setShowThemeMapper,
     handlePropertyClose,
+    handlePropertyShow,
     handleTabClick
   };
 };

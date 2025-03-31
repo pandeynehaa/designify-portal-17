@@ -28,8 +28,11 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
   const { selectedElement } = useSelectedElement();
   
   const updateElement = (id: string, updates: Partial<CanvasElement>) => {
-    // This will be implemented in CanvasArea component
-    console.log("Updating element:", id, updates);
+    if (typeof (window as any).updateCanvasElement === 'function') {
+      (window as any).updateCanvasElement(id, updates);
+    } else {
+      console.error("updateCanvasElement function not available");
+    }
   };
 
   return (

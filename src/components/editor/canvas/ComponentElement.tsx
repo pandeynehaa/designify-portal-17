@@ -4,6 +4,7 @@ import { CanvasElement } from "../../../types/canvasElement";
 import { useComponentElement } from "../../../hooks/useComponentElement";
 import ComponentControl from "./component/ComponentControl";
 import ComponentEditor from "./component/ComponentEditor";
+import { useSelectedElement } from "../../../hooks/useSelectedElement";
 
 interface ComponentElementProps {
   element: CanvasElement;
@@ -28,6 +29,17 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
     handleTextKeyDown,
     setIsEditing
   } = useComponentElement({ element, activeTool, editMode });
+
+  const { selectElement } = useSelectedElement();
+  
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    // Only select in edit mode
+    if (editMode) {
+      selectElement(element);
+    }
+  };
   
   const style = {
     position: 'absolute' as const,
@@ -50,6 +62,7 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
       } ${isSelected && editMode ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}`}
       onMouseDown={handleMouseDown}
       onDoubleClick={handleDoubleClick}
+      onClick={handleClick}
     >
       {isEditing ? (
         <ComponentEditor 
