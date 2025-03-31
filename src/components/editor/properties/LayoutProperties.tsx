@@ -1,6 +1,5 @@
-
 import React from "react";
-import { TemplateStyles } from "../../../pages/DesignEditor";
+import { TemplateStyles } from "../../../types/templateStyles";
 
 interface LayoutPropertiesProps {
   templateStyles: TemplateStyles;

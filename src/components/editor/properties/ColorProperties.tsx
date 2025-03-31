@@ -1,6 +1,6 @@
 
 import React from "react";
-import { TemplateStyles } from "../../../pages/DesignEditor";
+import { TemplateStyles } from "../../../types/templateStyles";
 import { Button } from "../../ui/button";
 
 interface ColorPropertiesProps {

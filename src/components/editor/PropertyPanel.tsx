@@ -1,7 +1,7 @@
 
 import React from "react";
 import { X } from "lucide-react";
-import { TemplateStyles } from "../../pages/DesignEditor";
+import { TemplateStyles } from "../../types/templateStyles";
 import TypographyProperties from "./properties/TypographyProperties";
 import ColorProperties from "./properties/ColorProperties";
 import ImageProperties from "./properties/ImageProperties";

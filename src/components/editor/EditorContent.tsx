@@ -1,11 +1,10 @@
-
 import React from "react";
 import EditorSidebar from "./EditorSidebar";
 import CanvasArea from "./CanvasArea";
 import PropertyPanel from "./PropertyPanel";
 import CanvasDropOverlay from "./CanvasDropOverlay";
 import CanvasTools from "./CanvasTools";
-import { TemplateStyles } from "../../pages/DesignEditor";
+import { TemplateStyles } from "../../types/templateStyles";
 
 interface EditorContentProps {
   activeTab: string;

@@ -1,7 +1,6 @@
-
 import React from "react";
 import { AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline } from "lucide-react";
-import { TemplateStyles } from "../../../pages/DesignEditor";
+import { TemplateStyles } from "../../../types/templateStyles";
 
 interface TypographyPropertiesProps {
   templateStyles: TemplateStyles;

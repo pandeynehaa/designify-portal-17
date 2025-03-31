@@ -9,7 +9,7 @@ import TokenGateTemplate from "./templates/TokenGateTemplate";
 import BuyCoinTemplate from "./templates/BuyCoinTemplate";
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "@/components/ui/menubar";
 import { Edit, Crop, MousePointer, Move, Plus, Type, Image as ImageIcon, Layers } from "lucide-react";
-import { TemplateStyles } from "../../pages/DesignEditor";
+import { TemplateStyles } from "../../types/templateStyles";
 
 interface CanvasAreaProps {
   activeTemplate: string;

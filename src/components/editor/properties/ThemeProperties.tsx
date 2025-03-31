@@ -2,7 +2,7 @@
 import React from "react";
 import { Eye } from "lucide-react";
 import { Button } from "../../ui/button";
-import { TemplateStyles } from "../../../pages/DesignEditor";
+import { TemplateStyles } from "../../../types/templateStyles";
 import { toast } from "@/hooks/use-toast"; 
 
 interface ThemePropertiesProps {
