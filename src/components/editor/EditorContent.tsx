@@ -5,6 +5,7 @@ import CanvasArea from "./CanvasArea";
 import PropertyPanel from "./PropertyPanel";
 import CanvasDropOverlay from "./CanvasDropOverlay";
 import CanvasTools from "./CanvasTools";
+import { TemplateStyles } from "../../pages/DesignEditor";
 
 interface EditorContentProps {
   activeTab: string;
@@ -17,6 +18,8 @@ interface EditorContentProps {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
   handleZoomReset: () => void;
+  templateStyles: TemplateStyles;
+  updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
 }
 
 const EditorContent: React.FC<EditorContentProps> = ({
@@ -29,7 +32,9 @@ const EditorContent: React.FC<EditorContentProps> = ({
   dropOverlayVisible,
   handleZoomIn,
   handleZoomOut,
-  handleZoomReset
+  handleZoomReset,
+  templateStyles,
+  updateTemplateStyles
 }) => {
   const handleTabClick = (tab: string) => {
     setActiveTab(tab);
@@ -43,6 +48,7 @@ const EditorContent: React.FC<EditorContentProps> = ({
         <CanvasArea 
           activeTemplate={activeTemplate} 
           zoom={zoom} 
+          templateStyles={templateStyles}
         />
         <CanvasTools 
           zoom={zoom} 
@@ -53,7 +59,14 @@ const EditorContent: React.FC<EditorContentProps> = ({
         <CanvasDropOverlay isVisible={dropOverlayVisible} />
       </div>
       
-      {showPropertyPanel && <PropertyPanel activeTab={activeTab} onClose={handlePropertyClose} />}
+      {showPropertyPanel && (
+        <PropertyPanel 
+          activeTab={activeTab} 
+          onClose={handlePropertyClose} 
+          templateStyles={templateStyles}
+          updateTemplateStyles={updateTemplateStyles}
+        />
+      )}
     </div>
   );
 };

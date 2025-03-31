@@ -1,13 +1,21 @@
-
 import React from "react";
-import { X, AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline, ChevronDown } from "lucide-react";
+import { X, AlignLeft, AlignCenter, AlignRight, Bold, Italic, Underline, ChevronDown, Eye, EyeOff } from "lucide-react";
+import { TemplateStyles } from "../../pages/DesignEditor";
+import { Button } from "../ui/button";
 
 interface PropertyPanelProps {
   activeTab: string;
   onClose: () => void;
+  templateStyles: TemplateStyles;
+  updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
 }
 
-const PropertyPanel: React.FC<PropertyPanelProps> = ({ activeTab, onClose }) => {
+const PropertyPanel: React.FC<PropertyPanelProps> = ({ 
+  activeTab, 
+  onClose, 
+  templateStyles, 
+  updateTemplateStyles 
+}) => {
   return (
     <div className="editor-panel w-72 flex flex-col h-full">
       <div className="editor-toolbar justify-between">
@@ -18,171 +26,276 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({ activeTab, onClose }) => 
       </div>
       
       <div className="flex-1 overflow-y-auto">
-        {activeTab === "typography" && <TypographyProperties />}
-        {activeTab === "colors" && <ColorProperties />}
+        {activeTab === "typography" && (
+          <TypographyProperties 
+            templateStyles={templateStyles} 
+            updateTemplateStyles={updateTemplateStyles} 
+          />
+        )}
+        {activeTab === "colors" && (
+          <ColorProperties 
+            templateStyles={templateStyles} 
+            updateTemplateStyles={updateTemplateStyles} 
+          />
+        )}
         {activeTab === "images" && <ImageProperties />}
-        {activeTab === "layout" && <LayoutProperties />}
+        {activeTab === "layout" && (
+          <LayoutProperties 
+            templateStyles={templateStyles} 
+            updateTemplateStyles={updateTemplateStyles} 
+          />
+        )}
         {activeTab === "effects" && <EffectsProperties />}
-        {activeTab === "theme" && <ThemeProperties />}
+        {activeTab === "theme" && (
+          <ThemeProperties 
+            templateStyles={templateStyles} 
+            updateTemplateStyles={updateTemplateStyles} 
+          />
+        )}
       </div>
     </div>
   );
 };
 
-const TypographyProperties: React.FC = () => (
-  <div className="p-4 space-y-4">
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Font Family</label>
-      <div className="flex">
-        <select className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2">
-          <option>Inter</option>
-          <option>SF Pro Display</option>
-          <option>Roboto</option>
-          <option>Poppins</option>
-        </select>
-      </div>
-    </div>
-    
-    <div className="space-y-4">
-      <div>
-        <label className="block text-xs text-editor-muted mb-1.5">Size</label>
-        <div className="flex">
-          <input
-            type="number"
-            value="16"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-          <select className="ml-2 w-20 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2">
-            <option>px</option>
-            <option>rem</option>
-            <option>em</option>
-          </select>
-        </div>
-      </div>
-      
-      <div>
-        <label className="block text-xs text-editor-muted mb-1.5">Weight</label>
-        <select className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2">
-          <option>Regular (400)</option>
-          <option>Medium (500)</option>
-          <option>Semi Bold (600)</option>
-          <option>Bold (700)</option>
-        </select>
-      </div>
-      
-      <div>
-        <label className="block text-xs text-editor-muted mb-1.5">Line Height</label>
-        <div className="flex">
-          <input
-            type="number"
-            value="1.5"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-        </div>
-      </div>
-      
-      <div>
-        <label className="block text-xs text-editor-muted mb-1.5">Letter Spacing</label>
-        <div className="flex">
-          <input
-            type="number"
-            value="0"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-          <select className="ml-2 w-20 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2">
-            <option>px</option>
-            <option>em</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Style</label>
-      <div className="flex space-x-2">
-        <button className="flex-1 bg-editor-highlight p-2 rounded-md flex items-center justify-center">
-          <Bold size={16} className="text-editor-text" />
-        </button>
-        <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
-          <Italic size={16} className="text-editor-text" />
-        </button>
-        <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
-          <Underline size={16} className="text-editor-text" />
-        </button>
-      </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Alignment</label>
-      <div className="flex space-x-2">
-        <button className="flex-1 bg-editor-highlight p-2 rounded-md flex items-center justify-center">
-          <AlignLeft size={16} className="text-editor-text" />
-        </button>
-        <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
-          <AlignCenter size={16} className="text-editor-text" />
-        </button>
-        <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
-          <AlignRight size={16} className="text-editor-text" />
-        </button>
-      </div>
-    </div>
-  </div>
-);
+interface StylePropertyProps {
+  templateStyles: TemplateStyles;
+  updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+}
 
-const ColorProperties: React.FC = () => (
-  <div className="p-4 space-y-4">
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Text Color</label>
-      <div className="flex items-center">
-        <div className="w-8 h-8 rounded-md bg-blue-500 border border-editor-border"></div>
-        <input
-          type="text"
-          value="#3B82F6"
-          className="ml-2 flex-1 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-        />
+const TypographyProperties: React.FC<StylePropertyProps> = ({ templateStyles, updateTemplateStyles }) => {
+  const fonts = [
+    { value: "font-display", label: "Bebas Neue (Display)" },
+    { value: "font-sans", label: "Gravity (Sans)" },
+    { value: "font-serif", label: "Serif" },
+    { value: "font-mono", label: "Monospace" }
+  ];
+
+  const handleHeadingFontChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateTemplateStyles('headingFont', e.target.value);
+  };
+
+  const handleBodyFontChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateTemplateStyles('bodyFont', e.target.value);
+  };
+
+  return (
+    <div className="p-4 space-y-4">
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Heading Font</label>
+        <div className="flex">
+          <select 
+            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+            value={templateStyles.headingFont}
+            onChange={handleHeadingFontChange}
+          >
+            {fonts.map(font => (
+              <option key={font.value} value={font.value}>{font.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Body Font</label>
+        <div className="flex">
+          <select 
+            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+            value={templateStyles.bodyFont}
+            onChange={handleBodyFontChange}
+          >
+            {fonts.map(font => (
+              <option key={font.value} value={font.value}>{font.label}</option>
+            ))}
+          </select>
+        </div>
+      </div>
+      
+      <div className="space-y-4">
+        <div>
+          <label className="block text-xs text-editor-muted mb-1.5">Text Colors</label>
+          
+          <div className="space-y-2">
+            <div>
+              <label className="block text-xs text-editor-muted mb-1">Header Text</label>
+              <input 
+                type="color" 
+                value={templateStyles.headerTextColor}
+                onChange={(e) => updateTemplateStyles('headerTextColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-xs text-editor-muted mb-1">Banner Text</label>
+              <input 
+                type="color" 
+                value={templateStyles.bannerTextColor}
+                onChange={(e) => updateTemplateStyles('bannerTextColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-xs text-editor-muted mb-1">Content Text</label>
+              <input 
+                type="color" 
+                value={templateStyles.collectionTextColor}
+                onChange={(e) => updateTemplateStyles('collectionTextColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-xs text-editor-muted mb-1">Card Text</label>
+              <input 
+                type="color" 
+                value={templateStyles.cardTextColor}
+                onChange={(e) => updateTemplateStyles('cardTextColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-xs text-editor-muted mb-1">Button Text</label>
+              <input 
+                type="color" 
+                value={templateStyles.buttonTextColor}
+                onChange={(e) => updateTemplateStyles('buttonTextColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Font Style</label>
+        <div className="flex space-x-2">
+          <button className="flex-1 bg-editor-highlight p-2 rounded-md flex items-center justify-center">
+            <Bold size={16} className="text-editor-text" />
+          </button>
+          <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
+            <Italic size={16} className="text-editor-text" />
+          </button>
+          <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
+            <Underline size={16} className="text-editor-text" />
+          </button>
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Alignment</label>
+        <div className="flex space-x-2">
+          <button className="flex-1 bg-editor-highlight p-2 rounded-md flex items-center justify-center">
+            <AlignLeft size={16} className="text-editor-text" />
+          </button>
+          <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
+            <AlignCenter size={16} className="text-editor-text" />
+          </button>
+          <button className="flex-1 bg-editor-surface p-2 rounded-md flex items-center justify-center">
+            <AlignRight size={16} className="text-editor-text" />
+          </button>
+        </div>
       </div>
     </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Background Color</label>
-      <div className="flex items-center">
-        <div className="w-8 h-8 rounded-md bg-white border border-editor-border"></div>
-        <input
-          type="text"
-          value="#FFFFFF"
-          className="ml-2 flex-1 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-        />
+  );
+};
+
+const ColorProperties: React.FC<StylePropertyProps> = ({ templateStyles, updateTemplateStyles }) => {
+  return (
+    <div className="p-4 space-y-4">
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Background Colors</label>
+        
+        <div className="space-y-2">
+          <div>
+            <label className="block text-xs text-editor-muted mb-1">Header Background</label>
+            <input 
+              type="color" 
+              value={templateStyles.headerBg}
+              onChange={(e) => updateTemplateStyles('headerBg', e.target.value)}
+              className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-xs text-editor-muted mb-1">Content Background</label>
+            <input 
+              type="color" 
+              value={templateStyles.collectionBg}
+              onChange={(e) => updateTemplateStyles('collectionBg', e.target.value)}
+              className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+            />
+          </div>
+          
+          <div>
+            <label className="block text-xs text-editor-muted mb-1">Card Background</label>
+            <input 
+              type="color" 
+              value={templateStyles.cardBg}
+              onChange={(e) => updateTemplateStyles('cardBg', e.target.value)}
+              className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+            />
+          </div>
+        </div>
+      </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Brand Colors</label>
+        <div className="space-y-2">
+          <div>
+            <label className="block text-xs text-editor-muted mb-1">Accent Color</label>
+            <div className="flex items-center">
+              <input 
+                type="color" 
+                value={templateStyles.accentColor}
+                onChange={(e) => updateTemplateStyles('accentColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-xs text-editor-muted mb-1">Button Color</label>
+            <div className="flex items-center">
+              <input 
+                type="color" 
+                value={templateStyles.buttonBg}
+                onChange={(e) => updateTemplateStyles('buttonBg', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+          </div>
+          
+          <div>
+            <label className="block text-xs text-editor-muted mb-1">Border Color</label>
+            <div className="flex items-center">
+              <input 
+                type="color" 
+                value={templateStyles.borderColor}
+                onChange={(e) => updateTemplateStyles('borderColor', e.target.value)}
+                className="w-full h-8 bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text"
+              />
+            </div>
+          </div>
+        </div>
+        
+        <div className="mt-4">
+          <Button 
+            className="w-full justify-center text-xs" 
+            variant="secondary"
+            onClick={() => {
+              updateTemplateStyles('accentColor', '#9b87f5');
+              updateTemplateStyles('buttonBg', '#9b87f5');
+            }}
+          >
+            Reset to Default Colors
+          </Button>
+        </div>
       </div>
     </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Brand Colors</label>
-      <div className="grid grid-cols-6 gap-2 mb-2">
-        <div className="w-8 h-8 rounded-md bg-blue-500 border border-editor-border"></div>
-        <div className="w-8 h-8 rounded-md bg-blue-400 border border-editor-border"></div>
-        <div className="w-8 h-8 rounded-md bg-blue-300 border border-editor-border"></div>
-        <div className="w-8 h-8 rounded-md bg-gray-800 border border-editor-border"></div>
-        <div className="w-8 h-8 rounded-md bg-gray-600 border border-editor-border"></div>
-        <div className="w-8 h-8 rounded-md bg-gray-400 border border-editor-border"></div>
-      </div>
-      <button className="editor-button w-full justify-center text-xs">
-        Add to Theme Colors
-      </button>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Gradients</label>
-      <div className="space-y-2 mb-2">
-        <div className="h-8 rounded-md bg-gradient-to-r from-blue-500 to-purple-500 border border-editor-border"></div>
-        <div className="h-8 rounded-md bg-gradient-to-r from-green-400 to-blue-500 border border-editor-border"></div>
-        <div className="h-8 rounded-md bg-gradient-to-r from-purple-500 to-pink-500 border border-editor-border"></div>
-      </div>
-      <button className="editor-button w-full justify-center text-xs">
-        Create Custom Gradient
-      </button>
-    </div>
-  </div>
-);
+  );
+};
 
 const ImageProperties: React.FC = () => (
   <div className="p-4 space-y-4">
@@ -284,129 +397,108 @@ const ImageProperties: React.FC = () => (
   </div>
 );
 
-const LayoutProperties: React.FC = () => (
-  <div className="p-4 space-y-4">
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Position</label>
-      <div className="flex space-x-2">
-        <div className="flex-1">
-          <label className="block text-xs text-editor-muted">X</label>
-          <input
-            type="text"
-            value="20px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-xs text-editor-muted">Y</label>
-          <input
-            type="text"
-            value="40px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-        </div>
-      </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Size</label>
-      <div className="flex space-x-2">
-        <div className="flex-1">
-          <label className="block text-xs text-editor-muted">Width</label>
-          <input
-            type="text"
-            value="300px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-        </div>
-        <div className="flex-1">
-          <label className="block text-xs text-editor-muted">Height</label>
-          <input
-            type="text"
-            value="auto"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-          />
-        </div>
-      </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Margin</label>
-      <div className="grid grid-cols-4 gap-2">
-        <div>
-          <label className="block text-xs text-editor-muted">Top</label>
-          <input
-            type="text"
-            value="20px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-editor-muted">Right</label>
-          <input
-            type="text"
-            value="10px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-editor-muted">Bottom</label>
-          <input
-            type="text"
-            value="20px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-editor-muted">Left</label>
-          <input
-            type="text"
-            value="10px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
+const LayoutProperties: React.FC<StylePropertyProps> = ({ templateStyles, updateTemplateStyles }) => {
+  const handleHeightChange = (section: 'headerHeight' | 'bannerHeight', value: string) => {
+    updateTemplateStyles(section, value);
+  };
+  
+  const handleGridColumnsChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateTemplateStyles('gridColumns', parseInt(e.target.value));
+  };
+  
+  const handleBorderRadiusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    updateTemplateStyles('buttonRadius', e.target.value);
+  };
+
+  return (
+    <div className="p-4 space-y-4">
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Section Heights</label>
+        <div className="space-y-2">
+          <div>
+            <label className="block text-xs text-editor-muted">Header Height</label>
+            <select 
+              className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+              value={templateStyles.headerHeight}
+              onChange={(e) => handleHeightChange('headerHeight', e.target.value)}
+            >
+              <option value="3rem">Small (48px)</option>
+              <option value="4rem">Medium (64px)</option>
+              <option value="5rem">Large (80px)</option>
+              <option value="6rem">Extra Large (96px)</option>
+            </select>
+          </div>
+          
+          <div>
+            <label className="block text-xs text-editor-muted">Banner Height</label>
+            <select 
+              className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+              value={templateStyles.bannerHeight}
+              onChange={(e) => handleHeightChange('bannerHeight', e.target.value)}
+            >
+              <option value="12rem">Small (192px)</option>
+              <option value="16rem">Medium (256px)</option>
+              <option value="20rem">Large (320px)</option>
+              <option value="24rem">Extra Large (384px)</option>
+              <option value="30rem">Hero (480px)</option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Padding</label>
-      <div className="grid grid-cols-4 gap-2">
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Grid Layout</label>
         <div>
-          <label className="block text-xs text-editor-muted">Top</label>
-          <input
-            type="text"
-            value="16px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-editor-muted">Right</label>
-          <input
-            type="text"
-            value="16px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-editor-muted">Bottom</label>
-          <input
-            type="text"
-            value="16px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
-        </div>
-        <div>
-          <label className="block text-xs text-editor-muted">Left</label>
-          <input
-            type="text"
-            value="16px"
-            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-2 py-2"
-          />
+          <label className="block text-xs text-editor-muted">Columns</label>
+          <select 
+            className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+            value={templateStyles.gridColumns}
+            onChange={handleGridColumnsChange}
+          >
+            <option value="1">1 Column</option>
+            <option value="2">2 Columns</option>
+            <option value="3">3 Columns</option>
+            <option value="4">4 Columns</option>
+            <option value="5">5 Columns</option>
+            <option value="6">6 Columns</option>
+          </select>
         </div>
       </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Border Radius</label>
+        <select 
+          className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+          value={templateStyles.buttonRadius}
+          onChange={handleBorderRadiusChange}
+        >
+          <option value="0">None (0px)</option>
+          <option value="0.25rem">Extra Small (4px)</option>
+          <option value="0.5rem">Small (8px)</option>
+          <option value="0.75rem">Medium (12px)</option>
+          <option value="1rem">Large (16px)</option>
+          <option value="1.5rem">Extra Large (24px)</option>
+          <option value="9999px">Full (Rounded)</option>
+        </select>
+      </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Spacing</label>
+        <select 
+          className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
+          value={templateStyles.spacing}
+          onChange={(e) => updateTemplateStyles('spacing', e.target.value)}
+        >
+          <option value="0.5rem">Extra Small (8px)</option>
+          <option value="1rem">Small (16px)</option>
+          <option value="1.5rem">Medium (24px)</option>
+          <option value="2rem">Large (32px)</option>
+          <option value="2.5rem">Extra Large (40px)</option>
+        </select>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 const EffectsProperties: React.FC = () => (
   <div className="p-4 space-y-4">
@@ -530,162 +622,149 @@ const EffectsProperties: React.FC = () => (
   </div>
 );
 
-const ThemeProperties: React.FC = () => (
-  <div className="p-4 space-y-4">
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Theme Name</label>
-      <input
-        type="text"
-        value="Modern Web3"
-        className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2"
-      />
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Primary Colors</label>
-      <div className="space-y-2">
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-blue-500 border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Primary</div>
-            <input
-              type="text"
-              value="#3B82F6"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
+const ThemeProperties: React.FC<StylePropertyProps> = ({ templateStyles, updateTemplateStyles }) => {
+  const applyPresetTheme = (theme: 'default' | 'dark' | 'light' | 'colorful') => {
+    switch (theme) {
+      case 'default':
+        updateTemplateStyles('accentColor', '#9b87f5');
+        updateTemplateStyles('buttonBg', '#9b87f5');
+        updateTemplateStyles('headerBg', '#18181E');
+        updateTemplateStyles('collectionBg', '#18181E');
+        updateTemplateStyles('cardBg', '#232329');
+        updateTemplateStyles('headerTextColor', 'white');
+        updateTemplateStyles('bannerTextColor', 'white');
+        updateTemplateStyles('collectionTextColor', 'white');
+        updateTemplateStyles('cardTextColor', 'white');
+        updateTemplateStyles('buttonTextColor', 'white');
+        break;
+      case 'dark':
+        updateTemplateStyles('accentColor', '#7E69AB');
+        updateTemplateStyles('buttonBg', '#7E69AB');
+        updateTemplateStyles('headerBg', '#111111');
+        updateTemplateStyles('collectionBg', '#111111');
+        updateTemplateStyles('cardBg', '#1A1A1A');
+        updateTemplateStyles('headerTextColor', '#CCCCCC');
+        updateTemplateStyles('bannerTextColor', '#CCCCCC');
+        updateTemplateStyles('collectionTextColor', '#CCCCCC');
+        updateTemplateStyles('cardTextColor', '#CCCCCC');
+        updateTemplateStyles('buttonTextColor', '#FFFFFF');
+        break;
+      case 'light':
+        updateTemplateStyles('accentColor', '#b6a8f8');
+        updateTemplateStyles('buttonBg', '#b6a8f8');
+        updateTemplateStyles('headerBg', '#FFFFFF');
+        updateTemplateStyles('collectionBg', '#F5F5F5');
+        updateTemplateStyles('cardBg', '#FFFFFF');
+        updateTemplateStyles('headerTextColor', '#333333');
+        updateTemplateStyles('bannerTextColor', '#333333');
+        updateTemplateStyles('collectionTextColor', '#333333');
+        updateTemplateStyles('cardTextColor', '#333333');
+        updateTemplateStyles('buttonTextColor', '#FFFFFF');
+        break;
+      case 'colorful':
+        updateTemplateStyles('accentColor', '#b6a8f8');
+        updateTemplateStyles('buttonBg', '#9b87f5');
+        updateTemplateStyles('headerBg', '#1F1D36');
+        updateTemplateStyles('collectionBg', '#3F3351');
+        updateTemplateStyles('cardBg', '#864879');
+        updateTemplateStyles('headerTextColor', '#FFFFFF');
+        updateTemplateStyles('bannerTextColor', '#FFFFFF');
+        updateTemplateStyles('collectionTextColor', '#FFFFFF');
+        updateTemplateStyles('cardTextColor', '#FFFFFF');
+        updateTemplateStyles('buttonTextColor', '#FFFFFF');
+        break;
+    }
+  };
+
+  return (
+    <div className="p-4 space-y-4">
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Theme Presets</label>
+        <div className="space-y-2">
+          <Button 
+            variant="secondary" 
+            className="w-full text-xs"
+            onClick={() => applyPresetTheme('default')}
+          >
+            <div className="w-3 h-3 rounded-full bg-[#9b87f5] mr-1.5"></div>
+            Default Theme
+          </Button>
+          <Button 
+            variant="secondary" 
+            className="w-full text-xs"
+            onClick={() => applyPresetTheme('dark')}
+          >
+            <div className="w-3 h-3 rounded-full bg-[#111111] mr-1.5"></div>
+            Dark Theme
+          </Button>
+          <Button 
+            variant="secondary" 
+            className="w-full text-xs"
+            onClick={() => applyPresetTheme('light')}
+          >
+            <div className="w-3 h-3 rounded-full bg-[#F5F5F5] mr-1.5"></div>
+            Light Theme
+          </Button>
+          <Button 
+            variant="secondary" 
+            className="w-full text-xs"
+            onClick={() => applyPresetTheme('colorful')}
+          >
+            <div className="w-3 h-3 rounded-full bg-[#864879] mr-1.5"></div>
+            Colorful Theme
+          </Button>
         </div>
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-blue-400 border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Secondary</div>
-            <input
-              type="text"
-              value="#60A5FA"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
+      </div>
+      
+      <div>
+        <label className="block text-xs text-editor-muted mb-1.5">Current Theme Colors</label>
+        <div className="grid grid-cols-4 gap-2 mb-2">
+          <div className="w-8 h-8 rounded-md" style={{ backgroundColor: templateStyles.accentColor }}></div>
+          <div className="w-8 h-8 rounded-md" style={{ backgroundColor: templateStyles.buttonBg }}></div>
+          <div className="w-8 h-8 rounded-md" style={{ backgroundColor: templateStyles.headerBg }}></div>
+          <div className="w-8 h-8 rounded-md" style={{ backgroundColor: templateStyles.cardBg }}></div>
         </div>
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-amber-500 border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Accent</div>
-            <input
-              type="text"
-              value="#F59E0B"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
+      </div>
+      
+      <div>
+        <Button 
+          className="w-full bg-cv-purple hover:bg-cv-purple/90 text-white"
+          onClick={() => {
+            toast({
+              title: "Theme Saved",
+              description: "Your custom theme has been saved to your library."
+            });
+          }}
+        >
+          Save Theme to Library
+        </Button>
+      </div>
+      
+      <div>
+        <Button 
+          variant="outline" 
+          className="w-full border-cv-purple text-cv-purple hover:bg-cv-purple hover:text-white"
+          onClick={() => {
+            toast({
+              title: "Theme Exported",
+              description: "Your theme settings have been exported to a file."
+            });
+          }}
+        >
+          Export Theme Settings
+        </Button>
+      </div>
+      
+      <div className="border-t border-editor-border pt-4">
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-editor-muted">Apply Theme to All Pages</span>
+          <button className="p-1 rounded-md bg-editor-surface hover:bg-editor-highlight transition-colors">
+            <Eye size={16} className="text-editor-text" />
+          </button>
         </div>
       </div>
     </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Neutral Colors</label>
-      <div className="space-y-2">
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-gray-900 border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Background (Dark)</div>
-            <input
-              type="text"
-              value="#111827"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
-        </div>
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-white border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Background (Light)</div>
-            <input
-              type="text"
-              value="#FFFFFF"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
-        </div>
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-gray-700 border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Text (Dark)</div>
-            <input
-              type="text"
-              value="#374151"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
-        </div>
-        <div className="flex items-center">
-          <div className="w-8 h-8 rounded-md bg-gray-200 border border-editor-border"></div>
-          <div className="ml-2">
-            <div className="text-xs text-editor-text">Border</div>
-            <input
-              type="text"
-              value="#E5E7EB"
-              className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-0.5 text-center"
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Typography</label>
-      <div className="space-y-2">
-        <select className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2 mb-2">
-          <option>Inter</option>
-          <option>SF Pro Display</option>
-          <option>Roboto</option>
-          <option>Poppins</option>
-        </select>
-        
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-editor-text">Heading Size Scale</span>
-          <select className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-1">
-            <option>1.25</option>
-            <option>1.333</option>
-            <option>1.414</option>
-            <option>1.5</option>
-          </select>
-        </div>
-        
-        <div className="flex justify-between items-center">
-          <span className="text-xs text-editor-text">Base Font Size</span>
-          <select className="w-20 bg-editor-surface border border-editor-border rounded-md text-xs text-editor-text px-2 py-1">
-            <option>14px</option>
-            <option>16px</option>
-            <option>18px</option>
-          </select>
-        </div>
-      </div>
-    </div>
-    
-    <div>
-      <label className="block text-xs text-editor-muted mb-1.5">Border Radius</label>
-      <select className="w-full bg-editor-surface border border-editor-border rounded-md text-sm text-editor-text px-3 py-2">
-        <option>None (0px)</option>
-        <option>Small (4px)</option>
-        <option>Medium (8px)</option>
-        <option>Large (12px)</option>
-        <option>XL (16px)</option>
-        <option>2XL (24px)</option>
-        <option>Full (9999px)</option>
-      </select>
-    </div>
-    
-    <div>
-      <button className="editor-button-primary w-full justify-center text-sm">
-        Apply Theme to Template
-      </button>
-    </div>
-    
-    <div>
-      <button className="editor-button w-full justify-center text-sm">
-        Save Theme to Library
-      </button>
-    </div>
-  </div>
-);
+  );
+};
 
 export default PropertyPanel;

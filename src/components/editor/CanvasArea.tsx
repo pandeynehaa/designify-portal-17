@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, DragEvent, useEffect } from "react";
 import { toast } from "../ui/use-toast";
 import DeviceToolbar from "./DeviceToolbar";
@@ -10,13 +9,15 @@ import TokenGateTemplate from "./templates/TokenGateTemplate";
 import BuyCoinTemplate from "./templates/BuyCoinTemplate";
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "@/components/ui/menubar";
 import { Edit, Crop, MousePointer, Move, Plus, Type, Image as ImageIcon, Layers } from "lucide-react";
+import { TemplateStyles } from "../../pages/DesignEditor";
 
 interface CanvasAreaProps {
   activeTemplate: string;
   zoom: number;
+  templateStyles: TemplateStyles;
 }
 
-const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
+const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom, templateStyles }) => {
   const [deviceView, setDeviceView] = useState("desktop");
   const [zoomLevel, setZoomLevel] = useState(zoom * 100);
   const [activeTool, setActiveTool] = useState("select");
@@ -25,7 +26,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
   const [showGrid, setShowGrid] = useState(true);
   const [editMode, setEditMode] = useState(true);
   
-  // Update zoom level when zoom prop changes
   useEffect(() => {
     setZoomLevel(zoom * 100);
   }, [zoom]);
@@ -46,7 +46,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Highlight drop area
     if (canvasRef.current) {
       canvasRef.current.classList.add("drag-over");
     }
@@ -56,7 +55,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Remove highlight
     if (canvasRef.current) {
       canvasRef.current.classList.remove("drag-over");
     }
@@ -66,7 +64,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
     e.preventDefault();
     e.stopPropagation();
     
-    // Remove highlight
     if (canvasRef.current) {
       canvasRef.current.classList.remove("drag-over");
     }
@@ -145,7 +142,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
   const renderActiveTemplate = () => {
     switch (activeTemplate) {
       case "marketplace":
-        return <MarketplaceTemplate />;
+        return <MarketplaceTemplate styles={templateStyles} />;
       case "drops":
         return <DropsTemplate />;
       case "token-gate":
@@ -280,7 +277,8 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({ activeTemplate, zoom }) => {
           
           {editMode && (
             <button 
-              className="absolute right-4 bottom-4 p-2 bg-cv-accent rounded-full text-white shadow-lg hover:bg-cv-accent/90 transition-colors"
+              className="absolute right-4 bottom-4 p-2 rounded-full text-white shadow-lg transition-colors"
+              style={{ backgroundColor: templateStyles.buttonBg }}
               title="Add Element"
             >
               <Plus size={20} />
