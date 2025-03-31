@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { 
   PlusCircle, Upload, Palette, PanelLeft, 
-  Camera, Layers, DropletLine
+  Camera, Layers, Droplet
 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Slider } from "@/components/ui/slider";
@@ -109,7 +109,7 @@ const BackgroundTab: React.FC = () => {
             value="gradient" 
             className="text-xs py-1.5 data-[state=active]:bg-cv-accent"
           >
-            <DropletLine size={14} className="mr-1" />
+            <Droplet size={14} className="mr-1" />
             Gradient
           </TabsTrigger>
           <TabsTrigger 
