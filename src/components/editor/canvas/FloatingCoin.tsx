@@ -10,16 +10,19 @@ interface FloatingCoinProps {
 }
 
 const FloatingCoin: React.FC<FloatingCoinProps> = ({ color, textColor }) => {
+  // Use correct type for the ref
   const coinRef = useRef<Mesh>(null);
   
   // Use gradient colors
   const primaryColor = color || "#ffbf00";
   const secondaryColor = "#ff8c00"; // Secondary color for edge
   
-  // Animation
+  // Animation - fix the TypeScript errors with rotation and position
   useFrame((state) => {
     if (coinRef.current) {
+      // Access rotation.y instead of y directly
       coinRef.current.rotation.y += 0.005;
+      // Access position.y instead of y directly
       coinRef.current.position.y = Math.sin(state.clock.getElapsedTime()) * 0.1;
     }
   });
