@@ -2,14 +2,9 @@
 import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { BuyCoinFormValues, SectionProps } from "./types";
+import { TreasurySectionProps } from "./types";
 import { Info } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-
-interface TreasurySectionProps extends SectionProps {
-  form: UseFormReturn<BuyCoinFormValues>;
-}
 
 const TreasurySection: React.FC<TreasurySectionProps> = ({ form, sectionName, updateProgress }) => {
   // Check if treasury address is valid (simple check for now)

@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SectionProps } from "./types";
+import { TokenomicsSectionProps } from "./types";
 
-const TokenomicsSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+const TokenomicsSection: React.FC<TokenomicsSectionProps> = ({ form, sectionName, updateProgress }) => {
   const initialPrice = form.watch("initialPrice");
   const maxSupply = form.watch("maxSupply");
   

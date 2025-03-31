@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SectionProps } from "./types";
+import { TokenInfoSectionProps } from "./types";
 
-const TokenInfoSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+const TokenInfoSection: React.FC<TokenInfoSectionProps> = ({ form, sectionName, updateProgress }) => {
   const tokenSymbol = form.watch("tokenSymbol");
   const tokenName = form.watch("tokenName");
   const tokenDecimals = form.watch("tokenDecimals");

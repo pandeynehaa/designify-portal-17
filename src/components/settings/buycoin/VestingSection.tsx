@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
-import { SectionProps } from "./types";
+import { VestingSectionProps } from "./types";
 
-const VestingSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+const VestingSection: React.FC<VestingSectionProps> = ({ form, sectionName, updateProgress }) => {
   const enableVesting = form.watch("enableVesting");
   const vestingPeriod = form.watch("vestingPeriod");
   const vestingCliff = form.watch("vestingCliff");

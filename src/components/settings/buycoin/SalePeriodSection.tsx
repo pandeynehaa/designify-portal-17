@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SectionProps } from "./types";
+import { SalePeriodSectionProps } from "./types";
 
-const SalePeriodSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+const SalePeriodSection: React.FC<SalePeriodSectionProps> = ({ form, sectionName, updateProgress }) => {
   const publicSaleStart = form.watch("publicSaleStart");
   const publicSaleEnd = form.watch("publicSaleEnd");
   

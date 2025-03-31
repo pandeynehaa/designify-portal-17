@@ -24,3 +24,12 @@ export interface SectionProps {
   sectionName: string;
   updateProgress?: (sectionName: string, isComplete: boolean) => void;
 }
+
+// Define specific prop types for each section component
+export type ContractSectionProps = SectionProps;
+export type TokenInfoSectionProps = SectionProps;
+export type TokenomicsSectionProps = SectionProps;
+export type VestingSectionProps = SectionProps;
+export type SalePeriodSectionProps = SectionProps;
+export type PurchaseLimitsSectionProps = SectionProps;
+export type TreasurySectionProps = SectionProps;

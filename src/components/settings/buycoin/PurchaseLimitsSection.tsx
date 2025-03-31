@@ -2,9 +2,9 @@
 import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { SectionProps } from "./types";
+import { PurchaseLimitsSectionProps } from "./types";
 
-const PurchaseLimitsSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+const PurchaseLimitsSection: React.FC<PurchaseLimitsSectionProps> = ({ form, sectionName, updateProgress }) => {
   const minPurchaseAmount = form.watch("minPurchaseAmount");
   const maxPurchaseAmount = form.watch("maxPurchaseAmount");
   
