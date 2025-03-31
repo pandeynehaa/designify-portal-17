@@ -18,11 +18,11 @@ const AIImageGenerator: React.FC<AIImageGeneratorProps> = ({ onClose, onGenerate
   const [creativeLevel, setCreativeLevel] = useState([50]);
   const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
   const [sampledPrompts] = useState([
-    "Futuristic crypto trading dashboard with neon graphics",
-    "Digital wallet interface with NFT showcase in cyberpunk style",
-    "Abstract blockchain visualization with glowing connections",
-    "Metaverse landscape with digital assets and NFT galleries",
-    "Web3 community hub with 3D avatar interactions"
+    "Futuristic NFT marketplace UI with glowing elements",
+    "Cyberpunk theme for web3 token gate interface",
+    "Abstract digital wallet dashboard with 3D elements",
+    "Modern NFT gallery layout with dark mode aesthetics",
+    "Crypto dashboard with data visualization and neon accents"
   ]);
 
   const handleGenerate = () => {
@@ -39,13 +39,14 @@ const AIImageGenerator: React.FC<AIImageGeneratorProps> = ({ onClose, onGenerate
     
     // Simulate AI image generation (in a real app, this would call an API)
     setTimeout(() => {
-      // These are placeholder images - in a real implementation, 
-      // this would be replaced with calls to an AI image generation API
+      // These are placeholder images focused on NFTs, themes and UI designs
       const placeholderImages = [
-        "https://images.unsplash.com/photo-1639322537228-f710d846310a?w=500",
-        "https://images.unsplash.com/photo-1639322537234-e7895e08a659?w=500",
-        "https://images.unsplash.com/photo-1636466497217-26a8cbeaf0aa?w=500",
-        "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?w=500"
+        "https://via.placeholder.com/500x500/4F46E5/FFFFFF?text=NFT+Theme+1",
+        "https://via.placeholder.com/500x500/10B981/FFFFFF?text=UI+Design",
+        "https://via.placeholder.com/500x500/8B5CF6/FFFFFF?text=Web3+Interface",
+        "https://via.placeholder.com/500x500/EC4899/FFFFFF?text=Dashboard+Theme",
+        "https://via.placeholder.com/500x500/F59E0B/FFFFFF?text=Token+Gate+UI",
+        "https://via.placeholder.com/500x500/3B82F6/FFFFFF?text=NFT+Gallery"
       ];
       
       const randomImage = placeholderImages[Math.floor(Math.random() * placeholderImages.length)];
