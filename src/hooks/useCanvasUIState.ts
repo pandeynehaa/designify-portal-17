@@ -31,13 +31,22 @@ export const useCanvasUIState = () => {
   };
 
   return {
+    // State values
     showGrid,
-    toggleGrid,
     editMode,
-    toggleEditMode,
     showLeftSidebar,
-    toggleLeftSidebar,
     showRightSidebar,
+    
+    // Direct setters
+    setShowGrid,
+    setEditMode,
+    setShowLeftSidebar,
+    setShowRightSidebar,
+    
+    // Toggle functions
+    toggleGrid,
+    toggleEditMode,
+    toggleLeftSidebar,
     toggleRightSidebar
   };
 };

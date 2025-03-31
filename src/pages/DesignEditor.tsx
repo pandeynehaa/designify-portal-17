@@ -1,4 +1,3 @@
-
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -18,9 +17,8 @@ import { useCanvasUIState } from "@/hooks/useCanvasUIState";
 const DesignEditor: React.FC = () => {
   const location = useLocation();
   const { selectedElement } = useSelectedElement();
-  const { showRightSidebar, setShowRightSidebar } = useCanvasUIState();
+  const { showRightSidebar, toggleRightSidebar, setShowRightSidebar } = useCanvasUIState();
   
-  // Custom hooks for editor state management
   const { 
     activeTab, 
     showPropertyPanel, 
@@ -44,7 +42,6 @@ const DesignEditor: React.FC = () => {
   const { zoom, handleZoomIn, handleZoomOut, handleZoomReset } = useCanvasZoom(1);
   const { dropOverlayVisible } = useCanvasDrop();
   
-  // Check if we need to set a specific template from navigation
   useEffect(() => {
     if (location.state && location.state.template) {
       setActiveTemplate(location.state.template as TemplateType);
@@ -55,7 +52,6 @@ const DesignEditor: React.FC = () => {
     }
   }, [location.state, setActiveTemplate]);
   
-  // Auto-show property panel when an element is selected
   useEffect(() => {
     if (selectedElement && !showPropertyPanel) {
       setShowPropertyPanel(true);
