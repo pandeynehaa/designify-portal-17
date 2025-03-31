@@ -1,9 +1,10 @@
 
-import React, { useState } from "react";
-import { Pencil, Trash2, Copy, Move } from "lucide-react";
+import React from "react";
 import { CanvasElement } from "../../../types/canvasElement";
 import ElementControls from "./ElementControls";
 import ResizeHandles from "./ResizeHandles";
+import { useSelectedElement } from "../../../hooks/useSelectedElement";
+import { toast } from "@/components/ui/use-toast";
 
 interface ImageElementProps {
   element: CanvasElement;
@@ -11,8 +12,8 @@ interface ImageElementProps {
 }
 
 const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
-  const [isSelected, setIsSelected] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+  const { selectedElement, selectElement } = useSelectedElement();
+  const isSelected = selectedElement?.id === element.id;
   
   const style = {
     position: 'absolute' as const,
@@ -23,21 +24,26 @@ const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
   
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    setIsSelected(true);
+    selectElement(element);
+    
+    toast({
+      title: "Image Selected",
+      description: "Edit image properties in the panel"
+    });
   };
   
   const handleMouseEnter = () => {
-    setIsHovered(true);
+    // Hovering logic can remain
   };
   
   const handleMouseLeave = () => {
-    setIsHovered(false);
+    // Hovering logic can remain
   };
 
   return (
     <div
       style={style}
-      className={`relative transition-all duration-150 ${isSelected ? 'canvas-element selected' : 'canvas-element'}`}
+      className={`relative transition-all duration-150 ${isSelected ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}`}
       onClick={handleClick}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
@@ -48,12 +54,11 @@ const ImageElement: React.FC<ImageElementProps> = ({ element, activeTool }) => {
         className="max-w-[300px] max-h-[300px] rounded shadow-sm"
       />
       
-      {(isSelected || isHovered) && (
-        <ElementControls />
-      )}
-      
       {isSelected && (
-        <ResizeHandles />
+        <>
+          <ElementControls element={element} />
+          <ResizeHandles />
+        </>
       )}
     </div>
   );

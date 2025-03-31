@@ -3,6 +3,7 @@ import React from "react";
 import { CanvasElement } from "../../types/canvasElement";
 import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
+import { useSelectedElement } from "../../hooks/useSelectedElement";
 
 interface CanvasElementsProps {
   droppedElements: CanvasElement[];
@@ -10,6 +11,15 @@ interface CanvasElementsProps {
 }
 
 const CanvasElements: React.FC<CanvasElementsProps> = ({ droppedElements, activeTool }) => {
+  const { selectElement } = useSelectedElement();
+  
+  const handleCanvasClick = (e: React.MouseEvent) => {
+    // Only clear selection if clicking directly on the canvas (not on an element)
+    if (e.target === e.currentTarget) {
+      selectElement(null);
+    }
+  };
+
   const renderElement = (element: CanvasElement) => {
     switch (element.type) {
       case 'component':
@@ -22,9 +32,12 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({ droppedElements, active
   };
 
   return (
-    <>
+    <div 
+      className="absolute inset-0" 
+      onClick={handleCanvasClick}
+    >
       {droppedElements.map(renderElement)}
-    </>
+    </div>
   );
 };
 

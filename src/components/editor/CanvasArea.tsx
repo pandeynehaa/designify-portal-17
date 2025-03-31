@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { useDeviceState } from "../../hooks/useDeviceState";
 import DeviceToolbar from "./DeviceToolbar";
@@ -8,9 +7,11 @@ import CanvasTools from "./CanvasTools";
 import { Menubar, MenubarMenu, MenubarTrigger, MenubarContent, MenubarItem } from "@/components/ui/menubar";
 import { Edit, Crop, MousePointer, Move, Type, Image as ImageIcon, Layers } from "lucide-react";
 import { TemplateStyles } from "../../types/templateStyles";
+import { CanvasElement } from "../../types/canvasElement";
 import CanvasEventHandlers from "./canvas/CanvasEventHandlers";
 import TemplateRenderer from "./canvas/TemplateRenderer";
 import CanvasActionButton from "./canvas/CanvasActionButton";
+import { useSelectedElement } from "../../hooks/useSelectedElement";
 import { toast } from "@/components/ui/use-toast";
 
 interface CanvasAreaProps {
@@ -27,9 +28,10 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
   const { deviceView, setDeviceView, activeTool, setActiveTool } = useDeviceState();
   const [zoomLevel, setZoomLevel] = useState(zoom * 100);
   const canvasRef = useRef<HTMLDivElement>(null);
-  const [droppedElements, setDroppedElements] = useState<Array<{type: string, id: string, x: number, y: number, content?: string}>>([]);
+  const [droppedElements, setDroppedElements] = useState<CanvasElement[]>([]);
   const [showGrid, setShowGrid] = useState(true);
   const [editMode, setEditMode] = useState(true);
+  const { selectedElement, selectElement } = useSelectedElement();
   
   React.useEffect(() => {
     setZoomLevel(zoom * 100);
@@ -85,7 +87,8 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         type: 'image',
         id: newId,
         x: 150,
-        y: 150
+        y: 150,
+        content: 'https://via.placeholder.com/150'
       }
     ]);
     toast({
@@ -111,6 +114,23 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
       description: "New component has been added to the canvas"
     });
   };
+  
+  const updateElement = (id: string, updates: Partial<CanvasElement>) => {
+    setDroppedElements(elements => 
+      elements.map(element => 
+        element.id === id ? { ...element, ...updates } : element
+      )
+    );
+    
+    toast({
+      title: "Element Updated",
+      description: "Changes have been applied to the element"
+    });
+  };
+  
+  React.useEffect(() => {
+    (window as any).updateCanvasElement = updateElement;
+  }, []);
   
   return (
     <div className="flex flex-col flex-1 h-full">
