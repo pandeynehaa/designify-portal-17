@@ -1,8 +1,7 @@
-
 import React, { useState, useRef, useEffect } from "react";
 import { CanvasElement } from "../../../types/canvasElement";
 import ElementControls from "./ElementControls";
-import ResizeHandles from "./ResizeHandles";
+import ResizeHandles, { ResizeDirection } from "./ResizeHandles";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import { Link } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
@@ -26,7 +25,6 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
   const initialSize = useRef({ width: 0, height: 0 });
   const initialPos = useRef({ x: 0, y: 0 });
   
-  // Extract NFT properties from element
   const nftData = element.nftData || {
     image: element.content,
     name: "NFT Item",
@@ -38,7 +36,6 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
     height: 300
   };
   
-  // Apply NFT data to local state on element change
   useEffect(() => {
     if (element.nftData) {
       setRotation(element.nftData.rotation || 0);
@@ -65,16 +62,13 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
     e.stopPropagation();
     
     if (!editMode) {
-      // In preview mode, clicking will navigate to marketplace
       if (nftData.marketplaceLink) {
         toast({
           title: "Marketplace Link",
           description: `Navigating to: ${nftData.marketplaceLink}`
         });
-        // In real implementation: window.location.href = nftData.marketplaceLink;
       }
     } else {
-      // In edit mode, select the element
       selectElement(element);
       
       toast({
@@ -84,8 +78,7 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
     }
   };
 
-  // Setup resize handlers
-  const handleResizeStart = (e: React.MouseEvent, direction: string) => {
+  const handleResizeStart = (e: React.MouseEvent, direction: ResizeDirection) => {
     e.stopPropagation();
     e.preventDefault();
     
@@ -104,7 +97,6 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
       let newWidth = initialSize.current.width;
       let newHeight = initialSize.current.height;
       
-      // Adjust size based on resize direction
       if (direction.includes('e')) {
         newWidth = Math.max(50, initialSize.current.width + deltaX);
       } else if (direction.includes('w')) {
@@ -125,7 +117,6 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
       
       resizing.current = false;
       
-      // Update element in the global state with new dimensions
       if (typeof (window as any).updateCanvasElement === 'function') {
         (window as any).updateCanvasElement(element.id, {
           nftData: {
@@ -144,7 +135,6 @@ const NFTElement: React.FC<NFTElementProps> = ({ element, activeTool, editMode =
     document.addEventListener('mouseup', handleResizeEnd);
   };
 
-  // Attach resize listeners to ResizeHandles component
   const getResizeHandlers = () => {
     return {
       onResizeStart: handleResizeStart

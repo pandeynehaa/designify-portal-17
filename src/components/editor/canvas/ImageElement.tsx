@@ -1,4 +1,3 @@
-
 import React from "react";
 import { CanvasElement } from "../../../types/canvasElement";
 import ElementControls from "./ElementControls";
