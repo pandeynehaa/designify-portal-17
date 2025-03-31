@@ -11,6 +11,7 @@ import LayoutProperties from "./properties/LayoutProperties";
 import EffectsProperties from "./properties/EffectsProperties";
 import ThemeProperties from "./properties/ThemeProperties";
 import ElementProperties from "./properties/ElementProperties";
+import BackgroundProperties from "./properties/BackgroundProperties";
 
 interface PropertyPanelProps {
   activeTab: string;
@@ -64,6 +65,12 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
               <ColorProperties 
                 templateStyles={templateStyles} 
                 updateTemplateStyles={updateTemplateStyles} 
+              />
+            )}
+            {activeTab === "background" && (
+              <BackgroundProperties
+                templateStyles={templateStyles}
+                updateTemplateStyles={updateTemplateStyles}
               />
             )}
             {activeTab === "images" && <ImageProperties />}

@@ -20,5 +20,11 @@ export interface CanvasElement {
   visible?: boolean;
   zIndex?: number;
   nftData?: NFTData;
-  templateSection?: string; // New field for template sections
+  templateSection?: string; // Field for template sections
+  backgroundType?: 'color' | 'gradient' | 'image'; // New field for background type
+  backgroundValue?: string; // New field for background value (color code, gradient string, or image URL)
+  blurAmount?: number; // New field for blur effect
+  opacity?: number; // New field for opacity (0-100)
+  enable3D?: boolean; // New field for 3D effect toggle
 }
+

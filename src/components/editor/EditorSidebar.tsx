@@ -1,13 +1,14 @@
 
 import React from "react";
 import { Grid } from "lucide-react";
-import SidebarTabs from "./SidebarTabs"; // Fixed import path
+import SidebarTabs from "./SidebarTabs"; 
 import ComponentsTab from "./sidebar/ComponentsTab";
 import ImagesTab from "./sidebar/ImagesTab";
 import ThemeTab from "./sidebar/ThemeTab";
 import LayersTab from "./sidebar/LayersTab";
 import AIThemeGenerator from "./sidebar/AIThemeGenerator";
 import NFTsTab from "./sidebar/NFTsTab";
+import BackgroundTab from "./sidebar/BackgroundTab";
 import { toast } from "@/components/ui/use-toast";
 
 interface EditorSidebarProps {
@@ -43,6 +44,7 @@ const EditorSidebar: React.FC<EditorSidebarProps> = ({ activeTab, setActiveTab }
         {activeTab === "items" && <NFTsTab />}
         {activeTab === "layers" && <LayersTab />}
         {activeTab === "theme" && <ThemeTab />}
+        {activeTab === "background" && <BackgroundTab />}
       </div>
       
       <AIThemeGenerator />

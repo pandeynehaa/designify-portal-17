@@ -42,6 +42,19 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
     }
   };
   
+  // Handle custom background properties if they exist
+  const elementBackground = element.backgroundType && element.backgroundValue 
+    ? element.backgroundType === 'gradient' 
+      ? element.backgroundValue 
+      : element.backgroundType === 'color' 
+        ? element.backgroundValue 
+        : 'white'
+    : 'white';
+    
+  // Handle custom effects if they exist
+  const blurEffect = element.blurAmount ? `blur(${element.blurAmount}px)` : 'none';
+  const opacity = element.opacity ? element.opacity / 100 : 1;
+  
   const style = {
     position: 'absolute' as const,
     left: `${position.x}px`,
@@ -50,14 +63,16 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
     transition: isDragging ? 'none' : 'box-shadow 0.2s ease',
     minWidth: '100px', // Ensure a minimum size for text elements
     minHeight: '30px',
-    opacity: editMode ? 1 : 0.95, // Slightly transparent in preview mode
+    opacity: editMode ? 1 : opacity,
+    background: elementBackground,
+    backdropFilter: blurEffect,
   };
   
   return (
     <div 
       key={element.id} 
       style={style} 
-      className={`p-2 bg-white border rounded ${
+      className={`p-2 border rounded ${
         !editMode ? 'shadow-md pointer-events-none' : 
         activeTool === 'move' ? 'hover:shadow-md' : ''
       } ${isSelected && editMode ? 'canvas-element selected ring-2 ring-cv-accent' : 'canvas-element'}

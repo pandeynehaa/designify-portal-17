@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { toast } from "@/components/ui/use-toast";
@@ -238,6 +237,43 @@ export const useCanvasState = () => {
     });
   };
   
+  // New function to update background properties
+  const updateBackgroundProperties = (id: string, properties: {
+    backgroundType?: 'color' | 'gradient' | 'image';
+    backgroundValue?: string;
+    blurAmount?: number;
+    opacity?: number;
+    enable3D?: boolean;
+  }) => {
+    // Get the original element before update
+    const originalElement = droppedElements.find(el => el.id === id);
+    
+    setDroppedElements(elements => 
+      elements.map(element => {
+        if (element.id === id) {
+          return { ...element, ...properties };
+        }
+        return element;
+      })
+    );
+    
+    // Add to history
+    if (originalElement) {
+      const updatedElement = { ...originalElement, ...properties };
+      
+      addToHistory({
+        type: 'update',
+        elements: [updatedElement],
+        previousElements: [originalElement]
+      });
+    }
+    
+    toast({
+      title: "Background Updated",
+      description: "Background properties have been updated"
+    });
+  };
+  
   // Undo the last action
   const undoAction = () => {
     if (currentHistoryIndex.current < 0) {
@@ -365,6 +401,7 @@ export const useCanvasState = () => {
     deleteElement,
     duplicateElement,
     updateNFTEffects,
+    updateBackgroundProperties, // Add the new function to the return object
     undoAction,
     redoAction
   };
