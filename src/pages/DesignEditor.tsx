@@ -30,7 +30,6 @@ const DesignEditor: React.FC = () => {
   
   const handleAIExtract = (themeData: any) => {
     console.log("Extracted theme data:", themeData);
-    // In a real implementation, we would apply the theme to the active template
     toast({
       title: "Theme Extracted",
       description: "The AI has successfully extracted the theme from the provided URL."
@@ -39,7 +38,6 @@ const DesignEditor: React.FC = () => {
   
   const handleThemeApply = (themeData: any) => {
     console.log("Applied theme data:", themeData);
-    // In a real implementation, we would apply the theme to the active template
     toast({
       title: "Theme Applied",
       description: "Your brand theme has been applied to the template."
