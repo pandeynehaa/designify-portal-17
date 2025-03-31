@@ -8,6 +8,7 @@ interface ElementPosition {
   x: number;
   y: number;
   content?: string;
+  nftData?: any;
 }
 
 interface UseCanvasDragDropProps {
@@ -56,11 +57,14 @@ export const useCanvasDragDrop = ({
     
     const componentData = e.dataTransfer.getData("application/component");
     const imageData = e.dataTransfer.getData("application/image");
+    const nftData = e.dataTransfer.getData("application/nft");
     
     if (componentData) {
       handleComponentDrop(componentData, x, y);
     } else if (imageData) {
       handleImageDrop(imageData, x, y);
+    } else if (nftData) {
+      handleNFTDrop(nftData, x, y);
     } else if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFileUpload(e.dataTransfer.files, x, y);
     }
@@ -97,6 +101,32 @@ export const useCanvasDragDrop = ({
     toast({
       title: "Image Added",
       description: "Image added to the canvas"
+    });
+  };
+
+  const handleNFTDrop = (nftData: string, x: number, y: number) => {
+    const nft = JSON.parse(nftData);
+    const newElement = {
+      type: "nft",
+      id: `nft-${Date.now()}`,
+      x: x / (zoomLevel / 100),
+      y: y / (zoomLevel / 100),
+      content: nft.image,
+      nftData: {
+        name: nft.name,
+        image: nft.image,
+        collection: nft.collection,
+        marketplaceLink: nft.marketplaceLink,
+        blurAmount: 0,
+        glowColor: "rgba(255, 255, 255, 0)",
+        glowSpread: 0
+      }
+    };
+    
+    setDroppedElements(prev => [...prev, newElement]);
+    toast({
+      title: "NFT Added",
+      description: `Added ${nft.name} to the canvas`
     });
   };
 

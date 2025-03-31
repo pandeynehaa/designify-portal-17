@@ -115,6 +115,34 @@ export const useCanvasState = () => {
     }
   };
   
+  // New functions for NFT elements
+  const updateNFTEffects = (id: string, effects: { 
+    blurAmount?: number; 
+    glowColor?: string; 
+    glowSpread?: number;
+    rotation?: number;
+  }) => {
+    setDroppedElements(elements => 
+      elements.map(element => {
+        if (element.id === id && element.type === 'nft') {
+          return { 
+            ...element, 
+            nftData: { 
+              ...(element.nftData || {}), 
+              ...effects 
+            } 
+          };
+        }
+        return element;
+      })
+    );
+    
+    toast({
+      title: "NFT Effects Updated",
+      description: "Visual effects have been applied to the NFT"
+    });
+  };
+  
   return {
     droppedElements,
     setDroppedElements,
@@ -127,6 +155,7 @@ export const useCanvasState = () => {
     handleInsertComponent,
     updateElement,
     deleteElement,
-    duplicateElement
+    duplicateElement,
+    updateNFTEffects
   };
 };

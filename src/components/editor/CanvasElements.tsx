@@ -3,6 +3,7 @@ import React from "react";
 import { CanvasElement } from "../../types/canvasElement";
 import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
+import NFTElement from "./canvas/NFTElement";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
 
 interface CanvasElementsProps {
@@ -36,6 +37,8 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
         return <ComponentElement key={element.id} element={element} activeTool={activeTool} editMode={editMode} />;
       case 'image':
         return <ImageElement key={element.id} element={element} activeTool={activeTool} />;
+      case 'nft':
+        return <NFTElement key={element.id} element={element} activeTool={activeTool} editMode={editMode} />;
       default:
         return null;
     }

@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/components/ui/use-toast";
+import NFTProperties from "./NFTProperties";
 
 interface ElementPropertiesProps {
   element: CanvasElement;
@@ -12,6 +13,11 @@ interface ElementPropertiesProps {
 }
 
 const ElementProperties: React.FC<ElementPropertiesProps> = ({ element, updateElement }) => {
+  // If it's an NFT element, use the dedicated NFT properties component
+  if (element.type === 'nft') {
+    return <NFTProperties element={element} updateElement={updateElement} />;
+  }
+
   const [content, setContent] = useState(element.content || "");
   const [position, setPosition] = useState({ x: element.x, y: element.y });
 
