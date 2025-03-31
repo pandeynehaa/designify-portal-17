@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
@@ -36,6 +37,7 @@ const DesignEditor: React.FC = () => {
     activeTemplate, 
     setActiveTemplate, 
     updateTemplateStyles, 
+    applyToAllSites,
     currentTemplateStyles 
   } = useTemplateStyles();
   
@@ -105,6 +107,7 @@ const DesignEditor: React.FC = () => {
           handleZoomReset={handleZoomReset}
           templateStyles={currentTemplateStyles}
           updateTemplateStyles={updateTemplateStyles}
+          applyToAllSites={applyToAllSites}
         />
       </div>
       

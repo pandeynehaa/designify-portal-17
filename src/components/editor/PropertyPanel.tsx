@@ -18,13 +18,15 @@ interface PropertyPanelProps {
   onClose: () => void;
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
 const PropertyPanel: React.FC<PropertyPanelProps> = ({ 
   activeTab, 
   onClose, 
   templateStyles, 
-  updateTemplateStyles 
+  updateTemplateStyles,
+  applyToAllSites
 }) => {
   const { selectedElement } = useSelectedElement();
   
@@ -58,33 +60,38 @@ const PropertyPanel: React.FC<PropertyPanelProps> = ({
             {activeTab === "typography" && (
               <TypographyProperties 
                 templateStyles={templateStyles} 
-                updateTemplateStyles={updateTemplateStyles} 
+                updateTemplateStyles={updateTemplateStyles}
+                applyToAllSites={applyToAllSites}
               />
             )}
             {activeTab === "colors" && (
               <ColorProperties 
                 templateStyles={templateStyles} 
-                updateTemplateStyles={updateTemplateStyles} 
+                updateTemplateStyles={updateTemplateStyles}
+                applyToAllSites={applyToAllSites}
               />
             )}
             {activeTab === "background" && (
               <BackgroundProperties
                 templateStyles={templateStyles}
                 updateTemplateStyles={updateTemplateStyles}
+                applyToAllSites={applyToAllSites}
               />
             )}
             {activeTab === "images" && <ImageProperties />}
             {activeTab === "layout" && (
               <LayoutProperties 
                 templateStyles={templateStyles} 
-                updateTemplateStyles={updateTemplateStyles} 
+                updateTemplateStyles={updateTemplateStyles}
+                applyToAllSites={applyToAllSites}
               />
             )}
             {activeTab === "effects" && <EffectsProperties />}
             {activeTab === "theme" && (
               <ThemeProperties 
                 templateStyles={templateStyles} 
-                updateTemplateStyles={updateTemplateStyles} 
+                updateTemplateStyles={updateTemplateStyles}
+                applyToAllSites={applyToAllSites}
               />
             )}
           </>

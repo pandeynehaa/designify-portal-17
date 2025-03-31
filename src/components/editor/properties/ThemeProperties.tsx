@@ -3,14 +3,20 @@ import React from "react";
 import { Eye } from "lucide-react";
 import { Button } from "../../ui/button";
 import { TemplateStyles } from "../../../types/templateStyles";
-import { toast } from "@/hooks/use-toast"; 
+import { toast } from "@/components/ui/use-toast";
+import ApplyToAllSites from "./ApplyToAllSites";
 
 interface ThemePropertiesProps {
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
-const ThemeProperties: React.FC<ThemePropertiesProps> = ({ templateStyles, updateTemplateStyles }) => {
+const ThemeProperties: React.FC<ThemePropertiesProps> = ({ 
+  templateStyles, 
+  updateTemplateStyles, 
+  applyToAllSites 
+}) => {
   const applyPresetTheme = (theme: 'default' | 'dark' | 'light' | 'colorful') => {
     switch (theme) {
       case 'default':
@@ -62,6 +68,64 @@ const ThemeProperties: React.FC<ThemePropertiesProps> = ({ templateStyles, updat
         updateTemplateStyles('buttonTextColor', '#FFFFFF');
         break;
     }
+  };
+
+  const applyPresetThemeToAllSites = (theme: 'default' | 'dark' | 'light' | 'colorful') => {
+    switch (theme) {
+      case 'default':
+        applyToAllSites('accentColor', '#9b87f5');
+        applyToAllSites('buttonBg', '#9b87f5');
+        applyToAllSites('headerBg', '#18181E');
+        applyToAllSites('collectionBg', '#18181E');
+        applyToAllSites('cardBg', '#232329');
+        applyToAllSites('headerTextColor', 'white');
+        applyToAllSites('bannerTextColor', 'white');
+        applyToAllSites('collectionTextColor', 'white');
+        applyToAllSites('cardTextColor', 'white');
+        applyToAllSites('buttonTextColor', 'white');
+        break;
+      case 'dark':
+        applyToAllSites('accentColor', '#7E69AB');
+        applyToAllSites('buttonBg', '#7E69AB');
+        applyToAllSites('headerBg', '#111111');
+        applyToAllSites('collectionBg', '#111111');
+        applyToAllSites('cardBg', '#1A1A1A');
+        applyToAllSites('headerTextColor', '#CCCCCC');
+        applyToAllSites('bannerTextColor', '#CCCCCC');
+        applyToAllSites('collectionTextColor', '#CCCCCC');
+        applyToAllSites('cardTextColor', '#CCCCCC');
+        applyToAllSites('buttonTextColor', '#FFFFFF');
+        break;
+      case 'light':
+        applyToAllSites('accentColor', '#b6a8f8');
+        applyToAllSites('buttonBg', '#b6a8f8');
+        applyToAllSites('headerBg', '#FFFFFF');
+        applyToAllSites('collectionBg', '#F5F5F5');
+        applyToAllSites('cardBg', '#FFFFFF');
+        applyToAllSites('headerTextColor', '#333333');
+        applyToAllSites('bannerTextColor', '#333333');
+        applyToAllSites('collectionTextColor', '#333333');
+        applyToAllSites('cardTextColor', '#333333');
+        applyToAllSites('buttonTextColor', '#FFFFFF');
+        break;
+      case 'colorful':
+        applyToAllSites('accentColor', '#b6a8f8');
+        applyToAllSites('buttonBg', '#9b87f5');
+        applyToAllSites('headerBg', '#1F1D36');
+        applyToAllSites('collectionBg', '#3F3351');
+        applyToAllSites('cardBg', '#864879');
+        applyToAllSites('headerTextColor', '#FFFFFF');
+        applyToAllSites('bannerTextColor', '#FFFFFF');
+        applyToAllSites('collectionTextColor', '#FFFFFF');
+        applyToAllSites('cardTextColor', '#FFFFFF');
+        applyToAllSites('buttonTextColor', '#FFFFFF');
+        break;
+    }
+    
+    toast({
+      title: "Theme Applied to All Sites",
+      description: `The ${theme} theme has been applied to all Web3 sites.`
+    });
   };
 
   return (
@@ -142,15 +206,46 @@ const ThemeProperties: React.FC<ThemePropertiesProps> = ({ templateStyles, updat
           Export Theme Settings
         </Button>
       </div>
+
+      <div className="border-t border-editor-border pt-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-editor-muted">Apply Preset to All Sites</span>
+        </div>
+        <div className="grid grid-cols-2 gap-2">
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="text-xs border-cv-purple text-cv-purple hover:bg-cv-purple hover:text-white"
+            onClick={() => applyPresetThemeToAllSites('default')}
+          >
+            Default Theme
+          </Button>
+          <Button 
+            variant="outline" 
+            size="sm"
+            className="text-xs border-cv-purple text-cv-purple hover:bg-cv-purple hover:text-white"
+            onClick={() => applyPresetThemeToAllSites('dark')}
+          >
+            Dark Theme
+          </Button>
+        </div>
+      </div>
       
       <div className="border-t border-editor-border pt-4">
         <div className="flex items-center justify-between">
-          <span className="text-xs text-editor-muted">Apply Theme to All Pages</span>
+          <span className="text-xs text-editor-muted">Preview</span>
           <button className="p-1 rounded-md bg-editor-surface hover:bg-editor-highlight transition-colors">
             <Eye size={16} className="text-editor-text" />
           </button>
         </div>
       </div>
+
+      {/* Add the ApplyToAllSites component for individual properties */}
+      <ApplyToAllSites 
+        property="accentColor"
+        value={templateStyles.accentColor}
+        onApply={applyToAllSites}
+      />
     </div>
   );
 };

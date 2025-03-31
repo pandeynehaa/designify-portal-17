@@ -25,6 +25,7 @@ interface EditorContentProps {
   handleZoomReset: () => void;
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
+  applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
 }
 
 const EditorContent: React.FC<EditorContentProps> = ({
@@ -39,7 +40,8 @@ const EditorContent: React.FC<EditorContentProps> = ({
   handleZoomOut,
   handleZoomReset,
   templateStyles,
-  updateTemplateStyles
+  updateTemplateStyles,
+  applyToAllSites
 }) => {
   const { selectedElement } = useSelectedElement();
   const { updateElement } = useCanvasState();
@@ -106,6 +108,7 @@ const EditorContent: React.FC<EditorContentProps> = ({
                   onClose={handlePropertyClose} 
                   templateStyles={templateStyles}
                   updateTemplateStyles={updateTemplateStyles}
+                  applyToAllSites={applyToAllSites}
                 />
               </CollapsibleContent>
             </Collapsible>

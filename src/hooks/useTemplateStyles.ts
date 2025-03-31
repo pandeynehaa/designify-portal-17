@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { TemplateStyles, TemplateType } from "../types/templateStyles";
 import { toast } from "@/components/ui/use-toast";
@@ -113,11 +114,34 @@ export const useTemplateStyles = () => {
     });
   };
 
+  // Function to apply a style property to all templates
+  const applyToAllSites = (property: keyof TemplateStyles, value: any) => {
+    setTemplateStyles(prev => {
+      const updatedStyles = { ...prev };
+      
+      // Apply the value to all template types
+      (Object.keys(updatedStyles) as TemplateType[]).forEach(templateType => {
+        updatedStyles[templateType] = {
+          ...updatedStyles[templateType],
+          [property]: value
+        };
+      });
+      
+      return updatedStyles;
+    });
+    
+    toast({
+      title: "Applied to All Sites",
+      description: `Updated ${property} to ${value} across all templates`
+    });
+  };
+
   return {
     templateStyles,
     activeTemplate,
     setActiveTemplate,
     updateTemplateStyles,
+    applyToAllSites,
     currentTemplateStyles: templateStyles[activeTemplate]
   };
 };
