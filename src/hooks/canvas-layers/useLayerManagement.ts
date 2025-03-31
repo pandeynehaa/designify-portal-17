@@ -1,9 +1,8 @@
-
 import { useState } from "react";
 import { Layer } from "../../types/layer";
 import { CanvasElement } from "../../types/canvasElement";
 import { v4 as uuidv4 } from "uuid";
-import { LayerManagementReturn } from "../../types/hookTypes";
+import { LayerManagementReturn } from "../../types/canvasLayerTypes";
 
 export const useLayerManagement = (
   droppedElements: CanvasElement[],

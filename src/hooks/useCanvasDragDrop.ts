@@ -1,10 +1,9 @@
-
 import { CanvasElement } from "../types/canvasElement";
 import { useDropEventHandlers } from "./drag-drop/useDropEventHandlers";
 import { useComponentDropHandlers } from "./drag-drop/useComponentDropHandlers";
 import { useMediaDropHandlers } from "./drag-drop/useMediaDropHandlers";
 import { useProcessDropData } from "./drag-drop/useProcessDropData";
-import { CanvasDragDropProps, CanvasDragDropReturn } from "../types/hookTypes";
+import { CanvasDragDropProps, CanvasDragDropReturn } from "../types/canvasDragDropTypes";
 
 export const useCanvasDragDrop = ({
   canvasRef,

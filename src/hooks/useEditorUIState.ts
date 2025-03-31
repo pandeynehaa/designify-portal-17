@@ -1,6 +1,5 @@
-
 import { useState } from "react";
-import { EditorUIStateReturn } from "../types/hookTypes";
+import { EditorUIStateReturn } from "../types/canvasUITypes";
 
 export const useEditorUIState = (): EditorUIStateReturn => {
   const [activeTab, setActiveTab] = useState("layout");

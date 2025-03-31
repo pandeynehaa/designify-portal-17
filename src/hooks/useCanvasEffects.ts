@@ -1,8 +1,7 @@
-
 import { toast } from "@/components/ui/use-toast";
 import { CanvasElement } from "../types/canvasElement";
 import { useCanvasHistory } from "./useCanvasHistory";
-import { CanvasEffectsReturn, NFTEffectsProps, BackgroundPropertiesProps } from "../types/hookTypes";
+import { CanvasEffectsReturn, NFTEffectsProps, BackgroundPropertiesProps } from "../types/canvasElementTypes";
 
 export const useCanvasEffects = (
   droppedElements: CanvasElement[],

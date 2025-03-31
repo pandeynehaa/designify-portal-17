@@ -1,11 +1,10 @@
-
 import { CanvasElement } from "../types/canvasElement";
 import { useCanvasHistory } from "./useCanvasHistory";
 import { useTextElements } from "./canvas-elements/useTextElements";
 import { useImageElements } from "./canvas-elements/useImageElements";
 import { useComponentElements } from "./canvas-elements/useComponentElements";
 import { useElementOperations } from "./canvas-elements/useElementOperations";
-import { CanvasElementsReturn } from "../types/hookTypes";
+import { CanvasElementsReturn } from "../types/canvasElementTypes";
 
 export const useCanvasElements = (
   droppedElements: CanvasElement[],

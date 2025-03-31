@@ -1,7 +1,7 @@
 import { useRef } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { toast } from "@/components/ui/use-toast";
-import { CanvasHistoryReturn, HistoryAction } from "../types/hookTypes";
+import { CanvasHistoryReturn, HistoryAction } from "../types/canvasHistoryTypes";
 
 export const useCanvasHistory = (): CanvasHistoryReturn => {
   // History management

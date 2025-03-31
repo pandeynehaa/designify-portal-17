@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from "react";
-import { EditableTextProps, EditableTextReturn, EditableTextStyles } from "../types/hookTypes";
+import { EditableTextProps, EditableTextReturn, EditableTextStyles } from "../types/componentTypes";
 
 export const useEditableText = ({ initialText, onSave }: EditableTextProps): EditableTextReturn => {
   const [isEditing, setIsEditing] = useState(false);

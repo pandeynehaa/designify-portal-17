@@ -1,9 +1,8 @@
-
 import { useState, useRef, useEffect } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { toast } from "@/components/ui/use-toast";
 import { useSelectedElement } from "./useSelectedElement";
-import { ComponentElementProps, ComponentElementReturn } from "../types/hookTypes";
+import { ComponentElementProps, ComponentElementReturn } from "../types/componentTypes";
 
 export const useComponentElement = ({ 
   element, 

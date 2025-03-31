@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { useCanvasUIState } from "./useCanvasUIState";
@@ -6,7 +5,7 @@ import { useCanvasHistory } from "./useCanvasHistory";
 import { useCanvasElements } from "./useCanvasElements";
 import { useCanvasEffects } from "./useCanvasEffects";
 import { useLayerManagement } from "./canvas-layers/useLayerManagement";
-import { CanvasStateReturn } from "../types/hookTypes";
+import { CanvasStateReturn } from "../types/canvasElementTypes";
 
 export const useCanvasState = (): CanvasStateReturn => {
   const [droppedElements, setDroppedElements] = useState<CanvasElement[]>([]);
