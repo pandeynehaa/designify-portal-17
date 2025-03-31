@@ -2,6 +2,7 @@
 import React from "react";
 import { TrendingUp, DollarSign, Users, Award, ChevronRight, ArrowRight } from "lucide-react";
 import { TemplateStyles } from "../../../types/templateStyles";
+import CoinScene from "../canvas/CoinScene";
 
 interface BuyCoinTemplateProps {
   styles: TemplateStyles;
@@ -87,18 +88,9 @@ const BuyCoinTemplate: React.FC<BuyCoinTemplateProps> = ({ styles }) => (
           </div>
           
           <div className="w-1/2 flex justify-center items-center">
-            <div className="relative">
-              <div className="w-72 h-72 rounded-full opacity-20 absolute animate-pulse"
-                style={{ background: `linear-gradient(to bottom right, #ffbf00, #ff8c00)` }}
-              ></div>
-              <div className="w-64 h-64 rounded-full flex items-center justify-center relative z-10 border-8"
-                style={{ 
-                  background: `linear-gradient(to bottom right, #ffbf00, #ff8c00)`,
-                  borderColor: styles.headerBg
-                }}
-              >
-                <div className={`${styles.headingFont} text-5xl`} style={{ color: styles.buttonTextColor }}>MELANIA</div>
-              </div>
+            <div className="relative h-[300px] w-[300px]">
+              {/* 3D Coin Element */}
+              <CoinScene coinColor="#ffbf00" textColor={styles.buttonTextColor} />
             </div>
           </div>
         </div>
