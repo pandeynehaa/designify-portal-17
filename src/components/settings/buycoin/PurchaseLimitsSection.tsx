@@ -1,15 +1,20 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { BuyCoinFormValues } from "./types";
+import { SectionProps } from "./types";
 
-interface PurchaseLimitsSectionProps {
-  form: UseFormReturn<BuyCoinFormValues>;
-}
+const PurchaseLimitsSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+  const minPurchaseAmount = form.watch("minPurchaseAmount");
+  const maxPurchaseAmount = form.watch("maxPurchaseAmount");
+  
+  useEffect(() => {
+    if (updateProgress) {
+      const isComplete = minPurchaseAmount.length > 0 && maxPurchaseAmount.length > 0;
+      updateProgress(sectionName, isComplete);
+    }
+  }, [minPurchaseAmount, maxPurchaseAmount, updateProgress, sectionName]);
 
-const PurchaseLimitsSection: React.FC<PurchaseLimitsSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <FormField

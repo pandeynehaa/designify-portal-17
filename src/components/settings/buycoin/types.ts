@@ -1,4 +1,6 @@
 
+import { UseFormReturn } from "react-hook-form";
+
 export interface BuyCoinFormValues {
   contractAddress: string;
   network: string;
@@ -18,7 +20,7 @@ export interface BuyCoinFormValues {
 }
 
 export interface SectionProps {
-  form: any;
+  form: UseFormReturn<BuyCoinFormValues>;
   sectionName: string;
   updateProgress?: (sectionName: string, isComplete: boolean) => void;
 }

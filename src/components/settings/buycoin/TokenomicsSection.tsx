@@ -1,15 +1,20 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { BuyCoinFormValues } from "./types";
+import { SectionProps } from "./types";
 
-interface TokenomicsSectionProps {
-  form: UseFormReturn<BuyCoinFormValues>;
-}
+const TokenomicsSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+  const initialPrice = form.watch("initialPrice");
+  const maxSupply = form.watch("maxSupply");
+  
+  useEffect(() => {
+    if (updateProgress) {
+      const isComplete = initialPrice.length > 0 && maxSupply.length > 0;
+      updateProgress(sectionName, isComplete);
+    }
+  }, [initialPrice, maxSupply, updateProgress, sectionName]);
 
-const TokenomicsSection: React.FC<TokenomicsSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <FormField

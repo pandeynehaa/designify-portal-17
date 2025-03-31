@@ -1,15 +1,20 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { BuyCoinFormValues } from "./types";
+import { SectionProps } from "./types";
 
-interface ContractSectionProps {
-  form: UseFormReturn<BuyCoinFormValues>;
-}
+const ContractSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+  const contractAddress = form.watch("contractAddress");
+  const network = form.watch("network");
+  
+  useEffect(() => {
+    if (updateProgress) {
+      const isComplete = contractAddress.length > 0 && network.length > 0;
+      updateProgress(sectionName, isComplete);
+    }
+  }, [contractAddress, network, updateProgress, sectionName]);
 
-const ContractSection: React.FC<ContractSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       <FormField

@@ -1,15 +1,21 @@
 
-import React from "react";
+import React, { useEffect } from "react";
 import { FormField, FormItem, FormLabel, FormControl, FormDescription } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { UseFormReturn } from "react-hook-form";
-import { BuyCoinFormValues } from "./types";
+import { SectionProps } from "./types";
 
-interface TokenInfoSectionProps {
-  form: UseFormReturn<BuyCoinFormValues>;
-}
+const TokenInfoSection: React.FC<SectionProps> = ({ form, sectionName, updateProgress }) => {
+  const tokenSymbol = form.watch("tokenSymbol");
+  const tokenName = form.watch("tokenName");
+  const tokenDecimals = form.watch("tokenDecimals");
+  
+  useEffect(() => {
+    if (updateProgress) {
+      const isComplete = tokenSymbol.length > 0 && tokenName.length > 0 && tokenDecimals.length > 0;
+      updateProgress(sectionName, isComplete);
+    }
+  }, [tokenSymbol, tokenName, tokenDecimals, updateProgress, sectionName]);
 
-const TokenInfoSection: React.FC<TokenInfoSectionProps> = ({ form }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
       <FormField
