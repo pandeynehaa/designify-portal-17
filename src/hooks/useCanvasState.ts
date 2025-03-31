@@ -87,6 +87,32 @@ export const useCanvasState = () => {
     });
   };
   
+  const deleteElement = (id: string) => {
+    setDroppedElements(elements => elements.filter(element => element.id !== id));
+    toast({
+      title: "Element Deleted",
+      description: "Element has been removed from the canvas"
+    });
+  };
+
+  const duplicateElement = (id: string) => {
+    const elementToDuplicate = droppedElements.find(el => el.id === id);
+    if (elementToDuplicate) {
+      const newElement = {
+        ...elementToDuplicate,
+        id: `${elementToDuplicate.type}-${Date.now()}`,
+        x: elementToDuplicate.x + 20,
+        y: elementToDuplicate.y + 20
+      };
+      setDroppedElements([...droppedElements, newElement]);
+      
+      toast({
+        title: "Element Duplicated",
+        description: "A copy of the element has been created"
+      });
+    }
+  };
+  
   return {
     droppedElements,
     setDroppedElements,
@@ -97,6 +123,8 @@ export const useCanvasState = () => {
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
-    updateElement
+    updateElement,
+    deleteElement,
+    duplicateElement
   };
 };

@@ -5,4 +5,6 @@ export interface CanvasElement {
   x: number;
   y: number;
   content?: string;
+  visible?: boolean;
+  zIndex?: number;
 }

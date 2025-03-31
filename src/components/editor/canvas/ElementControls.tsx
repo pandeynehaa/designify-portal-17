@@ -2,6 +2,8 @@
 import React from "react";
 import { Pencil, Trash2, Copy, Move } from "lucide-react";
 import { CanvasElement } from "../../../types/canvasElement";
+import { useCanvasState } from "../../../hooks/useCanvasState";
+import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import { toast } from "@/components/ui/use-toast";
 
 interface ElementControlsProps {
@@ -9,6 +11,9 @@ interface ElementControlsProps {
 }
 
 const ElementControls: React.FC<ElementControlsProps> = ({ element }) => {
+  const { deleteElement, duplicateElement } = useCanvasState();
+  const { selectElement } = useSelectedElement();
+
   const handleMoveClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     toast({
@@ -27,18 +32,13 @@ const ElementControls: React.FC<ElementControlsProps> = ({ element }) => {
 
   const handleCopyClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast({
-      title: "Copy Element",
-      description: "Element has been copied to clipboard"
-    });
+    duplicateElement(element.id);
   };
 
   const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    toast({
-      title: "Delete Element",
-      description: "Element has been deleted from the canvas"
-    });
+    deleteElement(element.id);
+    selectElement(null);
   };
 
   return (

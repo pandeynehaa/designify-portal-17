@@ -32,6 +32,8 @@ const CanvasView: React.FC<CanvasViewProps> = ({
   templateStyles,
   handleCanvasClick
 }) => {
+  const { selectedElement } = useSelectedElement();
+
   return (
     <div 
       ref={canvasRef}
@@ -39,11 +41,11 @@ const CanvasView: React.FC<CanvasViewProps> = ({
         deviceView === "desktop" ? "w-[1200px] h-[800px]" : 
         deviceView === "tablet" ? "w-[768px] h-[1024px]" : 
         "w-[375px] h-[667px]"
-      } ${showGrid ? 'bg-grid-pattern' : ''}`}
+      } ${showGrid ? 'bg-grid-pattern' : ''} ${selectedElement ? 'editing-element' : ''}`}
       style={{ 
         transform: `scale(${zoom})`,
         overflow: "hidden",
-        backgroundImage: showGrid ? 'linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)' : 'none',
+        backgroundImage: showGrid ? 'linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px), linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px)' : 'none',
         backgroundSize: showGrid ? '20px 20px' : '0',
       }}
       onClick={handleCanvasClick}

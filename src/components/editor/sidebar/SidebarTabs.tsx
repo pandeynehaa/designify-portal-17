@@ -16,6 +16,7 @@ const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) =>
     { id: "typography", icon: Type, label: "Typography" },
     { id: "images", icon: Image, label: "Images" },
     { id: "components", icon: Layers, label: "Components" },
+    { id: "layers", icon: Layers, label: "Layers" },
     { id: "colors", icon: Palette, label: "Colors" },
     { id: "effects", icon: Sparkles, label: "Effects" },
     { id: "theme", icon: Wand2, label: "Theme" },

@@ -21,6 +21,11 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({ droppedElements, active
   };
 
   const renderElement = (element: CanvasElement) => {
+    // Skip rendering if element is explicitly set to not visible
+    if (element.visible === false) {
+      return null;
+    }
+
     switch (element.type) {
       case 'component':
         return <ComponentElement key={element.id} element={element} activeTool={activeTool} />;
@@ -31,12 +36,19 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({ droppedElements, active
     }
   };
 
+  // Sort elements by z-index if available
+  const sortedElements = [...droppedElements].sort((a, b) => {
+    const aZIndex = a.zIndex ?? 0;
+    const bZIndex = b.zIndex ?? 0;
+    return aZIndex - bZIndex;
+  });
+
   return (
     <div 
       className="absolute inset-0" 
       onClick={handleCanvasClick}
     >
-      {droppedElements.map(renderElement)}
+      {sortedElements.map(renderElement)}
     </div>
   );
 };
