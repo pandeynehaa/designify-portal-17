@@ -1,7 +1,7 @@
 
 import { useState } from "react";
-import { Layer } from "../types/layer";
-import { CanvasElement } from "../types/canvasElement";
+import { Layer } from "../../types/layer";
+import { CanvasElement } from "../../types/canvasElement";
 import { v4 as uuidv4 } from "uuid";
 
 export const useLayerManagement = (

@@ -15,7 +15,13 @@ export const useCanvasState = () => {
     showGrid, 
     toggleGrid, 
     editMode, 
-    toggleEditMode 
+    toggleEditMode,
+    showLeftSidebar,
+    showRightSidebar,
+    setShowLeftSidebar,
+    setShowRightSidebar,
+    toggleLeftSidebar,
+    toggleRightSidebar
   } = useCanvasUIState();
   
   const { addToHistory, undoAction, redoAction } = useCanvasHistory();
@@ -65,6 +71,10 @@ export const useCanvasState = () => {
     toggleGrid,
     editMode,
     toggleEditMode,
+    showLeftSidebar,
+    showRightSidebar,
+    toggleLeftSidebar,
+    toggleRightSidebar,
     handleInsertText,
     handleInsertImage,
     handleInsertComponent,
