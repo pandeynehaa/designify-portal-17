@@ -67,19 +67,21 @@ const LayerItem: React.FC<LayerItemProps> = ({
         onClick={() => handleLayerSelect(layer)}
       >
         <div className="flex items-center space-x-1">
-          <CollapsibleTrigger
-            onClick={(e) => {
-              e.stopPropagation();
-              toggleLayerExpansion(layer.id);
-            }}
-            className="p-1 rounded hover:bg-cv-lightgray/20"
-          >
-            {expandedLayers[layer.id] ? (
-              <ChevronDown size={14} />
-            ) : (
-              <ChevronRight size={14} />
-            )}
-          </CollapsibleTrigger>
+          <Collapsible open={expandedLayers[layer.id]}>
+            <CollapsibleTrigger
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLayerExpansion(layer.id);
+              }}
+              className="p-1 rounded hover:bg-cv-lightgray/20"
+            >
+              {expandedLayers[layer.id] ? (
+                <ChevronDown size={14} />
+              ) : (
+                <ChevronRight size={14} />
+              )}
+            </CollapsibleTrigger>
+          </Collapsible>
           
           <span className="font-medium text-sm">{layer.name}</span>
           {!layer.visible && (
