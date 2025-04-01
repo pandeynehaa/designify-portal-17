@@ -3,6 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Check, X } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 interface ComponentEditorProps {
   isEditing: boolean;
@@ -79,20 +80,23 @@ const ComponentEditor: React.FC<ComponentEditorProps> = ({
       )}
       
       <div className="flex justify-end mt-2 space-x-2">
-        <button 
+        <Button 
           onClick={handleCancelClick}
-          className="flex items-center px-2 py-1 text-xs bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors"
+          size="sm"
+          variant="outline"
+          className="h-7 px-2 py-1 text-xs bg-gray-200 text-gray-700 hover:bg-gray-300"
         >
           <X size={12} className="mr-1" />
           Cancel
-        </button>
-        <button 
+        </Button>
+        <Button 
           onClick={handleSaveClick}
-          className="flex items-center px-2 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
+          size="sm"
+          className="h-7 px-2 py-1 text-xs bg-green-500 text-white hover:bg-green-600"
         >
           <Check size={12} className="mr-1" />
           Save
-        </button>
+        </Button>
       </div>
     </div>
   );
