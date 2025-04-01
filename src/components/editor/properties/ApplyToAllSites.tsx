@@ -1,9 +1,7 @@
 
 import React from "react";
-import { Copy, CopyCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { toast } from "@/components/ui/use-toast";
+import { Globe } from "lucide-react";
 
 interface ApplyToAllSitesProps {
   property: string;
@@ -16,40 +14,26 @@ const ApplyToAllSites: React.FC<ApplyToAllSitesProps> = ({
   value, 
   onApply 
 }) => {
-  const [isApplying, setIsApplying] = useState(false);
-  
-  const handleApply = () => {
-    setIsApplying(true);
+  const handleApplyToAll = () => {
     onApply(property, value);
-    
-    // Show success animation briefly
-    setTimeout(() => {
-      setIsApplying(false);
-    }, 1500);
+  };
+
+  const getPropertyName = (prop: string) => {
+    return prop
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/^./, str => str.toUpperCase());
   };
 
   return (
-    <div className="border-t border-editor-border pt-4 mt-4">
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-xs text-editor-muted">Apply to All Web3 Sites</span>
-      </div>
+    <div className="mt-4 border-t border-editor-border pt-4">
       <Button 
+        onClick={handleApplyToAll}
         variant="outline" 
         size="sm"
-        className="w-full text-xs border-cv-purple text-cv-purple hover:bg-cv-purple hover:text-white"
-        onClick={handleApply}
+        className="w-full text-xs flex items-center justify-center gap-2 bg-editor-surface border-editor-border hover:bg-editor-highlight"
       >
-        {isApplying ? (
-          <>
-            <CopyCheck size={14} className="mr-1.5" />
-            Applied to All Sites
-          </>
-        ) : (
-          <>
-            <Copy size={14} className="mr-1.5" />
-            Apply to All Web3 Sites
-          </>
-        )}
+        <Globe size={12} />
+        Apply {getPropertyName(property)} to All Sites
       </Button>
     </div>
   );

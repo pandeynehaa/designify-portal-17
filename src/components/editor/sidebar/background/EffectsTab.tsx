@@ -1,7 +1,9 @@
-import React, { useEffect } from "react";
+
+import React from "react";
+import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
-import { toast } from "@/components/ui/use-toast";
+import ThreeDToggle from "../../properties/ThreeD/ThreeDToggle";
 
 interface EffectsTabProps {
   blurAmount: number;
@@ -20,77 +22,37 @@ const EffectsTab: React.FC<EffectsTabProps> = ({
   onOpacityChange,
   on3DToggle
 }) => {
-  // Apply 3D effect to canvas when enabled
-  useEffect(() => {
-    // Update the class on the canvas element when 3D effect changes
-    const canvasElement = document.querySelector('#canvas-area .vr-perspective');
-    if (canvasElement) {
-      if (enable3D) {
-        canvasElement.classList.add('parallax-effect');
-      } else {
-        canvasElement.classList.remove('parallax-effect');
-      }
-    }
-  }, [enable3D]);
-
-  const handleApplyEffects = () => {
-    toast({
-      title: "Effects Applied",
-      description: `Applied blur: ${blurAmount}px, opacity: ${opacity}%, 3D effect: ${enable3D ? 'On' : 'Off'}`
-    });
-  };
-
   return (
-    <div className="space-y-4">
-      <div className="bg-cv-darkgray/50 rounded-md p-3 backdrop-blur-sm">
-        <div className="flex justify-between items-center mb-2">
-          <label className="text-xs text-cv-white">Blur Effect</label>
-          <span className="text-xs text-cv-lightgray">{blurAmount}px</span>
+    <div className="space-y-6">
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <Label className="text-xs text-cv-white">Blur Amount</Label>
+          <span className="text-xs text-cv-white">{blurAmount}px</span>
         </div>
         <Slider 
-          defaultValue={[blurAmount]} 
+          value={[blurAmount]} 
+          min={0} 
           max={20} 
-          step={1} 
-          value={[blurAmount]}
-          onValueChange={onBlurChange}
+          step={0.5} 
+          onValueChange={onBlurChange} 
         />
       </div>
       
-      <div className="bg-cv-darkgray/50 rounded-md p-3 backdrop-blur-sm">
-        <div className="flex justify-between items-center mb-2">
-          <label className="text-xs text-cv-white">Opacity</label>
-          <span className="text-xs text-cv-lightgray">{opacity}%</span>
+      <div>
+        <div className="flex items-center justify-between mb-1.5">
+          <Label className="text-xs text-cv-white">Opacity</Label>
+          <span className="text-xs text-cv-white">{opacity}%</span>
         </div>
         <Slider 
-          defaultValue={[opacity]} 
+          value={[opacity]} 
+          min={0} 
           max={100} 
-          step={1}
-          value={[opacity]}
-          onValueChange={onOpacityChange}
+          step={1} 
+          onValueChange={onOpacityChange} 
         />
       </div>
       
-      <div className="bg-cv-darkgray/50 rounded-md p-3 backdrop-blur-sm">
-        <div className="flex justify-between items-center">
-          <div>
-            <label className="text-xs text-cv-white block">3D Parallax Effect</label>
-            <span className="text-xs text-cv-lightgray">Adds depth to background</span>
-          </div>
-          <Switch 
-            checked={enable3D}
-            onCheckedChange={on3DToggle}
-          />
-        </div>
-      </div>
-      
-      <div className="bg-cv-darkgray/50 rounded-md p-3 backdrop-blur-sm">
-        <button 
-          className="w-full px-3 py-2 bg-cv-accent rounded-md text-white text-sm hover:bg-cv-purple transition-colors"
-          onClick={handleApplyEffects}
-        >
-          Apply Effects
-        </button>
-      </div>
+      <ThreeDToggle enabled={enable3D} onChange={on3DToggle} />
     </div>
   );
 };

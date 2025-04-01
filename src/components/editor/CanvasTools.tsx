@@ -43,7 +43,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
   
   const handleMintNow = () => {
     toast({
-      title: "Mint as NFT",
+      title: "Minting as NFT",
       description: "Your design is being prepared to be minted as an NFT"
     });
     
@@ -62,6 +62,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         <button 
           className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
           onClick={onZoomOut}
+          title="Zoom Out"
         >
           <ZoomOut size={16} className="text-gray-700" />
         </button>
@@ -73,6 +74,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         <button 
           className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
           onClick={onZoomIn}
+          title="Zoom In"
         >
           <ZoomIn size={16} className="text-gray-700" />
         </button>
@@ -82,6 +84,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         <button 
           className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
           onClick={onReset}
+          title="Reset Zoom"
         >
           <RotateCcw size={16} className="text-gray-700" />
         </button>
@@ -91,6 +94,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         <button 
           className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
           onClick={handleMoveClick}
+          title="Move Tool"
         >
           <Move size={16} className="text-gray-700" />
         </button>
@@ -98,6 +102,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         <button 
           className={`p-1.5 rounded-full hover:bg-gray-100 transition-colors ${showGrid ? 'bg-cv-accent text-white' : ''}`}
           onClick={toggleGrid}
+          title={showGrid ? "Hide Grid" : "Show Grid"}
         >
           <Grid size={16} className={`${showGrid ? 'text-white' : 'text-gray-700'}`} />
         </button>
@@ -105,6 +110,7 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
         <button 
           className="p-1.5 rounded-full hover:bg-gray-100 transition-colors"
           onClick={handleLayersClick}
+          title="Layers Panel"
         >
           <Layers size={16} className="text-gray-700" />
         </button>

@@ -1,10 +1,10 @@
 
 import React from "react";
 import { TemplateStyles } from "../../../types/templateStyles";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 import ApplyToAllSites from "./ApplyToAllSites";
-import ThemePresets from "./theme/ThemePresets";
-import ThemeActions from "./theme/ThemeActions";
-import ThemePreview from "./theme/ThemePreview";
+import ThreeDToggle from "./ThreeD/ThreeDToggle";
 
 interface ThemePropertiesProps {
   templateStyles: TemplateStyles;
@@ -14,24 +14,28 @@ interface ThemePropertiesProps {
 
 const ThemeProperties: React.FC<ThemePropertiesProps> = ({ 
   templateStyles, 
-  updateTemplateStyles, 
-  applyToAllSites 
+  updateTemplateStyles,
+  applyToAllSites
 }) => {
   return (
     <div className="p-4 space-y-4">
-      <ThemePresets 
-        updateTemplateStyles={updateTemplateStyles} 
-        applyToAllSites={applyToAllSites} 
-      />
+      <div>
+        <h3 className="text-sm font-medium mb-2">Theme Settings</h3>
+        <p className="text-xs text-editor-muted mb-4">
+          Configure global theme settings that apply across all templates.
+        </p>
+      </div>
       
-      <ThemePreview templateStyles={templateStyles} />
+      <div className="space-y-4 border-t border-editor-border pt-4">
+        <ThreeDToggle 
+          enabled={templateStyles.enable3D} 
+          onChange={(enabled) => updateTemplateStyles('enable3D', enabled)}
+        />
+      </div>
       
-      <ThemeActions />
-
-      {/* Add ApplyToAllSites component for individual properties */}
       <ApplyToAllSites
-        property="accentColor"
-        value={templateStyles.accentColor}
+        property="enable3D"
+        value={templateStyles.enable3D}
         onApply={applyToAllSites}
       />
     </div>
