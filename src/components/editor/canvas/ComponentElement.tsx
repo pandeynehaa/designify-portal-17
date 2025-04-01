@@ -6,6 +6,7 @@ import ComponentControl from "./component/ComponentControl";
 import ComponentEditor from "./component/ComponentEditor";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import { toast } from "@/components/ui/use-toast";
+import { CircleDollarSign, Wallet, Star, ImageIcon } from "lucide-react";
 
 interface ComponentElementProps {
   element: CanvasElement;
@@ -94,7 +95,7 @@ const ComponentElement: React.FC<ComponentElementProps> = ({
       return (
         <div className="flex flex-col">
           <div className="bg-gray-200 rounded-md w-full aspect-square flex items-center justify-center mb-2">
-            <Image size={24} className="text-gray-400" />
+            <ImageIcon size={24} className="text-gray-400" />
           </div>
           <div className="text-sm font-medium">Bored Ape #1234</div>
           <div className="text-xs text-gray-500 flex items-center mt-1">

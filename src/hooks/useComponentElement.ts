@@ -5,6 +5,14 @@ import { toast } from "@/components/ui/use-toast";
 import { useSelectedElement } from "./useSelectedElement";
 import { ComponentElementProps, ComponentElementReturn } from "../types/componentTypes";
 
+// Add a declaration for the snapToGrid property
+declare global {
+  interface Window {
+    snapToGrid?: boolean;
+    updateCanvasElement?: (id: string, updates: Partial<CanvasElement>) => void;
+  }
+}
+
 export const useComponentElement = ({ 
   element, 
   activeTool, 
@@ -59,8 +67,8 @@ export const useComponentElement = ({
         document.body.style.cursor = 'default';
         
         // Update the actual element position in the canvas state
-        if (typeof (window as any).updateCanvasElement === 'function') {
-          (window as any).updateCanvasElement(element.id, { 
+        if (typeof window.updateCanvasElement === 'function') {
+          window.updateCanvasElement(element.id, { 
             x: position.x, 
             y: position.y,
             isNew: undefined // Remove the isNew flag after the first move
