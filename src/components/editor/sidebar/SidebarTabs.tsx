@@ -27,11 +27,11 @@ const tabs = [
 
 const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="flex overflow-x-auto bg-cv-gray border-b border-cv-lightgray">
+    <div className="flex overflow-x-auto bg-cv-gray">
       {tabs.map(tab => (
         <button
           key={tab.id}
-          className={`flex-1 flex flex-col items-center justify-center py-2 px-1 min-w-[70px] transition-colors ${
+          className={`flex-1 flex flex-col items-center justify-center py-2 px-1 min-w-[50px] transition-colors ${
             activeTab === tab.id
               ? "text-cv-accent border-b-2 border-cv-accent"
               : "text-cv-white hover:text-cv-lightgray hover:bg-cv-lightgray/10"
@@ -39,7 +39,7 @@ const SidebarTabs: React.FC<SidebarTabsProps> = ({ activeTab, setActiveTab }) =>
           onClick={() => setActiveTab(tab.id)}
         >
           <div className="mb-1">{tab.icon}</div>
-          <span className="text-xs font-medium">{tab.label}</span>
+          <span className="text-xs font-medium truncate">{tab.label}</span>
         </button>
       ))}
     </div>

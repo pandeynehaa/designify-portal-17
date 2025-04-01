@@ -47,7 +47,7 @@ const EditorContent: React.FC<EditorContentProps> = ({
 }) => {
   const { selectedElement } = useSelectedElement();
   const { updateElement } = useCanvasState();
-  const { showRightSidebar, toggleRightSidebar } = useCanvasUIState();
+  const { showRightSidebar, toggleRightSidebar, showLeftSidebar } = useCanvasUIState();
   
   // Connect the updateElement function for Canvas and PropertyPanel
   useEffect(() => {
@@ -80,7 +80,9 @@ const EditorContent: React.FC<EditorContentProps> = ({
         </div>
         
         {/* Canvas Area with depth effects */}
-        <div className="flex-1 relative overflow-hidden bg-gradient-to-br from-cv-darkgray to-cv-black rounded-xl shadow-2xl m-2" id="canvas-area">
+        <div className={`flex-1 relative overflow-hidden bg-gradient-to-br from-cv-darkgray to-cv-black rounded-xl shadow-2xl m-2 transition-all duration-300 ${
+          showLeftSidebar ? '' : 'ml-0'
+        }`} id="canvas-area">
           <div className="absolute inset-0 bg-grid-pattern opacity-5 pointer-events-none"></div>
           
           <CanvasArea 
