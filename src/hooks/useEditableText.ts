@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { EditableTextProps, EditableTextReturn, EditableTextStyles } from "../types/componentTypes";
 
@@ -20,7 +21,7 @@ export const useEditableText = ({ initialText, onSave }: EditableTextProps): Edi
 
   const handleTextBlur = () => {
     setIsEditing(false);
-    if (onSave && (text !== initialText || Object.keys(styles).length > 0)) {
+    if (onSave && text !== initialText) {
       onSave(text, styles);
     }
   };

@@ -1,8 +1,9 @@
 
 import React from "react";
-import { Lock, Shield, Wallet, Check } from "lucide-react";
+import { Shield, Users, Gem, ArrowRight } from "lucide-react";
 import { TemplateStyles } from "../../../types/templateStyles";
 import { useCanvasState } from "../../../hooks/useCanvasState";
+import EditableComponent from "../shared/EditableComponent";
 
 interface TokenGateTemplateProps {
   styles: TemplateStyles;
@@ -27,14 +28,19 @@ const TokenGateTemplate: React.FC<TokenGateTemplateProps> = ({ styles }) => {
         style={{ 
           backgroundColor: styles.headerBg,
           color: styles.headerTextColor,
-          height: styles.headerHeight 
+          height: styles.headerHeight
         }}
       >
-        <div className={`${styles.headingFont} text-2xl tracking-wider`}>EXCLUSIVE ACCESS</div>
+        <div className={`${styles.headingFont} text-2xl tracking-wider`}>
+          <EditableComponent 
+            initialText="DEGEN DAO" 
+            isHeading={true}
+          />
+        </div>
         <div className="ml-auto flex items-center space-x-6">
           <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Home</button>
-          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Products</button>
-          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Membership</button>
+          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">About</button>
+          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Benefits</button>
           <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">FAQ</button>
           <button 
             style={{ 
@@ -42,10 +48,9 @@ const TokenGateTemplate: React.FC<TokenGateTemplateProps> = ({ styles }) => {
               color: styles.buttonTextColor,
               borderRadius: styles.buttonRadius
             }}
-            className="px-4 py-2 flex items-center space-x-2"
+            className="px-4 py-2"
           >
-            <Wallet className="h-4 w-4" />
-            <span>Connect</span>
+            Connect Wallet
           </button>
         </div>
       </div>
@@ -59,176 +64,195 @@ const TokenGateTemplate: React.FC<TokenGateTemplateProps> = ({ styles }) => {
         </div>
       )}
       
-      <div className="flex-1 flex justify-center items-center p-10" 
-        style={{ 
-          background: styles.bannerBg,
-          color: styles.bannerTextColor
-        }}
+      {/* Hero Section */}
+      <div 
+        className="flex-1 overflow-auto"
+        style={{ color: styles.bannerTextColor }}
       >
-        <div className="flex w-full max-w-5xl overflow-hidden rounded-2xl shadow-2xl border" 
-          style={{ borderColor: styles.borderColor }}
+        <div 
+          className="py-20 px-10"
+          style={{ 
+            background: styles.bannerBg,
+            minHeight: styles.bannerHeight
+          }}
         >
-          {/* Left side: Token gate */}
-          <div className="w-1/2 p-12 flex flex-col justify-center" style={{ backgroundColor: styles.cardBg }}>
-            <div className="mb-8 flex items-center">
-              <div className="w-12 h-12 rounded-full flex items-center justify-center" 
-                style={{ backgroundColor: styles.accentColor }}
-              >
-                <Lock className="text-white w-6 h-6" />
-              </div>
-              <div className="ml-4">
-                <h2 className={`${styles.headingFont} text-2xl`} style={{ color: styles.cardTextColor }}>TOKEN REQUIRED</h2>
-                <p style={{ color: `${styles.cardTextColor}80` }}>Verify ownership to continue</p>
-              </div>
-            </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <EditableComponent 
+              initialText="Exclusive Access for Token Holders" 
+              isHeading={true}
+              className="mb-6"
+            />
             
-            {/* Render dropped components in the middle if any */}
-            {sortedComponents.length > 0 && sortedComponents.some(c => c.y >= 200 && c.y < 400) && (
-              <div className="w-full py-4 my-4 border-y border-dashed border-purple-400/30">
-                <div className="text-center text-purple-300 py-4">
-                  {editMode ? "Dropped Component: Middle Left Section" : null}
-                </div>
-              </div>
-            )}
-            
-            <div className="mb-8">
-              <p className={`${styles.bodyFont} mb-6`} style={{ color: styles.cardTextColor }}>
-                This exclusive product is only available to members holding our Membership NFT. Connect your wallet to verify ownership.
-              </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3" 
-                    style={{ backgroundColor: `${styles.accentColor}20` }}
-                  >
-                    <Check className="w-4 h-4" style={{ color: styles.accentColor }} />
-                  </div>
-                  <span style={{ color: styles.cardTextColor }}>Lifetime access to exclusive drops</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3" 
-                    style={{ backgroundColor: `${styles.accentColor}20` }}
-                  >
-                    <Check className="w-4 h-4" style={{ color: styles.accentColor }} />
-                  </div>
-                  <span style={{ color: styles.cardTextColor }}>40% discount on all products</span>
-                </div>
-                <div className="flex items-center">
-                  <div className="w-6 h-6 rounded-full flex items-center justify-center mr-3" 
-                    style={{ backgroundColor: `${styles.accentColor}20` }}
-                  >
-                    <Check className="w-4 h-4" style={{ color: styles.accentColor }} />
-                  </div>
-                  <span style={{ color: styles.cardTextColor }}>Access to members-only events</span>
-                </div>
-              </div>
-            </div>
+            <EditableComponent 
+              initialText="Join our community of token holders to unlock premium content, special events, and unique benefits available only to members." 
+              className="text-xl opacity-90 max-w-2xl mx-auto mb-10"
+            />
             
             <button 
-              className="py-4 px-6 rounded-lg font-medium w-full flex items-center justify-center space-x-2"
               style={{ 
                 backgroundColor: styles.buttonBg, 
                 color: styles.buttonTextColor,
                 borderRadius: styles.buttonRadius
               }}
+              className="px-8 py-3 text-lg font-medium"
             >
-              <Wallet className="w-5 h-5" />
-              <span>Connect Wallet</span>
+              Connect Your Wallet
             </button>
-            
-            <div className="mt-4 text-center text-sm" style={{ color: `${styles.cardTextColor}80` }}>
-              Don't have the token? <a href="#" style={{ color: styles.accentColor }}>Purchase a membership</a>
+          </div>
+        </div>
+        
+        {/* Render dropped components in the middle if any */}
+        {sortedComponents.length > 0 && sortedComponents.some(c => c.y >= 200 && c.y < 500) && (
+          <div className="w-full py-4 border-y border-dashed border-purple-400/30">
+            <div className="text-center text-purple-300 py-4">
+              {editMode ? "Dropped Component: Middle Section" : null}
             </div>
           </div>
-          
-          {/* Right side: Product preview */}
-          <div className="w-1/2 p-12 flex flex-col" 
-            style={{ 
-              background: `linear-gradient(to bottom right, ${styles.headerBg}, ${styles.cardBg})` 
-            }}
-          >
-            <div className="mb-6 flex justify-between items-center">
-              <h2 className={`${styles.headingFont} text-2xl`} style={{ color: styles.cardTextColor }}>LIMITED EDITION</h2>
-              <div className="px-3 py-1 rounded-md text-sm font-medium" 
+        )}
+        
+        {/* Requirements Section */}
+        <div className="py-16 px-10" style={{ color: styles.collectionTextColor }}>
+          <div className="max-w-6xl mx-auto">
+            <EditableComponent 
+              initialText="How To Access" 
+              isHeading={true}
+              className="text-center mb-12"
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="p-6 rounded-lg flex flex-col items-center text-center"
                 style={{ 
-                  backgroundColor: `${styles.accentColor}20`, 
-                  color: styles.accentColor 
+                  backgroundColor: styles.cardBg, 
+                  color: styles.cardTextColor,
+                  borderRadius: styles.buttonRadius
                 }}
               >
-                MEMBERS ONLY
-              </div>
-            </div>
-            
-            {/* Render dropped components in the middle right if any */}
-            {sortedComponents.length > 0 && sortedComponents.some(c => c.y >= 400 && c.y < 500) && (
-              <div className="w-full py-4 my-4 border-y border-dashed border-purple-400/30">
-                <div className="text-center text-purple-300 py-4">
-                  {editMode ? "Dropped Component: Middle Right Section" : null}
-                </div>
-              </div>
-            )}
-            
-            <div className="flex-1 flex items-center justify-center mb-6">
-              <div className="w-64 h-64 rounded-lg flex items-center justify-center" 
-                style={{ 
-                  background: `linear-gradient(to bottom right, ${styles.accentColor}20, #0000ff20)` 
-                }}
-              >
-                <div className="w-48 h-48 rounded-lg transform rotate-12 shadow-lg flex items-center justify-center" 
-                  style={{ 
-                    background: `linear-gradient(to bottom right, ${styles.accentColor}, #0000ff)` 
-                  }}
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: `${styles.accentColor}20` }}
                 >
-                  <Shield className="w-16 h-16 text-white transform -rotate-12" />
+                  <Gem size={24} style={{ color: styles.accentColor }} />
                 </div>
+                <EditableComponent 
+                  initialText="Hold Required Tokens" 
+                  isHeading={true}
+                  className="text-xl mb-2"
+                />
+                <EditableComponent 
+                  initialText="You need to hold at least 100 DEGEN tokens in your connected wallet to access premium content." 
+                />
               </div>
-            </div>
-            
-            <div className="space-y-4">
-              <h3 className={`${styles.headingFont} text-xl`} style={{ color: styles.cardTextColor }}>CRYPTO GUARDIAN HOODIE</h3>
-              <p className={`${styles.bodyFont}`} style={{ color: `${styles.cardTextColor}80` }}>Limited edition, premium quality hoodie exclusive to token holders. Only 200 will ever be made.</p>
               
-              <div className="flex justify-between">
-                <div>
-                  <div style={{ color: `${styles.cardTextColor}80` }} className="text-sm">Price</div>
-                  <div style={{ color: styles.cardTextColor }} className="font-medium">$120.00 USD</div>
+              <div className="p-6 rounded-lg flex flex-col items-center text-center"
+                style={{ 
+                  backgroundColor: styles.cardBg, 
+                  color: styles.cardTextColor,
+                  borderRadius: styles.buttonRadius
+                }}
+              >
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: `${styles.accentColor}20` }}
+                >
+                  <Shield size={24} style={{ color: styles.accentColor }} />
                 </div>
-                <div>
-                  <div style={{ color: `${styles.cardTextColor}80` }} className="text-sm">Available</div>
-                  <div style={{ color: styles.cardTextColor }} className="font-medium">43/200</div>
+                <EditableComponent 
+                  initialText="Verify Your Wallet" 
+                  isHeading={true}
+                  className="text-xl mb-2"
+                />
+                <EditableComponent 
+                  initialText="Connect your wallet to our platform and complete a simple verification to prove ownership." 
+                />
+              </div>
+              
+              <div className="p-6 rounded-lg flex flex-col items-center text-center"
+                style={{ 
+                  backgroundColor: styles.cardBg, 
+                  color: styles.cardTextColor,
+                  borderRadius: styles.buttonRadius
+                }}
+              >
+                <div className="w-16 h-16 rounded-full flex items-center justify-center mb-4"
+                  style={{ backgroundColor: `${styles.accentColor}20` }}
+                >
+                  <Users size={24} style={{ color: styles.accentColor }} />
                 </div>
+                <EditableComponent 
+                  initialText="Access Exclusive Content" 
+                  isHeading={true}
+                  className="text-xl mb-2"
+                />
+                <EditableComponent 
+                  initialText="Once verified, you'll gain immediate access to members-only content, events and special offers." 
+                />
               </div>
             </div>
           </div>
         </div>
-      </div>
-      
-      {/* Render dropped components at the bottom if any */}
-      {sortedComponents.length > 0 && sortedComponents.some(c => c.y >= 500) && (
-        <div className="w-full py-4 border-t border-dashed border-purple-400/30">
-          <div className="text-center text-purple-300 py-4">
-            {editMode ? "Dropped Component: Bottom Section" : null}
+        
+        {/* Benefits Section */}
+        <div className="py-16 px-10" 
+          style={{ 
+            backgroundColor: styles.cardBg,
+            color: styles.cardTextColor
+          }}
+        >
+          <div className="max-w-6xl mx-auto">
+            <EditableComponent 
+              initialText="Member Benefits" 
+              isHeading={true}
+              className="text-center mb-12"
+            />
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {[1, 2, 3, 4].map((item) => (
+                <div key={item} className="flex items-start">
+                  <div className="mr-4 p-2 rounded-lg"
+                    style={{ backgroundColor: `${styles.accentColor}20` }}
+                  >
+                    <ArrowRight size={20} style={{ color: styles.accentColor }} />
+                  </div>
+                  <div>
+                    <EditableComponent 
+                      initialText={`Benefit ${item}`} 
+                      isHeading={true}
+                      className="text-xl mb-2"
+                    />
+                    <EditableComponent 
+                      initialText="Detailed description of the amazing benefits members will receive when they join the token gated community." 
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      )}
+        
+        {/* Render dropped components at the bottom if any */}
+        {sortedComponents.length > 0 && sortedComponents.some(c => c.y >= 500) && (
+          <div className="w-full py-4 border-t border-dashed border-purple-400/30">
+            <div className="text-center text-purple-300 py-4">
+              {editMode ? "Dropped Component: Bottom Section" : null}
+            </div>
+          </div>
+        )}
+      </div>
       
       {/* Footer */}
       <footer 
-        className="w-full p-6 border-t flex flex-col md:flex-row justify-between items-center gap-4"
+        className="w-full p-6 border-t flex justify-between items-center"
         style={{ 
           backgroundColor: styles.headerBg,
           borderColor: styles.borderColor,
           color: styles.headerTextColor
         }}
       >
-        <div>
-          <div className={`${styles.headingFont} text-xl mb-1`}>EXCLUSIVE ACCESS</div>
-          <div className="text-sm opacity-70">The premier token-gated membership platform</div>
+        <div className={`${styles.headingFont} text-xl`}>
+          <EditableComponent initialText="DEGEN DAO" isHeading={true} />
         </div>
         <div className="flex space-x-8">
           <div className="hover:text-white transition-colors cursor-pointer">Terms</div>
           <div className="hover:text-white transition-colors cursor-pointer">Privacy</div>
-          <div className="hover:text-white transition-colors cursor-pointer">Help Center</div>
+          <div className="hover:text-white transition-colors cursor-pointer">About</div>
           <div className="hover:text-white transition-colors cursor-pointer">Contact</div>
         </div>
         <div className="text-sm opacity-70">© 2023 All rights reserved</div>
