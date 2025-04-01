@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CanvasElements from "../CanvasElements";
 import TemplateRenderer from "./TemplateRenderer";
 import CanvasActionButton from "./CanvasActionButton";
@@ -7,6 +7,7 @@ import { TemplateStyles } from "../../../types/templateStyles";
 import { CanvasElement } from "../../../types/canvasElement";
 import { useSelectedElement } from "../../../hooks/useSelectedElement";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useIsMobile } from "../../../hooks/use-mobile";
 
 interface CanvasViewProps {
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -34,7 +35,12 @@ const CanvasView: React.FC<CanvasViewProps> = ({
   handleCanvasClick
 }) => {
   const { selectedElement } = useSelectedElement();
+  const isMobile = useIsMobile();
   const gridSize = 20; // Match the grid size used in ComponentElement
+  const [dimensions, setDimensions] = useState<{width: string, minHeight: string}>({
+    width: '1200px',
+    minHeight: '1600px'
+  });
 
   // Grid style enhancements for better visibility when using move tool
   const getGridStyle = () => {
@@ -71,25 +77,28 @@ const CanvasView: React.FC<CanvasViewProps> = ({
     return {};
   };
 
-  // Get device dimensions
-  const getDeviceDimensions = () => {
-    switch (deviceView) {
-      case "desktop":
-        return { width: '1200px', minHeight: '1600px' };
-      case "tablet":
-        return { width: '768px', minHeight: '1200px' };
-      case "mobile":
-        return { width: '375px', minHeight: '800px' };
-      default:
-        return { width: '1200px', minHeight: '1600px' };
-    }
-  };
-
-  const dimensions = getDeviceDimensions();
+  // Update dimensions when device view changes
+  useEffect(() => {
+    // Get device dimensions
+    const getDeviceDimensions = () => {
+      switch (deviceView) {
+        case "desktop":
+          return { width: '1200px', minHeight: '1600px' };
+        case "tablet":
+          return { width: '768px', minHeight: '1200px' };
+        case "mobile":
+          return { width: '375px', minHeight: '800px' };
+        default:
+          return { width: '1200px', minHeight: '1600px' };
+      }
+    };
+    
+    setDimensions(getDeviceDimensions());
+  }, [deviceView]);
 
   return (
-    <ScrollArea className="h-[80vh] max-h-[80vh] w-full rounded-md">
-      <div className="min-w-fit flex justify-center">
+    <ScrollArea className="h-full max-h-[80vh] w-full rounded-md">
+      <div className="min-w-fit flex justify-center py-4">
         <div 
           ref={canvasRef}
           className={`bg-white rounded-md shadow-2xl transition-all duration-300 transform origin-top relative ${
@@ -115,6 +124,13 @@ const CanvasView: React.FC<CanvasViewProps> = ({
           {showGrid && activeTool === 'move' && selectedElement && editMode && (
             <div className="absolute inset-0 pointer-events-none">
               <div className="absolute inset-0 grid-overlay"></div>
+            </div>
+          )}
+
+          {/* Device indicator - only in edit mode */}
+          {editMode && (
+            <div className="absolute bottom-2 right-2 bg-cv-purple/70 text-white text-xs py-1 px-2 rounded-full">
+              {deviceView}
             </div>
           )}
         </div>
