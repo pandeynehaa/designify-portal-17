@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Layer } from "../../types/layer";
 import { CanvasElement } from "../../types/canvasElement";
@@ -37,6 +38,12 @@ export const useLayerManagement = (
     // Don't delete if it's the only layer
     if (layers.length <= 1) {
       return;
+    }
+    
+    // Check if layer has elements
+    const hasElements = droppedElements.some(el => el.layerId === layerId);
+    if (hasElements) {
+      return; // Don't delete layers with elements
     }
     
     // Remove the layer

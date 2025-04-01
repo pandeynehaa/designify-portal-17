@@ -9,17 +9,14 @@ interface EmptyLayersStateProps {
 
 const EmptyLayersState: React.FC<EmptyLayersStateProps> = ({ handleAddLayer }) => {
   return (
-    <div className="p-6 text-center">
-      <Layers className="h-10 w-10 mx-auto mb-3 text-cv-purple/50" />
-      <h3 className="font-medium text-cv-white mb-2">No Layers Created Yet</h3>
-      <p className="text-sm text-cv-white/60 mb-4">
-        Layers help you organize elements on your canvas
+    <div className="h-full flex flex-col items-center justify-center p-6 text-center text-cv-white/60">
+      <Layers size={40} className="mb-4 opacity-40" />
+      <h3 className="text-lg font-medium mb-2">No Layers Yet</h3>
+      <p className="text-sm mb-6">
+        Create layers to organize and manage your canvas elements
       </p>
-      <Button 
-        onClick={handleAddLayer}
-        className="bg-cv-purple hover:bg-cv-purple/80"
-      >
-        <Plus size={14} className="mr-1" /> Add First Layer
+      <Button onClick={handleAddLayer} variant="secondary" className="bg-cv-accent hover:bg-cv-accent/90 text-white">
+        <Plus size={16} className="mr-2" /> Create New Layer
       </Button>
     </div>
   );
