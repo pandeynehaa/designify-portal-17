@@ -1,9 +1,12 @@
 
 import React, { useState, useEffect } from "react";
 import { useCanvasState } from "../../../hooks/useCanvasState";
-import { Package, Wallet, RefreshCw } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
+import NFTHeader from "./nft/NFTHeader";
+import NFTCollectionGroup from "./nft/NFTCollectionGroup";
+import EmptyWalletState from "./nft/EmptyWalletState";
+import EmptyNFTState from "./nft/EmptyNFTState";
+import NFTGuide from "./nft/NFTGuide";
 
 // Mock wallet NFT data for demonstration
 const mockWalletNFTs = [
@@ -44,11 +47,19 @@ const mockWalletNFTs = [
   }
 ];
 
+interface NFTData {
+  id: string;
+  name: string;
+  image: string;
+  collection: string;
+  marketplaceLink: string;
+}
+
 const NFTsTab: React.FC = () => {
   const { setDroppedElements } = useCanvasState();
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [walletNFTs, setWalletNFTs] = useState([]);
-  const [expandedCollections, setExpandedCollections] = useState({});
+  const [walletNFTs, setWalletNFTs] = useState<NFTData[]>([]);
+  const [expandedCollections, setExpandedCollections] = useState<Record<string, boolean>>({});
   
   // Simulate wallet connection
   useEffect(() => {
@@ -60,7 +71,7 @@ const NFTsTab: React.FC = () => {
         setWalletNFTs(mockWalletNFTs);
         
         // Initialize expanded state for collections
-        const collections = {};
+        const collections: Record<string, boolean> = {};
         mockWalletNFTs.forEach(nft => {
           if (!collections[nft.collection]) {
             collections[nft.collection] = true; // Default to expanded
@@ -78,7 +89,7 @@ const NFTsTab: React.FC = () => {
     checkWalletConnection();
   }, []);
   
-  const handleDragStart = (e: React.DragEvent, nft: any) => {
+  const handleDragStart = (e: React.DragEvent, nft: NFTData) => {
     e.dataTransfer.setData("application/nft", JSON.stringify(nft));
     e.dataTransfer.effectAllowed = "copy";
     
@@ -101,7 +112,7 @@ const NFTsTab: React.FC = () => {
     window.addEventListener('dragend', resetOverlay);
   };
   
-  const handleAddNFT = (nft: any) => {
+  const handleAddNFT = (nft: NFTData) => {
     // Create a new NFT element
     const newNFT = {
       type: 'nft',
@@ -172,7 +183,7 @@ const NFTsTab: React.FC = () => {
   };
   
   // Group NFTs by collection
-  const groupedNFTs = walletNFTs.reduce((acc, nft) => {
+  const groupedNFTs: Record<string, NFTData[]> = walletNFTs.reduce((acc: Record<string, NFTData[]>, nft) => {
     if (!acc[nft.collection]) {
       acc[nft.collection] = [];
     }
@@ -182,96 +193,33 @@ const NFTsTab: React.FC = () => {
 
   return (
     <div className="p-4 flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4">
-        <h3 className="text-sm font-medium text-cv-white">Your NFTs</h3>
-        <div className="flex gap-1">
-          <button
-            onClick={handleRefresh}
-            className="p-1.5 text-cv-white bg-cv-gray rounded hover:bg-cv-lightgray transition-colors"
-            title="Refresh NFTs"
-            disabled={!isWalletConnected}
-          >
-            <RefreshCw size={14} />
-          </button>
-          {!isWalletConnected && (
-            <button
-              onClick={handleConnectWallet}
-              className="p-1.5 text-cv-white bg-cv-gray rounded hover:bg-cv-lightgray transition-colors"
-              title="Connect Wallet"
-            >
-              <Wallet size={14} />
-            </button>
-          )}
-        </div>
-      </div>
+      <NFTHeader 
+        isWalletConnected={isWalletConnected}
+        onRefresh={handleRefresh}
+        onConnectWallet={handleConnectWallet}
+      />
       
       {isWalletConnected && Object.keys(groupedNFTs).length > 0 ? (
         <div className="overflow-y-auto flex-1">
           {Object.entries(groupedNFTs).map(([collection, nfts]) => (
-            <Collapsible
+            <NFTCollectionGroup
               key={collection}
-              open={expandedCollections[collection]}
-              onOpenChange={() => toggleCollection(collection)}
-              className="mb-3"
-            >
-              <CollapsibleTrigger className="flex items-center justify-between w-full p-2 bg-cv-gray/30 rounded-md text-cv-white text-sm">
-                <span>{collection}</span>
-                <span className="text-xs text-cv-white/60">{nfts.length} items</span>
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  {nfts.map((nft) => (
-                    <div 
-                      key={nft.id}
-                      className="bg-cv-gray/50 rounded-lg p-2 cursor-grab hover:bg-cv-gray transition-colors"
-                      draggable
-                      onDragStart={(e) => handleDragStart(e, nft)}
-                      onClick={() => handleAddNFT(nft)}
-                    >
-                      <img 
-                        src={nft.image} 
-                        alt={nft.name}
-                        className="w-full aspect-square object-cover rounded-md mb-2"
-                      />
-                      <div className="text-xs text-cv-white truncate font-medium">{nft.name}</div>
-                    </div>
-                  ))}
-                </div>
-              </CollapsibleContent>
-            </Collapsible>
+              collection={collection}
+              nfts={nfts}
+              expanded={expandedCollections[collection] || false}
+              onToggle={toggleCollection}
+              onDragStart={handleDragStart}
+              onNFTClick={handleAddNFT}
+            />
           ))}
         </div>
       ) : !isWalletConnected ? (
-        <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
-          <Wallet className="h-12 w-12 text-cv-white/30 mb-3" />
-          <h3 className="text-sm font-medium text-cv-white mb-1">No Wallet Connected</h3>
-          <p className="text-xs text-cv-white/60 mb-4">Connect your wallet to see your NFT collection</p>
-          <button
-            onClick={handleConnectWallet}
-            className="px-4 py-2 bg-cv-accent text-white rounded-md text-sm hover:bg-cv-accent/90 transition-colors"
-          >
-            Connect Wallet
-          </button>
-        </div>
+        <EmptyWalletState onConnectWallet={handleConnectWallet} />
       ) : (
-        <div className="flex-1 flex flex-col items-center justify-center text-center p-4">
-          <Package className="h-12 w-12 text-cv-white/30 mb-3" />
-          <h3 className="text-sm font-medium text-cv-white mb-1">No NFTs Found</h3>
-          <p className="text-xs text-cv-white/60 mb-4">We couldn't find any NFTs in your connected wallet</p>
-        </div>
+        <EmptyNFTState />
       )}
       
-      {isWalletConnected && (
-        <div className="mt-4 p-3 bg-cv-gray/30 rounded-lg">
-          <h4 className="text-xs font-medium text-cv-white mb-2">How to use NFTs</h4>
-          <ul className="text-xs text-cv-white/70 space-y-1.5 list-disc pl-4">
-            <li>Drag and drop NFTs onto your canvas</li>
-            <li>Click on an NFT to add it directly to the canvas</li>
-            <li>Use Effects tab to add blur and glow effects</li>
-            <li>Customize marketplace links in the properties panel</li>
-          </ul>
-        </div>
-      )}
+      {isWalletConnected && <NFTGuide />}
     </div>
   );
 };
