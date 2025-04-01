@@ -2,7 +2,7 @@
 import React, { useState, Dispatch, SetStateAction } from "react";
 import { 
   Save, FileCode, Settings, Image, Wand2, Code, Grid, 
-  Download, ChevronDown, Undo, Redo, Layers 
+  ChevronDown, Undo, Redo, Layers 
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 import {
@@ -69,13 +69,6 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
     toast({
       title: "Layers Panel",
       description: "Layers panel will be available soon"
-    });
-  };
-
-  const handleDownload = () => {
-    toast({
-      title: "Download",
-      description: "Your design is being prepared for download"
     });
   };
 
@@ -177,12 +170,6 @@ const EditorHeader: React.FC<EditorHeaderProps> = ({
           onClick={handleSave}
         >
           <Save size={16} />
-        </button>
-        <button 
-          className="p-1.5 rounded-md text-cv-white hover:bg-cv-lightgray transition-colors"
-          onClick={handleDownload}
-        >
-          <Download size={16} />
         </button>
       </div>
     </div>

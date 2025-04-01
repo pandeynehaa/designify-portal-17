@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { Plus, Type, Image, LayoutGrid, Monitor, Tablet, Smartphone, Move, MousePointer, FilePlus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,6 @@ interface CanvasToolbarProps {
   setDeviceView: (device: string) => void;
   activeTool: string;
   setActiveTool: (tool: string) => void;
-  zoomLevel: number;
-  handleZoomIn: () => void;
-  handleZoomOut: () => void;
   onInsertText: () => void;
   onInsertImage: () => void;
   onInsertComponent: () => void;
@@ -22,9 +20,6 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
   setDeviceView,
   activeTool,
   setActiveTool,
-  zoomLevel,
-  handleZoomIn,
-  handleZoomOut,
   onInsertText,
   onInsertImage,
   onInsertComponent,
@@ -111,61 +106,35 @@ const CanvasToolbar: React.FC<CanvasToolbarProps> = ({
         </div>
       </div>
       
-      {/* Rest of toolbar */}
-      <div className="flex items-center space-x-2">
-        {/* Device View Selection */}
-        <div className="flex items-center bg-cv-gray/50 rounded-md">
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`h-8 w-8 p-0 ${deviceView === 'desktop' ? 'bg-cv-accent text-white' : 'text-cv-white'}`}
-            onClick={() => setDeviceView('desktop')}
-            title="Desktop View"
-          >
-            <Monitor size={14} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`h-8 w-8 p-0 ${deviceView === 'tablet' ? 'bg-cv-accent text-white' : 'text-cv-white'}`}
-            onClick={() => setDeviceView('tablet')}
-            title="Tablet View"
-          >
-            <Tablet size={14} />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={`h-8 w-8 p-0 ${deviceView === 'smartphone' ? 'bg-cv-accent text-white' : 'text-cv-white'}`}
-            onClick={() => setDeviceView('smartphone')}
-            title="Smartphone View"
-          >
-            <Smartphone size={14} />
-          </Button>
-        </div>
-        
-        {/* Zoom Controls */}
-        <div className="flex items-center bg-cv-gray/50 rounded-md px-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 p-0 text-cv-white"
-            onClick={handleZoomOut}
-            title="Zoom Out"
-          >
-            -
-          </Button>
-          <span className="text-xs text-cv-white">{zoomLevel}%</span>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 p-0 text-cv-white"
-            onClick={handleZoomIn}
-            title="Zoom In"
-          >
-            +
-          </Button>
-        </div>
+      {/* Device View Selection */}
+      <div className="flex items-center bg-cv-gray/50 rounded-md">
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`h-8 w-8 p-0 ${deviceView === 'desktop' ? 'bg-cv-accent text-white' : 'text-cv-white'}`}
+          onClick={() => setDeviceView('desktop')}
+          title="Desktop View"
+        >
+          <Monitor size={14} />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`h-8 w-8 p-0 ${deviceView === 'tablet' ? 'bg-cv-accent text-white' : 'text-cv-white'}`}
+          onClick={() => setDeviceView('tablet')}
+          title="Tablet View"
+        >
+          <Tablet size={14} />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className={`h-8 w-8 p-0 ${deviceView === 'smartphone' ? 'bg-cv-accent text-white' : 'text-cv-white'}`}
+          onClick={() => setDeviceView('smartphone')}
+          title="Smartphone View"
+        >
+          <Smartphone size={14} />
+        </Button>
       </div>
     </div>
   );

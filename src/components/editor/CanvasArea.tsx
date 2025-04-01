@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from "react";
 import { useDeviceState } from "../../hooks/useDeviceState";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
@@ -8,6 +9,7 @@ import CanvasView from "./canvas/CanvasView";
 import CanvasTools from "./CanvasTools";
 import { TemplateStyles } from "../../types/templateStyles";
 import { toast } from "@/components/ui/use-toast";
+import { useCanvasZoom } from "@/hooks/useCanvasZoom";
 
 interface CanvasAreaProps {
   activeTemplate: string;
@@ -17,13 +19,13 @@ interface CanvasAreaProps {
 
 const CanvasArea: React.FC<CanvasAreaProps> = ({ 
   activeTemplate, 
-  zoom, 
+  zoom: initialZoom, 
   templateStyles 
 }) => {
   const { deviceView, setDeviceView, activeTool, setActiveTool } = useDeviceState();
-  const [zoomLevel, setZoomLevel] = useState(zoom * 100);
   const canvasRef = useRef<HTMLDivElement>(null);
   const { selectElement } = useSelectedElement();
+  const { zoom, setZoom, handleZoomIn, handleZoomOut, handleZoomReset } = useCanvasZoom(initialZoom);
   
   const {
     droppedElements,
@@ -41,8 +43,8 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
   } = useCanvasState();
   
   useEffect(() => {
-    setZoomLevel(zoom * 100);
-  }, [zoom]);
+    setZoom(initialZoom);
+  }, [initialZoom, setZoom]);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -54,18 +56,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
     }
   }, [templateStyles.enable3D]);
   
-  const handleZoomIn = () => {
-    if (zoomLevel < 200) {
-      setZoomLevel(zoomLevel + 10);
-    }
-  };
-  
-  const handleZoomOut = () => {
-    if (zoomLevel > 50) {
-      setZoomLevel(zoomLevel - 10);
-    }
-  };
-
   const handleCanvasClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       selectElement(null);
@@ -83,9 +73,6 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         setDeviceView={setDeviceView}
         activeTool={activeTool}
         setActiveTool={setActiveTool}
-        zoomLevel={zoomLevel}
-        handleZoomIn={handleZoomIn}
-        handleZoomOut={handleZoomOut}
         onInsertText={handleInsertText}
         onInsertImage={handleInsertImage}
         onInsertComponent={handleInsertComponent}
@@ -95,7 +82,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
       <div className="flex-1 relative overflow-auto p-4 canvas-content">
         <CanvasEventHandlers
           canvasRef={canvasRef}
-          zoomLevel={zoomLevel}
+          zoomLevel={zoom * 100}
           setDroppedElements={setDroppedElements}
         >
           <div className="w-full h-full flex items-center justify-center vr-perspective">
@@ -128,7 +115,7 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         zoom={zoom} 
         onZoomIn={handleZoomIn} 
         onZoomOut={handleZoomOut} 
-        onReset={() => setZoomLevel(100)}
+        onReset={handleZoomReset}
         showGrid={showGrid}
         toggleGrid={toggleGrid}
         editMode={editMode}

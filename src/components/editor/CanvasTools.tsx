@@ -2,9 +2,7 @@
 import React from "react";
 import { 
   Move, ZoomIn, ZoomOut, Undo, Redo, 
-  Layers, Eye, EyeOff, Lock, Unlock, 
-  AlignLeft, AlignCenter, AlignRight,
-  Grid, RotateCcw, Edit
+  Layers, Eye, Grid, RotateCcw, Edit, Sparkles
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
@@ -41,6 +39,21 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
       title: "Layers",
       description: "Layers panel will be available soon"
     });
+  };
+  
+  const handleMintNow = () => {
+    toast({
+      title: "Mint as NFT",
+      description: "Your design is being prepared to be minted as an NFT"
+    });
+    
+    // Simulate minting completion after a delay
+    setTimeout(() => {
+      toast({
+        title: "NFT Minted Successfully",
+        description: "Your design has been minted and is now available in the marketplace."
+      });
+    }, 3000);
   };
 
   return (
@@ -108,6 +121,14 @@ const CanvasTools: React.FC<CanvasToolsProps> = ({
           ) : (
             <Edit size={16} className="text-white" />
           )}
+        </button>
+
+        <button
+          className="p-1.5 rounded-full bg-cv-accent hover:bg-cv-accent/90 transition-colors"
+          onClick={handleMintNow}
+          title="Mint as NFT"
+        >
+          <Sparkles size={16} className="text-white" />
         </button>
       </div>
     </div>

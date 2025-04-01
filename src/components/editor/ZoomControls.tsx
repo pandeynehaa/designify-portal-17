@@ -1,27 +1,25 @@
 
 import React from "react";
-import { Eye, Share2, PlusSquare, MinusSquare } from "lucide-react";
+import { Eye, Share2 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
 interface ZoomControlsProps {
-  zoomLevel: number;
-  handleZoomIn: () => void;
-  handleZoomOut: () => void;
+  handleEyeClick?: () => void;
+  handleShareClick?: () => void;
 }
 
 const ZoomControls: React.FC<ZoomControlsProps> = ({
-  zoomLevel,
-  handleZoomIn,
-  handleZoomOut
+  handleEyeClick,
+  handleShareClick
 }) => {
-  const handleEyeClick = () => {
+  const handleDefaultEyeClick = () => {
     toast({
       title: "Preview Mode",
       description: "Previewing the design at actual size"
     });
   };
   
-  const handleShareClick = () => {
+  const handleDefaultShareClick = () => {
     toast({
       title: "Share Design",
       description: "Sharing options will be available soon"
@@ -30,22 +28,12 @@ const ZoomControls: React.FC<ZoomControlsProps> = ({
 
   return (
     <div className="flex items-center space-x-3">
-      <div className="flex items-center space-x-1">
-        <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleZoomOut}>
-          <MinusSquare size={14} className="text-editor-text" />
-        </button>
-        <span className="text-xs text-editor-text">{zoomLevel}%</span>
-        <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleZoomIn}>
-          <PlusSquare size={14} className="text-editor-text" />
-        </button>
-      </div>
-      
-      <div className="h-4 border-r border-editor-border mx-1"></div>
-      
-      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleEyeClick}>
+      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" 
+        onClick={handleEyeClick || handleDefaultEyeClick}>
         <Eye size={16} className="text-editor-text" />
       </button>
-      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" onClick={handleShareClick}>
+      <button className="p-1.5 hover:bg-editor-surface rounded-md toolbar-button-hover" 
+        onClick={handleShareClick || handleDefaultShareClick}>
         <Share2 size={16} className="text-editor-text" />
       </button>
     </div>

@@ -1,6 +1,6 @@
 
 import React, { useState } from "react";
-import { Sparkles, Plus, Trash2, Download, Share, ExternalLink } from "lucide-react";
+import { Sparkles, Plus, Trash2, Share, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
@@ -114,9 +114,6 @@ const SavedDesignsPanel: React.FC = () => {
               
               <div className="flex justify-between items-center">
                 <div className="flex space-x-1">
-                  <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
-                    <Download size={14} />
-                  </Button>
                   <Button size="sm" variant="ghost" className="h-8 w-8 p-0">
                     <Share size={14} />
                   </Button>
