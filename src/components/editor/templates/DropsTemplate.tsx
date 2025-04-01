@@ -35,10 +35,10 @@ const DropsTemplate: React.FC<DropsTemplateProps> = ({ styles }) => {
           <EditableComponent initialText="CYBERPUNK 2077" isHeading={true} />
         </div>
         <div className="ml-auto flex items-center space-x-6">
-          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Home</button>
-          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Collection</button>
-          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Roadmap</button>
-          <button style={{ color: styles.headerTextColor }} className="hover:text-white transition-colors">Team</button>
+          <EditableComponent initialText="Home" className="hover:text-white transition-colors" />
+          <EditableComponent initialText="Collection" className="hover:text-white transition-colors" />
+          <EditableComponent initialText="Roadmap" className="hover:text-white transition-colors" />
+          <EditableComponent initialText="Team" className="hover:text-white transition-colors" />
           <button 
             style={{ 
               backgroundColor: styles.buttonBg, 
@@ -48,7 +48,7 @@ const DropsTemplate: React.FC<DropsTemplateProps> = ({ styles }) => {
             className="px-4 py-2 flex items-center space-x-2"
           >
             <Wallet className="h-4 w-4" />
-            <span>Connect</span>
+            <EditableComponent initialText="Connect" />
           </button>
         </div>
       </div>
@@ -163,7 +163,7 @@ const DropsTemplate: React.FC<DropsTemplateProps> = ({ styles }) => {
                   }}
                   className="px-8 py-4 font-medium flex-1"
                 >
-                  Mint Now
+                  <EditableComponent initialText="Mint Now" />
                 </button>
                 <button 
                   style={{ 

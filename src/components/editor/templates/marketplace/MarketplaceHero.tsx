@@ -1,7 +1,7 @@
 
 import React from "react";
 import { TemplateStyles } from "../../../../types/templateStyles";
-import EditableText from "./EditableText";
+import EditableComponent from "../../shared/EditableComponent";
 
 interface MarketplaceHeroProps {
   styles: TemplateStyles;
@@ -19,7 +19,7 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ styles }) => {
     >
       <div className="text-center z-10">
         <h1 className="relative inline-block">
-          <EditableText 
+          <EditableComponent 
             initialText="Discover, Collect, and Sell NFTs" 
             isHeading={true}
             className={`text-5xl font-bold mb-4 ${styles.headingFont}`}
@@ -27,7 +27,7 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ styles }) => {
         </h1>
         
         <div className="relative inline-block">
-          <EditableText 
+          <EditableComponent 
             initialText="The world's largest digital marketplace for crypto collectibles and non-fungible tokens" 
             className={`text-xl mb-8 max-w-2xl mx-auto ${styles.bodyFont}`}
           />
@@ -42,7 +42,7 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ styles }) => {
             }}
             className="px-8 py-3 font-medium"
           >
-            Explore
+            <EditableComponent initialText="Explore" />
           </button>
           <button 
             className="px-8 py-3 font-medium border-2"
@@ -51,7 +51,7 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ styles }) => {
               borderRadius: styles.buttonRadius
             }}
           >
-            Create
+            <EditableComponent initialText="Create" />
           </button>
         </div>
       </div>

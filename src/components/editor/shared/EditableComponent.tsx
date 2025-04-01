@@ -54,6 +54,11 @@ const EditableComponent: React.FC<EditableComponentProps> = ({
     ? "text-2xl md:text-3xl lg:text-4xl font-bold" 
     : "text-base md:text-lg";
 
+  // Only show editing UI if we're in edit mode
+  if (!editMode) {
+    return <span className={`${baseStyles} ${className}`}>{text}</span>;
+  }
+
   if (isEditing && editMode) {
     return (
       <div className="relative">
@@ -87,7 +92,7 @@ const EditableComponent: React.FC<EditableComponentProps> = ({
       className={`relative group ${baseStyles} ${className}`}
       onClick={editMode ? handleTextClick : undefined}
     >
-      {text}
+      <span>{text}</span>
       {editMode && (
         <div className="absolute -right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button 
@@ -96,6 +101,7 @@ const EditableComponent: React.FC<EditableComponentProps> = ({
               handleTextClick();
             }}
             className="p-1 rounded bg-cv-darkgray/70 hover:bg-cv-accent/60 text-white"
+            title="Edit text"
           >
             <TextCursor size={16} />
           </button>
