@@ -26,7 +26,7 @@ export const useTemplateStyles = () => {
       bodyFont: "font-sans",
       gridColumns: 4,
       spacing: "1.5rem",
-      enable3D: false // Initialize with 3D effect off
+      enable3D: false
     },
     drops: {
       headerBg: "#18181E",
@@ -48,7 +48,7 @@ export const useTemplateStyles = () => {
       bodyFont: "font-sans",
       gridColumns: 3,
       spacing: "1.5rem",
-      enable3D: false // Initialize with 3D effect off
+      enable3D: false
     },
     "token-gate": {
       headerBg: "#18181E",
@@ -70,7 +70,7 @@ export const useTemplateStyles = () => {
       bodyFont: "font-sans",
       gridColumns: 2,
       spacing: "1.5rem",
-      enable3D: false // Initialize with 3D effect off
+      enable3D: false
     },
     "buy-coin": {
       headerBg: "#18181E",
@@ -92,7 +92,7 @@ export const useTemplateStyles = () => {
       bodyFont: "font-sans",
       gridColumns: 1,
       spacing: "1.5rem",
-      enable3D: false // Initialize with 3D effect off
+      enable3D: false
     }
   });
 
@@ -136,12 +136,33 @@ export const useTemplateStyles = () => {
     });
   };
 
+  // New function to update all style properties for all templates
+  const updateAllTemplateStyles = (newStyles: Partial<TemplateStyles>) => {
+    setTemplateStyles(prev => {
+      const updatedStyles = { ...prev };
+      
+      // Apply all the new values to all template types while preserving
+      // template-specific values like gridColumns
+      (Object.keys(updatedStyles) as TemplateType[]).forEach(templateType => {
+        updatedStyles[templateType] = {
+          ...updatedStyles[templateType],
+          ...newStyles,
+          // Preserve template-specific properties
+          gridColumns: updatedStyles[templateType].gridColumns
+        };
+      });
+      
+      return updatedStyles;
+    });
+  };
+
   return {
     templateStyles,
     activeTemplate,
     setActiveTemplate,
     updateTemplateStyles,
     applyToAllSites,
+    updateAllTemplateStyles,
     currentTemplateStyles: templateStyles[activeTemplate]
   };
 };

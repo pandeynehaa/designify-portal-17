@@ -38,6 +38,7 @@ const DesignEditor: React.FC = () => {
     setActiveTemplate, 
     updateTemplateStyles, 
     applyToAllSites,
+    updateAllTemplateStyles,
     currentTemplateStyles 
   } = useTemplateStyles();
   
@@ -62,10 +63,21 @@ const DesignEditor: React.FC = () => {
   }, [selectedElement, showPropertyPanel, setShowPropertyPanel, setShowRightSidebar]);
   
   const handleAIExtract = (themeData: any) => {
-    console.log("Extracted theme data:", themeData);
+    if (!themeData || !themeData.template) {
+      toast({
+        title: "Extraction Error",
+        description: "Invalid theme data received",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    // Update all templates with the extracted styles
+    updateAllTemplateStyles(themeData.template);
+    
     toast({
-      title: "Theme Extracted",
-      description: "The AI has successfully extracted the theme from the provided URL."
+      title: "Theme Extracted & Applied",
+      description: "The AI has successfully extracted and applied the theme to all templates"
     });
   };
   
