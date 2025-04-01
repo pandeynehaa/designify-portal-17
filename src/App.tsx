@@ -13,7 +13,7 @@ import CollectionDetail from "./pages/CollectionDetail";
 import ArtistProfile from "./pages/ArtistProfile";
 import Checkout from "./pages/Checkout";
 import NotFound from "./pages/NotFound";
-import React from "react";
+import { StrictMode } from "react";
 
 // Create a client outside of the component
 const queryClient = new QueryClient({
@@ -26,7 +26,7 @@ const queryClient = new QueryClient({
 
 const App = () => {
   return (
-    <React.StrictMode>
+    <StrictMode>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
           <Toaster />
@@ -47,7 +47,7 @@ const App = () => {
           </BrowserRouter>
         </TooltipProvider>
       </QueryClientProvider>
-    </React.StrictMode>
+    </StrictMode>
   );
 };
 
