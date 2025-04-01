@@ -1,6 +1,6 @@
 
 import { useState, DragEvent } from "react";
-import { CanvasDragDropReturn } from "../../types/canvasElementTypes";
+import { CanvasDragDropReturn } from "../../types/canvasDragDropTypes";
 
 interface UseDropEventHandlersProps {
   canvasRef: React.RefObject<HTMLDivElement>;
