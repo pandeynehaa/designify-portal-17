@@ -5,11 +5,11 @@ import MarketplaceHeader from "./marketplace/MarketplaceHeader";
 import MarketplaceHero from "./marketplace/MarketplaceHero";
 import FeaturedCollections from "./marketplace/FeaturedCollections";
 import TopCollections from "./marketplace/TopCollections";
-import { useEditableText } from "../../../hooks/useEditableText";
 import { useCanvasState } from "../../../hooks/useCanvasState";
 import CanvasElements from "../CanvasElements";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Heart, Grid, List } from "lucide-react";
+import EditableComponent from "../shared/EditableComponent";
 
 interface MarketplaceTemplateProps {
   styles: TemplateStyles;
@@ -150,8 +150,16 @@ const FeaturedNFTs: React.FC<{ styles: TemplateStyles; nfts: any[] }> = ({ style
       }}
     >
       <div className="mb-6 flex justify-between items-center">
-        <h2 className={`text-2xl font-bold ${styles.headingFont}`}>Featured NFTs</h2>
-        <button className="text-sm hover:underline">View All</button>
+        <h2 className={`text-2xl font-bold ${styles.headingFont}`}>
+          <EditableComponent 
+            initialText="Featured NFTs"
+            isHeading={true}
+            className="inline-block"
+          />
+        </h2>
+        <div className="text-sm hover:underline cursor-pointer">
+          <EditableComponent initialText="View All" />
+        </div>
       </div>
       
       <div 
@@ -179,10 +187,16 @@ const FeaturedNFTs: React.FC<{ styles: TemplateStyles; nfts: any[] }> = ({ style
               />
             </div>
             <div className="p-4">
-              <h3 className="font-medium truncate">{nft.name}</h3>
-              <div className="text-sm opacity-75 mb-1">by {nft.creator}</div>
+              <h3 className="font-medium truncate">
+                <EditableComponent initialText={nft.name} />
+              </h3>
+              <div className="text-sm opacity-75 mb-1">
+                <EditableComponent initialText={`by ${nft.creator}`} />
+              </div>
               <div className="flex justify-between items-center">
-                <span>{nft.price} ETH</span>
+                <span>
+                  <EditableComponent initialText={`${nft.price} ETH`} />
+                </span>
                 <span className="text-xs opacity-75">
                   <Heart size={12} className="inline mr-1" />
                   {nft.likes}
@@ -210,9 +224,11 @@ const MarketplaceFooter: React.FC<{ styles: TemplateStyles }> = ({ styles }) => 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="text-2xl font-bold mb-4">NFT Market</div>
+            <div className="text-2xl font-bold mb-4">
+              <EditableComponent initialText="NFT Market" isHeading={true} />
+            </div>
             <p className="text-sm opacity-70 mb-4">
-              The world's largest digital marketplace for crypto collectibles and non-fungible tokens.
+              <EditableComponent initialText="The world's largest digital marketplace for crypto collectibles and non-fungible tokens." />
             </p>
             <div className="flex space-x-4">
               <div className="w-8 h-8 rounded-full bg-gray-700 flex items-center justify-center cursor-pointer hover:bg-gray-600 transition-colors"></div>
@@ -222,47 +238,53 @@ const MarketplaceFooter: React.FC<{ styles: TemplateStyles }> = ({ styles }) => 
           </div>
           
           <div>
-            <div className="text-lg font-medium mb-4">Marketplace</div>
+            <div className="text-lg font-medium mb-4">
+              <EditableComponent initialText="Marketplace" isHeading={true} />
+            </div>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-purple-400 transition-colors">All NFTs</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Art</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Collectibles</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Photography</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Virtual Worlds</a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="All NFTs" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Art" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Collectibles" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Photography" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Virtual Worlds" /></a></li>
             </ul>
           </div>
           
           <div>
-            <div className="text-lg font-medium mb-4">My Account</div>
+            <div className="text-lg font-medium mb-4">
+              <EditableComponent initialText="My Account" isHeading={true} />
+            </div>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Profile</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Favorites</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Watchlist</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">My Collections</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Settings</a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Profile" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Favorites" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Watchlist" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="My Collections" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Settings" /></a></li>
             </ul>
           </div>
           
           <div>
-            <div className="text-lg font-medium mb-4">Resources</div>
+            <div className="text-lg font-medium mb-4">
+              <EditableComponent initialText="Resources" isHeading={true} />
+            </div>
             <ul className="space-y-2">
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Platform Status</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Partners</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-purple-400 transition-colors">Newsletter</a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Help Center" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Platform Status" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Partners" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Blog" /></a></li>
+              <li><a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Newsletter" /></a></li>
             </ul>
           </div>
         </div>
         
         <div className="mt-12 pt-6 border-t border-gray-700 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm opacity-70 mb-4 md:mb-0">
-            © 2023 NFT Market. All rights reserved.
+            <EditableComponent initialText="© 2023 NFT Market. All rights reserved." />
           </div>
           <div className="flex space-x-6 text-sm">
-            <a href="#" className="hover:text-purple-400 transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-purple-400 transition-colors">Terms of Service</a>
-            <a href="#" className="hover:text-purple-400 transition-colors">Cookie Policy</a>
+            <a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Privacy Policy" /></a>
+            <a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Terms of Service" /></a>
+            <a href="#" className="hover:text-purple-400 transition-colors"><EditableComponent initialText="Cookie Policy" /></a>
           </div>
         </div>
       </div>

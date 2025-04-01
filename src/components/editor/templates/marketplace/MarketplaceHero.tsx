@@ -34,25 +34,25 @@ const MarketplaceHero: React.FC<MarketplaceHeroProps> = ({ styles }) => {
         </div>
         
         <div className="flex justify-center space-x-4">
-          <button 
+          <div 
             style={{ 
               backgroundColor: styles.buttonBg, 
               color: styles.buttonTextColor,
               borderRadius: styles.buttonRadius
             }}
-            className="px-8 py-3 font-medium"
+            className="px-8 py-3 font-medium cursor-pointer"
           >
             <EditableComponent initialText="Explore" />
-          </button>
-          <button 
-            className="px-8 py-3 font-medium border-2"
+          </div>
+          <div 
+            className="px-8 py-3 font-medium border-2 cursor-pointer"
             style={{ 
               borderColor: styles.borderColor,
               borderRadius: styles.buttonRadius
             }}
           >
             <EditableComponent initialText="Create" />
-          </button>
+          </div>
         </div>
       </div>
       <div className="absolute inset-0 z-0 opacity-30 bg-gradient-to-r from-purple-900 to-blue-900"></div>

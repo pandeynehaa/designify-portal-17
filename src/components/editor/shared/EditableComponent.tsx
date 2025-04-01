@@ -92,7 +92,7 @@ const EditableComponent: React.FC<EditableComponentProps> = ({
       className={`relative group ${baseStyles} ${className}`}
       onClick={editMode ? handleTextClick : undefined}
     >
-      <span>{text}</span>
+      {text}
       {editMode && (
         <div className="absolute -right-8 top-1/2 transform -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
           <button 
