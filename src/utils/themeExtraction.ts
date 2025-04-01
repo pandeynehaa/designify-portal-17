@@ -30,16 +30,50 @@ export const extractThemeFromURL = async (url: string): Promise<any> => {
           light: generateLightColor(hash + 30),
         },
         text: {
-          dark: "#374151",
-          light: "#FFFFFF",
+          heading: generateColor(hash + 150),
+          body: generateColor(hash + 200),
+          button: generateLightColor(hash + 10),
         },
         border: generateLightColor(hash + 60),
       },
       typography: {
-        fontFamily: selectFont(hash % 5),
-        sizeScale: (hash % 20) / 100 + 1.2, // Between 1.2 and 1.4
-        baseSize: "16px",
+        heading: {
+          fontFamily: selectFont(hash % 5),
+          size: `${(hash % 8) + 24}px`,
+          weight: selectFontWeight(hash % 4),
+          lineHeight: (hash % 20) / 100 + 1.2,
+          letterSpacing: `${(hash % 10) / 10}px`,
+          transform: selectTextTransform(hash % 4),
+          style: hash % 5 === 0 ? 'italic' : 'normal',
+        },
+        body: {
+          fontFamily: selectFont((hash + 2) % 5),
+          size: `${(hash % 4) + 14}px`,
+          weight: selectFontWeight((hash + 2) % 4),
+          lineHeight: (hash % 20) / 100 + 1.4,
+          letterSpacing: `${(hash % 5) / 10}px`,
+        },
+        button: {
+          fontFamily: selectFont((hash + 1) % 5),
+          size: `${(hash % 4) + 14}px`,
+          weight: selectFontWeight((hash + 1) % 4),
+          transform: selectTextTransform((hash + 2) % 4),
+        }
       },
+      buttons: {
+        borderRadius: `${4 + (hash % 12)}px`,
+        padding: `${8 + (hash % 8)}px ${12 + (hash % 16)}px`,
+        hover: {
+          effect: selectHoverEffect(hash % 4),
+        }
+      },
+      spacing: {
+        base: `${(hash % 8) + 4}px`,
+        section: `${(hash % 16) + 16}px`,
+        gridGap: `${(hash % 8) + 8}px`,
+      },
+      images: generateSampleImages(hash),
+      logo: generateLogoPlaceholder(hash),
       borderRadius: `${4 + (hash % 12)}px`,
       shadows: {
         small: "0 1px 3px rgba(0,0,0,0.1)",
@@ -61,24 +95,24 @@ export const extractThemeFromURL = async (url: string): Promise<any> => {
 export const mapExtractedThemeToTemplateStyles = (themeData: any) => {
   return {
     headerBg: themeData.colors.background.dark,
-    headerTextColor: themeData.colors.text.light,
+    headerTextColor: themeData.colors.text.heading,
     headerHeight: "4rem",
     bannerBg: `bg-gradient-to-r from-[${themeData.colors.background.dark}] to-[${themeData.colors.primary}]`,
-    bannerTextColor: themeData.colors.text.light,
+    bannerTextColor: themeData.colors.text.heading,
     bannerHeight: "20rem",
     collectionBg: themeData.colors.background.dark,
-    collectionTextColor: themeData.colors.text.light,
+    collectionTextColor: themeData.colors.text.body,
     cardBg: shadeColor(themeData.colors.background.dark, 10),
-    cardTextColor: themeData.colors.text.light,
+    cardTextColor: themeData.colors.text.body,
     accentColor: themeData.colors.accent,
     borderColor: themeData.colors.border,
     buttonBg: themeData.colors.primary,
-    buttonTextColor: themeData.colors.text.light,
-    buttonRadius: themeData.borderRadius,
-    headingFont: mapFontToClassName(themeData.typography.fontFamily),
-    bodyFont: "font-sans",
+    buttonTextColor: themeData.colors.text.button,
+    buttonRadius: themeData.buttons.borderRadius,
+    headingFont: mapFontToClassName(themeData.typography.heading.fontFamily),
+    bodyFont: mapFontToClassName(themeData.typography.body.fontFamily),
     gridColumns: 4,
-    spacing: "1.5rem",
+    spacing: themeData.spacing.gridGap,
     enable3D: false
   };
 };
@@ -118,6 +152,42 @@ const generateLightColor = (seed: number): string => {
 const selectFont = (index: number): string => {
   const fonts = ["Inter", "Roboto", "Montserrat", "Poppins", "Open Sans"];
   return fonts[index];
+};
+
+const selectFontWeight = (index: number): string => {
+  const weights = ["normal", "medium", "semibold", "bold"];
+  return weights[index];
+};
+
+const selectTextTransform = (index: number): string => {
+  const transforms = ["none", "uppercase", "lowercase", "capitalize"];
+  return transforms[index];
+};
+
+const selectHoverEffect = (index: number): string => {
+  const effects = ["darken", "lighten", "scale", "glow"];
+  return effects[index];
+};
+
+const generateSampleImages = (seed: number): string[] => {
+  // In a real implementation, this would extract actual images from the site
+  // For now, we'll generate placeholder image URLs
+  const count = (seed % 5) + 2; // 2-6 images
+  const images = [];
+  
+  for (let i = 0; i < count; i++) {
+    const width = 300 + ((seed + i) % 500);
+    const height = 200 + ((seed + i) % 300);
+    const color = generateColor(seed + i * 100).replace('#', '');
+    images.push(`https://via.placeholder.com/${width}x${height}/${color}/FFFFFF?text=Extracted+Image+${i+1}`);
+  }
+  
+  return images;
+};
+
+const generateLogoPlaceholder = (seed: number): string => {
+  const color = generateColor(seed * 2).replace('#', '');
+  return `https://via.placeholder.com/200x80/${color}/FFFFFF?text=Extracted+Logo`;
 };
 
 const mapFontToClassName = (font: string): string => {

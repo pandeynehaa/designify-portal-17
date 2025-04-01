@@ -26,6 +26,7 @@ interface EditorContentProps {
   templateStyles: TemplateStyles;
   updateTemplateStyles: (property: keyof TemplateStyles, value: any) => void;
   applyToAllSites: (property: keyof TemplateStyles, value: any) => void;
+  extractedImages?: string[];
 }
 
 const EditorContent: React.FC<EditorContentProps> = ({
@@ -41,7 +42,8 @@ const EditorContent: React.FC<EditorContentProps> = ({
   handleZoomReset,
   templateStyles,
   updateTemplateStyles,
-  applyToAllSites
+  applyToAllSites,
+  extractedImages = []
 }) => {
   const { selectedElement } = useSelectedElement();
   const { updateElement } = useCanvasState();
@@ -69,7 +71,11 @@ const EditorContent: React.FC<EditorContentProps> = ({
       <div className="flex-1 flex overflow-hidden">
         {/* Editor Sidebar with glassmorphism */}
         <div className="relative">
-          <EditorSidebar activeTab={activeTab} setActiveTab={handleTabClick} />
+          <EditorSidebar 
+            activeTab={activeTab} 
+            setActiveTab={handleTabClick} 
+            extractedImages={extractedImages}
+          />
           <div className="absolute inset-0 bg-gradient-to-b from-cv-purple/5 to-transparent pointer-events-none"></div>
         </div>
         

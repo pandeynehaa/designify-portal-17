@@ -1,5 +1,5 @@
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import EditorHeader from "../components/editor/EditorHeader";
@@ -19,6 +19,7 @@ const DesignEditor: React.FC = () => {
   const location = useLocation();
   const { selectedElement } = useSelectedElement();
   const { showRightSidebar, toggleRightSidebar, setShowRightSidebar } = useCanvasUIState();
+  const [extractedImages, setExtractedImages] = useState<string[]>([]);
   
   const { 
     activeTab, 
@@ -75,6 +76,21 @@ const DesignEditor: React.FC = () => {
     // Update all templates with the extracted styles
     updateAllTemplateStyles(themeData.template);
     
+    // Store extracted images for the image library
+    if (themeData.raw && themeData.raw.images) {
+      setExtractedImages(themeData.raw.images);
+      
+      // Add logo to extracted images if available
+      if (themeData.raw.logo) {
+        setExtractedImages(prev => [themeData.raw.logo, ...prev]);
+      }
+      
+      toast({
+        title: "Assets Imported",
+        description: `${themeData.raw.images.length + (themeData.raw.logo ? 1 : 0)} images have been added to your library`
+      });
+    }
+    
     toast({
       title: "Theme Extracted & Applied",
       description: "The AI has successfully extracted and applied the theme to all templates"
@@ -120,6 +136,7 @@ const DesignEditor: React.FC = () => {
           templateStyles={currentTemplateStyles}
           updateTemplateStyles={updateTemplateStyles}
           applyToAllSites={applyToAllSites}
+          extractedImages={extractedImages}
         />
       </div>
       
