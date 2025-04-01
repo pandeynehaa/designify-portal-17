@@ -6,6 +6,7 @@ import UploadedImagesSection from "./image/UploadedImagesSection";
 import StockImagesSection from "./image/StockImagesSection";
 import StickersSection from "./image/StickersSection";
 import AIImageGenerator from "./image/AIImageGenerator";
+import { toast } from "@/components/ui/use-toast";
 
 interface ImagesTabProps {
   extractedImages?: string[];
@@ -13,6 +14,26 @@ interface ImagesTabProps {
 
 const ImagesTab: React.FC<ImagesTabProps> = ({ extractedImages = [] }) => {
   const [activeTab, setActiveTab] = useState("upload");
+  const [showAIGenerator, setShowAIGenerator] = useState(false);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
+  
+  const handleImageUpload = () => {
+    // In a real implementation, this would open a file dialog
+    // For now, we'll simulate adding an image with a toast notification
+    toast({
+      title: "Upload feature",
+      description: "Image upload functionality would be implemented here"
+    });
+  };
+  
+  const handleGenerateImage = (imageUrl: string) => {
+    setUploadedImages(prev => [...prev, imageUrl]);
+    toast({
+      title: "Image Generated",
+      description: "AI-generated image has been added to your library"
+    });
+    setShowAIGenerator(false);
+  };
   
   return (
     <div className="sidebar-content">
@@ -24,7 +45,7 @@ const ImagesTab: React.FC<ImagesTabProps> = ({ extractedImages = [] }) => {
         </TabsList>
         
         <TabsContent value="upload" className="mt-0">
-          <ImageUploadArea />
+          <ImageUploadArea onUpload={handleImageUpload} />
           <UploadedImagesSection extractedImages={extractedImages} />
         </TabsContent>
         
@@ -37,7 +58,22 @@ const ImagesTab: React.FC<ImagesTabProps> = ({ extractedImages = [] }) => {
         </TabsContent>
       </Tabs>
       
-      <AIImageGenerator />
+      {showAIGenerator ? (
+        <AIImageGenerator 
+          onClose={() => setShowAIGenerator(false)} 
+          onGenerate={handleGenerateImage} 
+        />
+      ) : (
+        <div className="mt-4 px-3">
+          <button 
+            className="w-full py-2 bg-cv-accent hover:bg-cv-accent/80 rounded-md text-white font-medium text-sm flex items-center justify-center"
+            onClick={() => setShowAIGenerator(true)}
+          >
+            <span className="mr-2">✨</span>
+            Generate with AI
+          </button>
+        </div>
+      )}
     </div>
   );
 };
