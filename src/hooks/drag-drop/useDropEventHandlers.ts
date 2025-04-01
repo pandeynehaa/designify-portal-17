@@ -74,9 +74,12 @@ export const useDropEventHandlers = ({
     const canvasRect = canvasRef.current?.getBoundingClientRect();
     if (!canvasRect) return;
     
-    // Calculate the drop position considering scroll
-    const scrollTop = canvasRef.current.parentElement?.scrollTop || 0;
-    const scrollLeft = canvasRef.current.parentElement?.scrollLeft || 0;
+    // Get the scroll container (Radix ScrollArea Viewport)
+    const scrollContainer = canvasRef.current.closest('[data-radix-scroll-area-viewport]');
+    
+    // Calculate the drop position considering both horizontal and vertical scroll
+    const scrollTop = scrollContainer?.scrollTop || 0;
+    const scrollLeft = scrollContainer?.scrollLeft || 0;
     
     const x = e.clientX - canvasRect.left + scrollLeft;
     const y = e.clientY - canvasRect.top + scrollTop;

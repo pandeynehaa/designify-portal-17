@@ -88,34 +88,36 @@ const CanvasView: React.FC<CanvasViewProps> = ({
   const dimensions = getDeviceDimensions();
 
   return (
-    <ScrollArea className="h-[80vh] max-h-[80vh] rounded-md">
-      <div 
-        ref={canvasRef}
-        className={`bg-white rounded-md shadow-2xl transition-all duration-300 transform origin-top relative ${
-          showGrid && editMode ? 'bg-grid-pattern' : ''} ${selectedElement ? 'editing-element' : ''} ${
-          !editMode ? 'preview-mode' : 'edit-mode'
-        }`}
-        style={{ 
-          transform: `scale(${zoom})`,
-          ...getGridStyle(),
-          ...get3DStyles(),
-          width: dimensions.width,
-          minHeight: dimensions.minHeight,
-          margin: '0 auto',
-          transformOrigin: 'top center'
-        }}
-        onClick={handleCanvasClick}
-      >
-        <TemplateRenderer activeTemplate={activeTemplate} templateStyles={templateStyles} />
-        <CanvasElements droppedElements={droppedElements} activeTool={activeTool} editMode={editMode} />
-        <CanvasActionButton editMode={editMode} templateStyles={templateStyles} />
-        
-        {/* Overlay grid guides when moving - appears only when in move mode and something is selected */}
-        {showGrid && activeTool === 'move' && selectedElement && editMode && (
-          <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute inset-0 grid-overlay"></div>
-          </div>
-        )}
+    <ScrollArea className="h-[80vh] max-h-[80vh] w-full rounded-md">
+      <div className="min-w-fit flex justify-center">
+        <div 
+          ref={canvasRef}
+          className={`bg-white rounded-md shadow-2xl transition-all duration-300 transform origin-top relative ${
+            showGrid && editMode ? 'bg-grid-pattern' : ''} ${selectedElement ? 'editing-element' : ''} ${
+            !editMode ? 'preview-mode' : 'edit-mode'
+          }`}
+          style={{ 
+            transform: `scale(${zoom})`,
+            ...getGridStyle(),
+            ...get3DStyles(),
+            width: dimensions.width,
+            minHeight: dimensions.minHeight,
+            margin: '0 auto',
+            transformOrigin: 'top center'
+          }}
+          onClick={handleCanvasClick}
+        >
+          <TemplateRenderer activeTemplate={activeTemplate} templateStyles={templateStyles} />
+          <CanvasElements droppedElements={droppedElements} activeTool={activeTool} editMode={editMode} />
+          <CanvasActionButton editMode={editMode} templateStyles={templateStyles} />
+          
+          {/* Overlay grid guides when moving - appears only when in move mode and something is selected */}
+          {showGrid && activeTool === 'move' && selectedElement && editMode && (
+            <div className="absolute inset-0 pointer-events-none">
+              <div className="absolute inset-0 grid-overlay"></div>
+            </div>
+          )}
+        </div>
       </div>
     </ScrollArea>
   );

@@ -29,7 +29,7 @@ const CanvasEventHandlers: React.FC<CanvasEventHandlersProps> = ({
 
   return (
     <div 
-      className="flex-1 flex items-start justify-center bg-[#111111] overflow-auto relative p-8"
+      className="flex-1 flex items-start justify-center bg-[#111111] overflow-auto relative p-8 w-full"
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
