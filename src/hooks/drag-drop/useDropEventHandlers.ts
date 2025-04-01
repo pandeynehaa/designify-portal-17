@@ -1,6 +1,6 @@
 
 import { useState, DragEvent } from "react";
-import { CanvasDragDropReturn } from "../../types/hookTypes";
+import { CanvasDragDropReturn } from "../../types/canvasElementTypes";
 
 interface UseDropEventHandlersProps {
   canvasRef: React.RefObject<HTMLDivElement>;
@@ -74,8 +74,12 @@ export const useDropEventHandlers = ({
     const canvasRect = canvasRef.current?.getBoundingClientRect();
     if (!canvasRect) return;
     
-    const x = e.clientX - canvasRect.left;
-    const y = e.clientY - canvasRect.top;
+    // Calculate the drop position considering scroll
+    const scrollTop = canvasRef.current.parentElement?.scrollTop || 0;
+    const scrollLeft = canvasRef.current.parentElement?.scrollLeft || 0;
+    
+    const x = e.clientX - canvasRect.left + scrollLeft;
+    const y = e.clientY - canvasRect.top + scrollTop;
     
     // Call the provided drop handler with coordinates
     onDrop(e, x, y);

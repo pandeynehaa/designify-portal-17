@@ -79,13 +79,13 @@ const CanvasArea: React.FC<CanvasAreaProps> = ({
         onInsertImagePlaceholder={handleInsertImagePlaceholder}
       />
       
-      <div className="flex-1 relative overflow-auto p-4 canvas-content">
+      <div className="flex-1 relative overflow-hidden p-4 canvas-content">
         <CanvasEventHandlers
           canvasRef={canvasRef}
           zoomLevel={zoom * 100}
           setDroppedElements={setDroppedElements}
         >
-          <div className="w-full h-full flex items-center justify-center vr-perspective">
+          <div className="w-full h-full flex items-center justify-center">
             <CanvasView
               canvasRef={canvasRef}
               deviceView={deviceView}
