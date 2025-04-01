@@ -4,7 +4,9 @@ import {
   Grid, BookOpen, Heart, Users, CreditCard, 
   Wallet, ShoppingCart, Star, Package, CircleDollarSign,
   ChevronDown, ChevronRight, Search, Plus, Layers,
-  Image, ArrowRight, Check, Menu, X
+  Image, ArrowRight, Check, Menu, X, Table, Toggle,
+  LayoutGrid, Rows, Columns, SeparatorHorizontal, 
+  ArrowUpDown, FileBox
 } from "lucide-react";
 import { toast } from "@/components/ui/use-toast";
 
@@ -44,32 +46,32 @@ const ComponentsTab: React.FC = () => {
         { 
           name: "NFT Card", 
           icon: BookOpen,
-          description: "Display an NFT with image, name, and price"
+          description: "Display an NFT with image, title, price and like count"
         },
         { 
           name: "Wallet Connect Button", 
           icon: Wallet,
-          description: "Button to connect cryptocurrency wallets"
+          description: "Interactive button for connecting Web3 wallets"
         },
         { 
           name: "Token Gate", 
           icon: CreditCard,
-          description: "Control access based on token ownership" 
+          description: "Verify token ownership to access gated content" 
         },
         { 
           name: "Price Display", 
           icon: CircleDollarSign,
-          description: "Show cryptocurrency prices with optional charts"
+          description: "Live cryptocurrency price with change percentage"
         },
         { 
           name: "NFT Gallery Grid", 
           icon: Grid,
-          description: "Display multiple NFTs in a responsive grid"
+          description: "Display multiple NFTs in a responsive grid layout"
         },
         { 
           name: "Collection List", 
           icon: Package,
-          description: "Show a list of NFT collections with stats"
+          description: "List of NFT collections with floor prices and stats"
         }
       ] 
     },
@@ -80,42 +82,42 @@ const ComponentsTab: React.FC = () => {
         { 
           name: "Primary Button", 
           icon: Plus,
-          description: "Main call-to-action button with hover effects"
+          description: "Main call-to-action button with vibrant background"
         },
         { 
           name: "Secondary Button", 
           icon: ArrowRight,
-          description: "Alternative action button with border styling"
+          description: "Outlined button for secondary actions with icon"
         },
         { 
           name: "Feature Card", 
-          icon: Layers,
-          description: "Highlight key features with icon and text"
+          icon: Star,
+          description: "Showcase a feature with icon, title and description"
         },
         { 
           name: "Data Table", 
-          icon: Grid,
-          description: "Display tabular data with sorting options"
+          icon: Table,
+          description: "Tabular data with headers and sortable columns"
         },
         { 
           name: "Star Rating", 
           icon: Star,
-          description: "Interactive rating component with 5 stars"
+          description: "Display user ratings with interactive star icons"
         },
         { 
           name: "Testimonial Card", 
           icon: Users,
-          description: "Display user reviews with avatar and quote"
+          description: "Customer testimonial with avatar, quote and rating"
         },
         { 
           name: "Toggle Switch", 
-          icon: Check,
-          description: "On/off toggle switch for boolean settings"
+          icon: Toggle,
+          description: "On/off toggle switch for settings and preferences"
         },
         { 
           name: "Modal Dialog", 
-          icon: X,
-          description: "Popup dialog with configurable content"
+          icon: FileBox,
+          description: "Pop-up dialog for confirmations and user inputs"
         }
       ] 
     },
@@ -125,28 +127,28 @@ const ComponentsTab: React.FC = () => {
       items: [
         { 
           name: "Container", 
-          icon: Layers,
-          description: "Responsive container with padding controls"
+          icon: LayoutGrid,
+          description: "Content wrapper with responsive padding and max-width"
         },
         { 
           name: "Flex Row", 
-          icon: Grid,
-          description: "Horizontal flex container for elements"
+          icon: Rows,
+          description: "Horizontal flex container for aligning elements in a row"
         },
         { 
           name: "Flex Column", 
-          icon: Layers,
-          description: "Vertical flex container for elements"
+          icon: Columns,
+          description: "Vertical flex container for stacking elements"
         },
         { 
           name: "Divider", 
-          icon: Layers,
-          description: "Horizontal rule with optional text label"
+          icon: SeparatorHorizontal,
+          description: "Horizontal divider line with optional label"
         },
         { 
           name: "Spacer", 
-          icon: Layers,
-          description: "Flexible empty space for layout control"
+          icon: ArrowUpDown,
+          description: "Adjustable vertical or horizontal spacing element"
         }
       ] 
     },
@@ -159,42 +161,42 @@ const ComponentsTab: React.FC = () => {
           icon: Layers, 
           isTemplate: true, 
           type: "hero",
-          description: "Full-width banner with heading and CTA"
+          description: "Full-width banner with headline, CTA and background"
         },
         { 
           name: "Features Section", 
           icon: Star, 
           isTemplate: true, 
           type: "features",
-          description: "Grid of feature cards with icons"
+          description: "Three-column grid showcasing key product features"
         },
         { 
           name: "NFT Gallery", 
           icon: Grid, 
           isTemplate: true, 
           type: "gallery",
-          description: "Masonry grid of NFT cards" 
+          description: "Masonry grid layout for showcasing NFT collections" 
         },
         { 
           name: "Collection Grid", 
           icon: Grid, 
           isTemplate: true, 
           type: "collection-grid",
-          description: "Featured collections in a responsive grid"
+          description: "Showcase featured collections with hover effects"
         },
         { 
           name: "Pricing Table", 
           icon: CircleDollarSign, 
           isTemplate: true, 
           type: "pricing",
-          description: "Compare pricing tiers with features list"
+          description: "Compare pricing plans with features and CTAs"
         },
         { 
           name: "FAQ Section", 
           icon: Users, 
           isTemplate: true, 
           type: "faq",
-          description: "Accordion of frequently asked questions"
+          description: "Collapsible frequently asked questions with answers"
         }
       ] 
     }

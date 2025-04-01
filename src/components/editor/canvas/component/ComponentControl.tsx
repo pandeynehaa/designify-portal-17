@@ -1,10 +1,11 @@
 
 import React from "react";
-import { TextCursor, Move, Check } from "lucide-react";
+import { TextCursor, Move, Check, Trash2, Copy, ArrowUp, ArrowDown, Lock, Unlock } from "lucide-react";
 import { CanvasElement } from "../../../../types/canvasElement";
 import ElementControls from "../ElementControls";
 import ResizeHandles from "../ResizeHandles";
 import { toast } from "@/components/ui/use-toast";
+import { useCanvasState } from "@/hooks/useCanvasState";
 
 interface ComponentControlProps {
   element: CanvasElement;
@@ -23,6 +24,8 @@ const ComponentControl: React.FC<ComponentControlProps> = ({
   isEditing, 
   setIsEditing 
 }) => {
+  const { updateElement, deleteElement, duplicateElement } = useCanvasState();
+  
   if (!isSelected || !editMode) return null;
 
   const handleMoveClick = (e: React.MouseEvent) => {
@@ -81,6 +84,38 @@ const ComponentControl: React.FC<ComponentControlProps> = ({
       description: "Component content has been updated"
     });
   };
+  
+  const handleDuplicateClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    duplicateElement(element.id);
+    
+    toast({
+      title: "Component Duplicated",
+      description: "A copy of the component has been created"
+    });
+  };
+  
+  const handleDeleteClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    deleteElement(element.id);
+    
+    toast({
+      title: "Component Deleted",
+      description: "The component has been removed from the canvas"
+    });
+  };
+  
+  const handleLockToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    updateElement(element.id, { locked: !element.locked });
+    
+    toast({
+      title: element.locked ? "Component Unlocked" : "Component Locked",
+      description: element.locked 
+        ? "The component can now be moved and edited" 
+        : "The component is now locked from editing"
+    });
+  };
 
   return (
     <>
@@ -91,39 +126,66 @@ const ComponentControl: React.FC<ComponentControlProps> = ({
       )}
 
       {!isEditing ? (
-        <div className="absolute -top-8 left-0 flex space-x-1">
-          <div 
-            className="bg-cv-accent text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center"
+        <div className="absolute -top-10 left-0 flex space-x-1 bg-black/10 backdrop-blur-sm p-1 rounded-md">
+          <button 
+            className="bg-cv-accent text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center hover:bg-cv-accent/90 transition-colors"
             onClick={handleMoveClick}
             title="Move component"
           >
             <Move size={14} className="mr-1" />
             <span className="text-xs">Move</span>
-          </div>
+          </button>
           
-          <div 
-            className="bg-cv-accent text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center"
-            onClick={handleEditClick}
-            title="Edit content"
+          {element.type === 'component' && (
+            <button 
+              className="bg-cv-accent text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center hover:bg-cv-accent/90 transition-colors"
+              onClick={handleEditClick}
+              title="Edit content"
+              disabled={element.locked}
+            >
+              <TextCursor size={14} className="mr-1" />
+              <span className="text-xs">Edit</span>
+            </button>
+          )}
+          
+          <button 
+            className="bg-blue-500 text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center hover:bg-blue-600 transition-colors"
+            onClick={handleDuplicateClick}
+            title="Duplicate component"
           >
-            <TextCursor size={14} className="mr-1" />
-            <span className="text-xs">Edit</span>
-          </div>
+            <Copy size={14} />
+          </button>
+          
+          <button 
+            className="bg-gray-700 text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center hover:bg-gray-800 transition-colors"
+            onClick={handleLockToggle}
+            title={element.locked ? "Unlock component" : "Lock component"}
+          >
+            {element.locked ? <Lock size={14} /> : <Unlock size={14} />}
+          </button>
+          
+          <button 
+            className="bg-red-500 text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center hover:bg-red-600 transition-colors"
+            onClick={handleDeleteClick}
+            title="Delete component"
+          >
+            <Trash2 size={14} />
+          </button>
         </div>
       ) : (
         <div className="absolute -top-8 left-0 flex space-x-1">
-          <div 
-            className="bg-green-500 text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center"
+          <button 
+            className="bg-green-500 text-white p-1.5 rounded-md shadow-sm cursor-pointer flex items-center hover:bg-green-600 transition-colors"
             onClick={handleEditComplete}
             title="Save edits"
           >
             <Check size={14} className="mr-1" />
             <span className="text-xs">Done</span>
-          </div>
+          </button>
         </div>
       )}
       
-      {!isEditing && (
+      {!isEditing && !element.locked && (
         <>
           <ElementControls element={element} />
           <ResizeHandles />
