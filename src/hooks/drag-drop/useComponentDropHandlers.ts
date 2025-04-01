@@ -37,7 +37,9 @@ export const useComponentDropHandlers = ({
           id: `template-${component.type}-${Date.now()}`,
           x: 0, // Center horizontally
           y: dropY,
-          content: component.type
+          content: component.type,
+          description: component.description,
+          isNew: true // Mark as new for auto-selection
         };
         
         // Insert at the appropriate position and return new array
@@ -78,20 +80,51 @@ export const useComponentDropHandlers = ({
   };
 
   const handleComponentDrop = (componentData: string, x: number, y: number) => {
-    const component = JSON.parse(componentData);
-    const newElement = {
-      type: "component",
-      id: `component-${Date.now()}`,
-      x: x / (zoomLevel / 100),
-      y: y / (zoomLevel / 100),
-      content: component.name
-    };
-    
-    setDroppedElements(prev => [...prev, newElement]);
-    toast({
-      title: "Component Added",
-      description: `Added ${component.name} to the canvas`
-    });
+    try {
+      const component = JSON.parse(componentData);
+      
+      // Determine width and height based on component type
+      let width = 200;
+      let height = 80;
+      
+      // Adjust size based on component type
+      if (component.name === 'NFT Card') {
+        width = 220;
+        height = 300;
+      } else if (component.name === 'Feature Card') {
+        width = 250;
+        height = 200;
+      } else if (component.name.includes('Button')) {
+        width = 180;
+        height = 50;
+      }
+      
+      const newElement = {
+        type: "component",
+        id: `component-${Date.now()}`,
+        x: x / (zoomLevel / 100),
+        y: y / (zoomLevel / 100),
+        content: component.name,
+        description: component.description,
+        width,
+        height,
+        isNew: true // Mark as new for auto-selection
+      };
+      
+      setDroppedElements(prev => [...prev, newElement]);
+      
+      toast({
+        title: "Component Added",
+        description: `Added ${component.name} to the canvas`,
+      });
+      
+    } catch (error) {
+      console.error("Error adding component:", error);
+      toast({
+        title: "Error",
+        description: "Could not add component to canvas"
+      });
+    }
   };
 
   return {

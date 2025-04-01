@@ -1,3 +1,4 @@
+
 import { useState, useRef, useEffect } from "react";
 import { CanvasElement } from "../types/canvasElement";
 import { toast } from "@/components/ui/use-toast";
@@ -34,23 +35,25 @@ export const useComponentElement = ({
   useEffect(() => {
     // Add mouse event listeners for dragging
     const handleMouseMove = (e: MouseEvent) => {
-      if (isDragging.current && activeTool === 'move' && editMode) {
+      if (isDragging.current && (activeTool === 'move' || isDraggingState) && editMode) {
         e.preventDefault();
         
         // Calculate new position
         let newX = e.clientX - dragOffset.current.x;
         let newY = e.clientY - dragOffset.current.y;
         
-        // Snap to grid
-        newX = Math.round(newX / gridSize) * gridSize;
-        newY = Math.round(newY / gridSize) * gridSize;
+        // Snap to grid if grid is enabled
+        if (window.snapToGrid) {
+          newX = Math.round(newX / gridSize) * gridSize;
+          newY = Math.round(newY / gridSize) * gridSize;
+        }
         
         setPosition({ x: newX, y: newY });
       }
     };
     
     const handleMouseUp = () => {
-      if (isDragging.current && activeTool === 'move' && editMode) {
+      if (isDragging.current && (activeTool === 'move' || isDraggingState) && editMode) {
         isDragging.current = false;
         setIsDraggingState(false);
         document.body.style.cursor = 'default';
@@ -59,14 +62,14 @@ export const useComponentElement = ({
         if (typeof (window as any).updateCanvasElement === 'function') {
           (window as any).updateCanvasElement(element.id, { 
             x: position.x, 
-            y: position.y 
+            y: position.y,
+            isNew: undefined // Remove the isNew flag after the first move
           });
         }
         
-        // Show toast notification
         toast({
-          title: "Element Moved",
-          description: `Element positioned at X: ${position.x}, Y: ${position.y}`
+          title: "Element Positioned",
+          description: "Component has been placed at the new position"
         });
       }
     };
@@ -78,7 +81,7 @@ export const useComponentElement = ({
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
     };
-  }, [activeTool, element.id, position, editMode]);
+  }, [activeTool, element.id, position, editMode, isDraggingState]);
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!editMode) return; // Disable interactions in preview mode
@@ -88,8 +91,8 @@ export const useComponentElement = ({
     // Select the element
     selectElement(element);
     
-    // If we're in move mode, start dragging
-    if (activeTool === 'move') {
+    // If we're in move mode or the move button was clicked, start dragging
+    if (activeTool === 'move' || (e.currentTarget as HTMLElement).classList.contains('move-handle')) {
       isDragging.current = true;
       setIsDraggingState(true);
       document.body.style.cursor = 'move';
@@ -104,8 +107,8 @@ export const useComponentElement = ({
       }
       
       toast({
-        title: "Moving Element",
-        description: "Drag to move. Release to place."
+        title: "Moving Component",
+        description: "Drag to position, then release to place"
       });
     }
   };
@@ -119,6 +122,12 @@ export const useComponentElement = ({
     if (element.type === 'component') {
       setIsEditing(true);
       selectElement(element);
+      
+      // Show hint toast
+      toast({
+        title: "Editing Text",
+        description: "Type to edit content, press Enter to save"
+      });
     }
   };
 
@@ -135,8 +144,8 @@ export const useComponentElement = ({
       }
       
       toast({
-        title: "Text Updated",
-        description: "Text content has been updated"
+        title: "Content Updated",
+        description: "Component text has been updated"
       });
     }
   };

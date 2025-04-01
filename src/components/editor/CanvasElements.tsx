@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { CanvasElement } from "../../types/canvasElement";
 import ComponentElement from "./canvas/ComponentElement";
 import ImageElement from "./canvas/ImageElement";
@@ -9,6 +9,7 @@ import ImagePlaceholder from "./canvas/ImagePlaceholder";
 import { useSelectedElement } from "../../hooks/useSelectedElement";
 import { useCanvasState } from "@/hooks/useCanvasState";
 import { useHotkeys } from "react-hotkeys-hook";
+import { toast } from "@/components/ui/use-toast";
 
 interface CanvasElementsProps {
   droppedElements: CanvasElement[];
@@ -23,12 +24,55 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
 }) => {
   const { selectElement, selectedElement } = useSelectedElement();
   const { layers, deleteElement } = useCanvasState();
+  const newElementRef = useRef<string | null>(null);
+  
+  // Find newly added element and scroll to it
+  useEffect(() => {
+    const newElement = droppedElements.find(el => el.isNew);
+    
+    if (newElement && newElement.id !== newElementRef.current) {
+      newElementRef.current = newElement.id;
+      
+      // Select the new element
+      selectElement(newElement);
+      
+      // Find the element and scroll to it
+      setTimeout(() => {
+        const element = document.getElementById(newElement.id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
+    }
+  }, [droppedElements, selectElement]);
+  
+  // Listen for element movement event
+  useEffect(() => {
+    const handleElementMove = (e: CustomEvent) => {
+      const { id } = e.detail;
+      const element = droppedElements.find(el => el.id === id);
+      if (element) {
+        selectElement(element);
+      }
+    };
+    
+    window.addEventListener('canvas-element-move' as any, handleElementMove as any);
+    
+    return () => {
+      window.removeEventListener('canvas-element-move' as any, handleElementMove as any);
+    };
+  }, [droppedElements, selectElement]);
   
   // Add keyboard shortcut for deletion
   useHotkeys('delete', () => {
     if (selectedElement) {
       deleteElement(selectedElement.id);
       selectElement(null);
+      
+      toast({
+        title: "Element Deleted",
+        description: "The selected element has been removed"
+      });
     }
   }, [selectedElement, deleteElement, selectElement]);
   
@@ -58,7 +102,14 @@ const CanvasElements: React.FC<CanvasElementsProps> = ({
 
     switch (element.type) {
       case 'component':
-        return <ComponentElement key={element.id} element={element} activeTool={activeTool} editMode={editMode} />;
+        return (
+          <ComponentElement 
+            key={element.id} 
+            element={{...element, id: element.id}} 
+            activeTool={activeTool} 
+            editMode={editMode} 
+          />
+        );
       case 'image':
         return <ImageElement key={element.id} element={element} activeTool={activeTool} />;
       case 'nft':
