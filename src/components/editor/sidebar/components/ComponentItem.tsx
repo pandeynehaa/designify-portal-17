@@ -1,10 +1,10 @@
 
 import React, { DragEvent } from "react";
-import { ComponentItem } from "@/types/componentLibraryTypes";
+import type { ComponentItem as ComponentItemType } from "@/types/componentLibraryTypes";
 import { toast } from "@/components/ui/use-toast";
 
 interface ComponentItemProps {
-  item: ComponentItem;
+  item: ComponentItemType;
   categoryId: string;
 }
 
